@@ -49,10 +49,16 @@ void Game::init(void)
 
 	//create a plane mesh
 	mesh = new Mesh();
-	mesh->createPlane(10);
+	//mesh->createPlane(10);
+
+	if (mesh->loadASE("data/meshes/box.ASE") == false)
+	{
+		std::cout << "file not found" << std::endl;
+		exit(0);
+	}
 
 	shader = new Shader();
-	if( !shader->load("data/shaders/simple.vs","data/shaders/simple.fs") )
+	if (!shader->load("data/shaders/simple.vs", "data/shaders/simple.fs"))
 	{
 		std::cout << "shader not found or error" << std::endl;
 		exit(0);
@@ -94,7 +100,8 @@ void Game::render(void)
 		shader->setMatrix44("u_model", m );
 		shader->setMatrix44("u_mvp", mvp );
    
-		mesh->render(GL_TRIANGLES, shader);
+		mesh->render(GL_POINTS, shader);
+		//mesh->render(GL_TRIANGLES, shader);
 		shader->disable();
 	}
 	else //render using fixed pipeline (DEPRECATED)

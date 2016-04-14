@@ -2,6 +2,7 @@
 #include <cassert>
 #include "includes.h"
 #include "shader.h"
+#include "extra/textparser.h"
 
 Mesh::Mesh()
 {
@@ -281,4 +282,74 @@ void Mesh::createPlane(float size)
 	uvs.push_back( Vector2(1,1) );
 	uvs.push_back( Vector2(0,0) );
 }
+
+bool Mesh::loadASE(const char* filename)
+{
+	vertices.clear();
+	normals.clear();
+	uvs.clear();
+	colors.clear();
+
+	TextParser t;
+	std::vector<Vector3> uniqueVertices;
+	float parseTime = 0.0;
+	
+	//Creamos el Parser de la Malla
+	if (t.create(filename) == false)
+	{
+		return false;
+	}
+
+	//Número de Vértices de la Malla
+	t.seek("*MESH_NUMVERTEX");
+	int num_vertices = t.getint();
+
+	//Número de caras de la Malla
+	t.seek("*MESH_NUMFACES");
+	int num_faces = t.getint();
+
+	//Añadimos los vertices de la Malla al vector de uniqueVertices
+	uniqueVertices.resize(num_vertices);
+	//vertices.resize(num_faces*3);
+	//std::cout << num_vertices << std::endl;
+
+	for (int i = 0; i < num_vertices; i++)
+	{
+		t.seek("*MESH_VERTEX");
+		t.getint();
+		Vector3 v;
+		v.x = t.getfloat();
+		v.z = t.getfloat();
+		v.y = t.getfloat();
+		uniqueVertices[i] = v;
+	}
+
+	//Sacamos los vertices para las diferentes caras de la Malla
+	for (int i = 0; i < num_faces; i++)
+	{
+		t.seek("*MESH_FACE");
+		t.getword();
+		t.getword();
+		
+		int A = t.getint();
+		vertices.push_back(uniqueVertices[A]);
+		t.getword();
+
+		int B = t.getint();
+		vertices.push_back(uniqueVertices[B]);
+		t.getword();
+
+		int C = t.getint();
+		vertices.push_back(uniqueVertices[C]);
+		t.getword();
+
+	}
+
+	uniqueVertices.clear();
+	//Printamos tiempo transcurrido
+	std::cout << "Tiempo de parseo de la Malla: " << parseTime << std::endl;
+
+	return true;
+}
+
 
