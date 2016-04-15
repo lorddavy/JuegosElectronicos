@@ -1,0 +1,4 @@
+﻿camera.obj : warning LNK4075: se omite '/EDITANDCONTINUE' debido a la especificación '/OPT:LBR'
+LINK : warning LNK4098: la biblioteca predeterminada'LIBCMT' entra en conflicto con otras bibliotecas; use la biblioteca /NODEFAULTLIB:biblioteca
+glew32s.lib(glew.obj) : warning LNK4099: no se encontró PDB 'vc120.pdb' con 'glew32s.lib(glew.obj)' o en 'C:\Users\u93032\Documents\GitHub\JuegosElectronicos\Practica1\vc120.pdb'; se vinculará el objeto sin tener en cuenta información de depuración
+  visualstudio.vcxproj -> C:\Users\u93032\Documents\GitHub\JuegosElectronicos\Practica1\visualstudio15\VS2015\..\..\visualstudio_debug.exe
