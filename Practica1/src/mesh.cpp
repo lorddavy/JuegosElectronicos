@@ -2,6 +2,7 @@
 #include <cassert>
 #include "includes.h"
 #include "shader.h"
+#include "utils.h"
 #include "extra/textparser.h"
 
 Mesh::Mesh()
@@ -285,6 +286,9 @@ void Mesh::createPlane(float size)
 
 bool Mesh::loadASE(const char* filename)
 {
+	long parseTime = 0;
+	long initialTime = getTime();
+
 	vertices.clear();
 	normals.clear();
 	uvs.clear();
@@ -292,7 +296,6 @@ bool Mesh::loadASE(const char* filename)
 
 	TextParser t;
 	std::vector<Vector3> uniqueVertices;
-	float parseTime = 0.0;
 
 	//Creamos el Parser de la Malla
 	if (t.create(filename) == false)
@@ -345,7 +348,10 @@ bool Mesh::loadASE(const char* filename)
 
 	}
 
-	uniqueVertices.clear();
+	//uniqueVertices.clear();
+	float finalTime = getTime();
+	parseTime = finalTime - initialTime;
+
 	//Printamos tiempo transcurrido
 	std::cout << "Tiempo de parseo de la Malla: " << parseTime << std::endl;
 
