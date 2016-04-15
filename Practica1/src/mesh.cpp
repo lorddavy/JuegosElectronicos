@@ -335,15 +335,14 @@ bool Mesh::loadASE(const char* filename)
 		t.getword();
 
 		int A = t.getint();
-		vertices.push_back(uniqueVertices[A]);
 		t.getword();
-
 		int B = t.getint();
-		vertices.push_back(uniqueVertices[B]);
 		t.getword();
-
 		int C = t.getint();
+
+		vertices.push_back(uniqueVertices[A]);
 		vertices.push_back(uniqueVertices[C]);
+		vertices.push_back(uniqueVertices[B]);
 		//t.getword();
 
 	}
@@ -353,7 +352,7 @@ bool Mesh::loadASE(const char* filename)
 	int num_tvertices = t.getint();
 
 	uniquetVertices.resize(num_tvertices);
-	std::cout << num_tvertices << std::endl;
+	//std::cout << num_tvertices << std::endl;
 
 	for (int i = 0; i < num_tvertices; i++)
 	{
@@ -376,24 +375,25 @@ bool Mesh::loadASE(const char* filename)
 		t.getint();
 
 		int A = t.getint();
+		int B = t.getint();
+		int C = t.getint();
+
 		uvs.push_back(uniquetVertices[A]);
 
-		int C = t.getint();
 		uvs.push_back(uniquetVertices[C]);
 
-		int B = t.getint();
 		uvs.push_back(uniquetVertices[B]);
 		//t.getword();
 
 	}
 
 	//Sacamos las normales para las diferentes caras de la Malla
-	for (int i = 0; i < num_faces; i++)
+	for (int i = 0; i < num_faces*3; i++)
 	{
-		t.seek("*MESH_FACENORMAL");
+		t.seek("*MESH_VERTEXNORMAL");
 		t.getint();
 		Vector3 v;
-		v.x = t.getfloat();
+		v.x = t.getfloat();		
 		v.z = t.getfloat();
 		v.y = t.getfloat();
 		normals.push_back(v);
@@ -401,7 +401,7 @@ bool Mesh::loadASE(const char* filename)
 	}
 
 	//Probamos si las uvs son correctas
-	for (int i = 0; i < num_tfaces; i++)
+	/*for (int i = 0; i < uvs.size(); i++)
 	{
 		Vector4 v;
 		v.x = uvs[i].x;
@@ -409,18 +409,18 @@ bool Mesh::loadASE(const char* filename)
 		v.z = 0;
 		v.w = 0;
 		colors.push_back(v);
-	}
+	}*/
 
 	//Probamos si las normales son correctas
-	/*for (int i = 0; i < num_faces; i++)
+	for (int i = 0; i < normals.size(); i++)
 	{
 		Vector4 v;
 		v.x = normals[i].x;
-		v.y = normals[i].z;
-		v.z = normals[i].y;
+		v.y = normals[i].y;
+		v.z = normals[i].z;
 		v.w = 0;
 		colors.push_back(v);
-	}*/
+	}
 
 	float finalTime = getTime();
 	parseTime = float(finalTime - initialTime) * 0.001;

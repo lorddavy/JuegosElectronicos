@@ -2,11 +2,12 @@
 c:\users\u93032\documents\github\juegoselectronicos\practica1\src\mesh.cpp(324): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
 c:\users\u93032\documents\github\juegoselectronicos\practica1\src\mesh.cpp(325): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
 c:\users\u93032\documents\github\juegoselectronicos\practica1\src\mesh.cpp(326): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+c:\users\u93032\documents\github\juegoselectronicos\practica1\src\mesh.cpp(362): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
 c:\users\u93032\documents\github\juegoselectronicos\practica1\src\mesh.cpp(363): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-c:\users\u93032\documents\github\juegoselectronicos\practica1\src\mesh.cpp(364): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
 c:\users\u93032\documents\github\juegoselectronicos\practica1\src\mesh.cpp(396): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
 c:\users\u93032\documents\github\juegoselectronicos\practica1\src\mesh.cpp(397): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
 c:\users\u93032\documents\github\juegoselectronicos\practica1\src\mesh.cpp(398): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+c:\users\u93032\documents\github\juegoselectronicos\practica1\src\mesh.cpp(415): warning C4018: '<': no coinciden signed/unsigned
 c:\users\u93032\documents\github\juegoselectronicos\practica1\src\mesh.cpp(425): warning C4244: 'inicializando': conversión de 'long' a 'float'; posible pérdida de datos
 c:\users\u93032\documents\github\juegoselectronicos\practica1\src\mesh.cpp(426): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
 camera.obj : warning LNK4075: se omite '/EDITANDCONTINUE' debido a la especificación '/OPT:LBR'

@@ -57,7 +57,7 @@ void Game::init(void)
 		exit(0);
 	}*/
 
-	if (mesh->loadASE("data/meshes/box.ASE") == false)
+	if (mesh->loadASE("data/meshes/p38/p38.ASE") == false)
 	{
 		std::cout << "file not found" << std::endl;
 		exit(0);
