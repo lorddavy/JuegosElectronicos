@@ -1,0 +1,8 @@
+*.opendb
+*.sdf
+*.exe
+*.pdb
+*.suo
+
+JuegosElectronicos/visualstudio15/VS2015/Debug
+
