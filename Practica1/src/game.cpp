@@ -57,7 +57,7 @@ void Game::init(void)
 		exit(0);
 	}*/
 
-	if (mesh->loadASE("data/meshes/p38/p38.ASE") == false)
+	if (mesh->loadASE("data/meshes/box.ASE") == false)
 	{
 		std::cout << "file not found" << std::endl;
 		exit(0);
@@ -98,7 +98,7 @@ void Game::render(void)
 	m.rotate(angle * DEG2RAD, Vector3(0,1,0) ); //build a rotation matrix
 
 	//draw the plane
-	if(1) //render using shader
+	if(0) //render using shader
 	{
 	    Matrix44 mvp = m * camera->viewprojection_matrix;
 

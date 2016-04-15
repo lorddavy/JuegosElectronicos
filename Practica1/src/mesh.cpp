@@ -286,7 +286,7 @@ void Mesh::createPlane(float size)
 
 bool Mesh::loadASE(const char* filename)
 {
-	long parseTime = 0;
+	float parseTime = 0;
 	long initialTime = getTime();
 
 	vertices.clear();
@@ -296,6 +296,7 @@ bool Mesh::loadASE(const char* filename)
 
 	TextParser t;
 	std::vector<Vector3> uniqueVertices;
+	std::vector<Vector2> uniquetVertices;
 
 	//Creamos el Parser de la Malla
 	if (t.create(filename) == false)
@@ -313,7 +314,6 @@ bool Mesh::loadASE(const char* filename)
 
 	//Añadimos los vertices de la Malla al vector de uniqueVertices
 	uniqueVertices.resize(num_vertices);
-	//vertices.resize(num_faces*3);
 	//std::cout << num_vertices << std::endl;
 
 	for (int i = 0; i < num_vertices; i++)
@@ -344,16 +344,89 @@ bool Mesh::loadASE(const char* filename)
 
 		int C = t.getint();
 		vertices.push_back(uniqueVertices[C]);
-		t.getword();
+		//t.getword();
+
+	}
+	
+	//Número de Vértices para texturas de la Malla
+	t.seek("*MESH_NUMTVERTEX");
+	int num_tvertices = t.getint();
+
+	uniquetVertices.resize(num_tvertices);
+	std::cout << num_tvertices << std::endl;
+
+	for (int i = 0; i < num_tvertices; i++)
+	{
+		t.seek("*MESH_TVERT");
+		t.getint();
+		Vector2 v;
+		v.x = t.getfloat();
+		v.y = t.getfloat();
+		uniquetVertices[i] = v;
+	}
+
+	//Número de caras para texturas de la Malla
+	t.seek("*MESH_NUMTVFACES");
+	int num_tfaces = t.getint();
+
+	//Sacamos los vertices para las diferentes caras de la Malla (para texturas)
+	for (int i = 0; i < num_tfaces; i++)
+	{
+		t.seek("*MESH_TFACE");
+		t.getint();
+
+		int A = t.getint();
+		uvs.push_back(uniquetVertices[A]);
+
+		int C = t.getint();
+		uvs.push_back(uniquetVertices[C]);
+
+		int B = t.getint();
+		uvs.push_back(uniquetVertices[B]);
+		//t.getword();
 
 	}
 
-	//uniqueVertices.clear();
+	//Sacamos las normales para las diferentes caras de la Malla
+	for (int i = 0; i < num_faces; i++)
+	{
+		t.seek("*MESH_FACENORMAL");
+		t.getint();
+		Vector3 v;
+		v.x = t.getfloat();
+		v.z = t.getfloat();
+		v.y = t.getfloat();
+		normals.push_back(v);
+
+	}
+
+	//Probamos si las uvs son correctas
+	for (int i = 0; i < num_tfaces; i++)
+	{
+		Vector4 v;
+		v.x = uvs[i].x;
+		v.y = uvs[i].y;
+		v.z = 0;
+		v.w = 0;
+		colors.push_back(v);
+	}
+
+	//Probamos si las normales son correctas
+	/*for (int i = 0; i < num_faces; i++)
+	{
+		Vector4 v;
+		v.x = normals[i].x;
+		v.y = normals[i].z;
+		v.z = normals[i].y;
+		v.w = 0;
+		colors.push_back(v);
+	}*/
+
 	float finalTime = getTime();
-	parseTime = finalTime - initialTime;
+	parseTime = float(finalTime - initialTime) * 0.001;
 
 	//Printamos tiempo transcurrido
-	std::cout << "Tiempo de parseo de la Malla: " << parseTime << std::endl;
+	std::cout << "Tiempo de parseo de la Malla: " << parseTime << " segundos" << std::endl;
 
 	return true;
 }
