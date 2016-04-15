@@ -58,7 +58,7 @@ void Game::init(void)
 	}
 
 	shader = new Shader();
-	if (!shader->load("data/shaders/simple.vs", "data/shaders/simple.fs"))
+	if( !shader->load("data/shaders/simple.vs","data/shaders/simple.fs") )
 	{
 		std::cout << "shader not found or error" << std::endl;
 		exit(0);
@@ -100,8 +100,7 @@ void Game::render(void)
 		shader->setMatrix44("u_model", m );
 		shader->setMatrix44("u_mvp", mvp );
    
-		mesh->render(GL_POINTS, shader);
-		//mesh->render(GL_TRIANGLES, shader);
+		mesh->render(GL_TRIANGLES, shader);
 		shader->disable();
 	}
 	else //render using fixed pipeline (DEPRECATED)
