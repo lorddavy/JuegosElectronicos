@@ -57,7 +57,8 @@ void Game::init(void)
 		exit(0);
 	}*/
 
-	if (mesh->loadASE("data/meshes/p38/p38.ASE") == false)
+	//if (mesh->loadASE("data/meshes/p38/p38.ASE") == false)
+	if (mesh->loadASE("data/meshes/spitfire/spitfire.ASE") == false)
 	{
 		std::cout << "file not found" << std::endl;
 		exit(0);
