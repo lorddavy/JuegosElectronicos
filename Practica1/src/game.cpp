@@ -58,11 +58,14 @@ void Game::init(void)
 	}*/
 
 	//if (mesh->loadASE("data/meshes/p38/p38.ASE") == false)
-	if (mesh->loadASE("data/meshes/spitfire/spitfire.ASE") == false)
+	if (mesh->readBIN("data/meshes/spitfire/spitfire.ASE.bin") == false)
 	{
-		std::cout << "file not found" << std::endl;
-		exit(0);
-	}
+		if (mesh->loadASE("data/meshes/spitfire/spitfire.ASE") == false)
+		{
+			std::cout << "file not found" << std::endl;
+			exit(0);
+		}
+	}	
 
 	shader = new Shader();
 	if( !shader->load("data/shaders/simple.vs","data/shaders/simple.fs") )

@@ -422,13 +422,116 @@ bool Mesh::loadASE(const char* filename)
 		colors.push_back(v);
 	}
 
+	//Guardamos archivo binario con la información
+	std::string bin_filename;
+	bin_filename = filename + std::string(".bin");
+	writeBIN(bin_filename.c_str());
+
+	//Calculamos tiempo
 	float finalTime = getTime();
-	parseTime = float(finalTime - initialTime) * 0.001;
+	parseTime = float(finalTime - initialTime) * 0.001;	
 
 	//Printamos tiempo transcurrido
 	std::cout << "Tiempo de parseo de la Malla: " << parseTime << " segundos" << std::endl;
 
 	return true;
+}
+
+bool Mesh::writeBIN(const char * filename)
+{
+	
+	//Guardamos la información de cabecera
+	sMeshBin header;
+	header.format[0] = 'M';
+	header.format[1] = 'E';
+	header.format[2] = 'S';
+	header.format[3] = 'H';
+	header.num_vertices = vertices.size();
+	header.num_normals = normals.size();
+	header.num_uvs = uvs.size();
+	header.num_colors = colors.size();
+
+	//Guardamos Bounding box
+
+	sBounding boundingBox;
+
+	//!!!!TO DO : CALCULARLO BIEN!!!!
+	boundingBox.center = Vector3(0,0,0);
+	boundingBox.half_size = Vector3(0,0,0);
+
+	//Creamos el fichero binario
+	FILE* f = fopen(filename, "wb");
+
+		if (f == NULL)
+		{
+			return false;
+		}
+
+	//Escribimos en el fichero los datos de la mesh
+	fwrite(&header, sizeof(sMeshBin), 1, f);
+	fwrite(&boundingBox, sizeof(sBounding), 1, f);
+	fwrite(&vertices[0], sizeof(Vector3), vertices.size(), f);
+	fwrite(&normals[0], sizeof(Vector3), normals.size(), f);
+	fwrite(&uvs[0], sizeof(Vector3), uvs.size(), f);
+	fwrite(&colors[0], sizeof(Vector3), colors.size(), f);
+
+	//Cerramos el fichero
+	fclose(f);
+
+	return true;
+}
+bool Mesh::readBIN(const char * filename)
+{
+	sMeshBin header;
+	sBounding boundingBox;
+
+	//Abrimos el fichero binario
+	if (FILE* f = fopen(filename, "rb"))
+	{
+
+		//Leemos y guardamos cabecera
+		fread(&header, sizeof(sMeshBin), 1, f);
+
+		//Comprobamos el formato
+		if (header.format[0] == 'M' && header.format[1] == 'E' && header.format[2] == 'S' && header.format[3] == 'H')
+		{
+			//Leemos y guardamos la bounding box
+			fread(&boundingBox, sizeof(sBounding), 1, f);
+
+			//Leemos y guardamos vertices
+			vertices.resize(header.num_vertices);
+			fread(&vertices[0], sizeof(Vector3), header.num_vertices, f);
+
+			//Leemos y guardamos normales
+			if (normals.size())
+			{
+				normals.resize(header.num_normals);
+				fread(&normals[0], sizeof(Vector3), header.num_normals, f);
+			}
+
+			//Leemos y guardamos uvs
+			if (uvs.size())
+			{
+				uvs.resize(header.num_uvs);
+				fread(&uvs[0], sizeof(Vector3), header.num_uvs, f);
+			}
+
+			if (colors.size())
+			{
+				colors.resize(header.num_colors);
+				fread(&colors[0], sizeof(Vector3), header.num_colors, f);
+			}
+		}
+		else {
+
+			std::cout << "Archivo binario de formato desconocido" << std::endl;
+			return false;
+		}
+		return true;
+	}
+
+	return false;
+	
 }
 
 
