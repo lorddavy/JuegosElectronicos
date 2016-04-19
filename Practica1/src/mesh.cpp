@@ -322,7 +322,7 @@ bool Mesh::loadASE(const char* filename)
 		t.getint();
 		Vector3 v;
 		v.x = t.getfloat();
-		v.z = t.getfloat();
+		v.z = -t.getfloat();
 		v.y = t.getfloat();
 		uniqueVertices[i] = v;
 	}
@@ -341,8 +341,8 @@ bool Mesh::loadASE(const char* filename)
 		int C = t.getint();
 
 		vertices.push_back(uniqueVertices[A]);
-		vertices.push_back(uniqueVertices[C]);
 		vertices.push_back(uniqueVertices[B]);
+		vertices.push_back(uniqueVertices[C]);
 		//t.getword();
 
 	}
@@ -380,9 +380,9 @@ bool Mesh::loadASE(const char* filename)
 
 		uvs.push_back(uniquetVertices[A]);
 
-		uvs.push_back(uniquetVertices[C]);
-
 		uvs.push_back(uniquetVertices[B]);
+
+		uvs.push_back(uniquetVertices[C]);
 		//t.getword();
 
 	}
@@ -394,7 +394,7 @@ bool Mesh::loadASE(const char* filename)
 		t.getint();
 		Vector3 v;
 		v.x = t.getfloat();		
-		v.z = t.getfloat();
+		v.z = -t.getfloat();
 		v.y = t.getfloat();
 		normals.push_back(v);
 
