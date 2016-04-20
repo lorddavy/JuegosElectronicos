@@ -454,10 +454,11 @@ bool Mesh::writeBIN(const char * filename)
 	//Guardamos Bounding box
 
 	sBounding boundingBox;
+	
+	bounds = calcBoundingBox();
 
-	//!!!!TO DO : CALCULARLO BIEN!!!!
-	boundingBox.center = Vector3(0,0,0);
-	boundingBox.half_size = Vector3(0,0,0);
+	boundingBox.center = Vector3((bounds[0] + bounds[1])/2, (bounds[2] + bounds[3]) / 2, (bounds[4] + bounds[5]) / 2);
+	boundingBox.half_size = Vector3(bounds[1] - boundingBox.center.x, bounds[3] - boundingBox.center.y, bounds[5] - boundingBox.center.z);
 
 	//Creamos el fichero binario
 	FILE* f = fopen(filename, "wb");
@@ -480,6 +481,56 @@ bool Mesh::writeBIN(const char * filename)
 
 	return true;
 }
+
+std::vector<float> Mesh::calcBoundingBox()
+{
+	std::vector<float> bounds;
+	float maxX = -INFINITE;
+	float minX = INFINITE;
+	float maxY = -INFINITE;
+	float minY = INFINITE;
+	float maxZ = -INFINITE;
+	float minZ = INFINITE;
+
+	for (int i = 0; i < vertices.size(); i++)
+	{
+		Vector3 v = vertices[i];
+
+		if (v.x > maxX)
+		{
+			maxX = v.x;
+		}
+		if (v.x < minX)
+		{
+			minX = v.x;
+		}
+		if (v.y > maxY)
+		{
+			maxY = v.y;
+		}
+		if (v.y < minY)
+		{
+			minY = v.z;
+		}
+		if (v.z > maxZ)
+		{
+			maxZ = v.z;
+		}
+		if (v.z < minZ)
+		{
+			minZ = v.y;
+		}
+
+	}
+	bounds.push_back(minX);
+	bounds.push_back(maxX);
+	bounds.push_back(minY);
+	bounds.push_back(maxX);
+	bounds.push_back(minZ);
+	bounds.push_back(maxZ);
+	return bounds;
+}
+
 bool Mesh::readBIN(const char * filename)
 {
 	sMeshBin header;

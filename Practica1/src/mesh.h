@@ -23,6 +23,8 @@ public:
 	unsigned int uvs_vbo_id;
 	unsigned int colors_vbo_id;
 
+	std::vector<float> bounds;
+
 	//Definimos la estructura de la cabecera
 	struct sMeshBin
 	{
@@ -56,6 +58,7 @@ public:
 	bool loadASE(const char * filename);
 	bool writeBIN(const char * filename);
 	bool readBIN(const char * filename);
+	std::vector<float> calcBoundingBox();
 };
 
 #endif
