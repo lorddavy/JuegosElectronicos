@@ -71,6 +71,13 @@ void Game::init(void)
 		exit(0);
 	}
 
+	texture = new Texture();
+	bool textureLoaded = texture->load("data/meshes/spitfire/spitfire_color_spec.tga");
+	if (!textureLoaded) {
+	std::cout << "Texture not found. " << std::endl;
+	}
+
+
 	//hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
 }
@@ -114,9 +121,14 @@ void Game::render(void)
 	{
 		glPushMatrix();
 		m.multGL();
+		texture->bind();
 		mesh->render(GL_TRIANGLES);
+		texture->unbind();
+
 		glPopMatrix();
 	}
+
+
     
     glDisable( GL_BLEND );
 

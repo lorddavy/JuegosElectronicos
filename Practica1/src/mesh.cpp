@@ -401,7 +401,8 @@ bool Mesh::loadASE(const char* filename)
 	}
 
 	//Probamos si las uvs son correctas
-	/*for (int i = 0; i < uvs.size(); i++)
+	/*
+	for (int i = 0; i < uvs.size(); i++)
 	{
 		Vector4 v;
 		v.x = uvs[i].x;
@@ -412,6 +413,7 @@ bool Mesh::loadASE(const char* filename)
 	}*/
 
 	//Probamos si las normales son correctas
+	/*
 	for (int i = 0; i < normals.size(); i++)
 	{
 		Vector4 v;
@@ -421,6 +423,7 @@ bool Mesh::loadASE(const char* filename)
 		v.w = 0;
 		colors.push_back(v);
 	}
+	*/
 
 	float finalTime = getTime();
 	parseTime = float(finalTime - initialTime) * 0.001;
