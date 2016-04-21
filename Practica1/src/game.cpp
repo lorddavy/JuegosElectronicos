@@ -9,6 +9,7 @@
 
 //some globals
 Mesh* mesh = NULL;
+Mesh* mesh_low = NULL; //Low Quality Mesh
 Texture* texture = NULL;
 Shader* shader = NULL;
 float angle = 0;
@@ -49,6 +50,8 @@ void Game::init(void)
 
 	//create a plane mesh
 	mesh = new Mesh();
+	mesh_low = new Mesh();
+
 	//mesh->createPlane(10);
 
 	/*if (mesh->loadASE("data/meshes/box.ASE") == false)
@@ -57,7 +60,7 @@ void Game::init(void)
 		exit(0);
 	}*/
 
-	//if (mesh->loadASE("data/meshes/p38/p38.ASE") == false)
+	//Carga de las mallas de los objetos
 	if (mesh->readBIN("data/meshes/spitfire/spitfire.ASE.bin") == false)
 	{
 		if (mesh->loadASE("data/meshes/spitfire/spitfire.ASE") == false)
@@ -66,6 +69,20 @@ void Game::init(void)
 			exit(0);
 		}
 	}	
+
+	if (mesh_low->readBIN("data/meshes/spitfire/spitfire_low.ASE.bin") == false)
+	{
+		if (mesh_low->loadASE("data/meshes/spitfire/spitfire_low.ASE") == false)
+		{
+			std::cout << "file not found" << std::endl;
+			exit(0);
+		}
+	}
+
+	//Las mallas las subimos a la GPU para que sea más eficiente el renderizado
+	mesh->uploadToVRAM();
+	mesh_low->uploadToVRAM();
+
 
 	shader = new Shader();
 	if( !shader->load("data/shaders/simple.vs","data/shaders/simple.fs") )
@@ -81,6 +98,10 @@ void Game::init(void)
 //what to do when the image has to be draw
 void Game::render(void)
 {
+	Mesh* render_mesh = NULL;
+	texture = new Texture();
+	texture->load("data/textures/test.tga");
+
 	glClearColor(1.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -102,22 +123,37 @@ void Game::render(void)
 	m.rotate(angle * DEG2RAD, Vector3(0,1,0) ); //build a rotation matrix
 
 	//draw the plane
-	if(0) //render using shader
+	if(1) //render using shader
 	{
-	    Matrix44 mvp = m * camera->viewprojection_matrix;
+		for (int i = -100; i < 100; i++)
+		{
+			m.setTranslation(i * 10, 0, 0); //Para hacer benchmarking pintamos 100 aviones
 
-		shader->enable();
-		shader->setMatrix44("u_model", m );
-		shader->setMatrix44("u_mvp", mvp );
-   
-		mesh->render(GL_TRIANGLES, shader);
-		shader->disable();
+			if (Vector3(i * 10, 0, 0).distance(camera->eye) > 100) //Escogemos la textura que toca
+			{render_mesh = mesh_low;}else{render_mesh = mesh;}
+
+
+			Matrix44 mvp = m * camera->viewprojection_matrix;
+
+			shader->enable();
+			shader->setMatrix44("u_model", m);
+			shader->setMatrix44("u_mvp", mvp);
+
+			texture->bind();
+			render_mesh->render(GL_TRIANGLES, shader);
+			texture->unbind();
+			shader->disable();			
+		}
+		
 	}
 	else //render using fixed pipeline (DEPRECATED)
 	{
 		glPushMatrix();
 		m.multGL();
-		mesh->render(GL_TRIANGLES);
+		texture->bind();
+		mesh->render(GL_TRIANGLES, shader);
+		texture->unbind();
+
 		glPopMatrix();
 	}
     
