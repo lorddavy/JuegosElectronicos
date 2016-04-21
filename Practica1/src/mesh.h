@@ -23,6 +23,25 @@ public:
 	unsigned int uvs_vbo_id;
 	unsigned int colors_vbo_id;
 
+	std::vector<float> bounds;
+
+	//Definimos la estructura de la cabecera
+	struct sMeshBin
+	{
+		char format[4];
+		int num_vertices;
+		int num_normals;
+		int num_uvs;
+		int num_colors;
+	};
+
+	//Definimos la bounding box
+	struct sBounding
+	{
+		Vector3 center;
+		Vector3 half_size;
+	};
+
 	Mesh();
 	Mesh( const Mesh& m );
 	~Mesh();
@@ -37,6 +56,9 @@ public:
 	void createQuad(float center_x, float center_y, float w, float h, bool flip_uvs = false);
 
 	bool loadASE(const char * filename);
+	bool writeBIN(const char * filename);
+	bool readBIN(const char * filename);
+	std::vector<float> calcBoundingBox();
 };
 
 #endif
