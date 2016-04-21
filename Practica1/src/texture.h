@@ -41,7 +41,7 @@ protected:
 };
 
 //Header For the Textures Manager
-class TextureManager {
+/*class TextureManager {
 public:
 	static std::map< std::string, Texture* > s_map;
 	
@@ -55,5 +55,5 @@ public:
 private:
 	static TextureManager* instance;
 	TextureManager();
-};
+};*/
 #endif

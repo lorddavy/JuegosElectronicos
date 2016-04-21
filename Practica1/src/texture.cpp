@@ -173,7 +173,7 @@ Texture::TGAInfo* Texture::loadTGA(const char* filename)
 }
 
 //Source code for the Textures Manager
-TextureManager* TextureManager::instance = NULL;
+/*TextureManager* TextureManager::instance = NULL;
 
 TextureManager::TextureManager()
 {
@@ -201,4 +201,4 @@ Texture* TextureManager::getTexture(const char* filename)
 	s_map[filename] = texture;
 	return texture;
 
-}
+}*/
