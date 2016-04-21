@@ -454,10 +454,7 @@ bool Mesh::writeBIN(const char * filename)
 	header.num_uvs = uvs.size();
 	header.num_colors = colors.size();
 
-	//Guardamos Bounding box
-
-	sBounding boundingBox;
-	
+	//Guardamos Bounding box	
 	bounds = calcBoundingBox();
 
 	boundingBox.center = Vector3((bounds[0] + bounds[1])/2, (bounds[2] + bounds[3]) / 2, (bounds[4] + bounds[5]) / 2);

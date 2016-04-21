@@ -5,6 +5,7 @@
 #define TEXTURE_H
 
 #include "includes.h"
+#include "Mesh.h"
 #include <map>
 #include <string>
 
@@ -39,4 +40,20 @@ protected:
 	TGAInfo* loadTGA(const char* filename);
 };
 
+//Header For the Textures Manager
+/*class TextureManager {
+public:
+	static std::map< std::string, Texture* > s_map;
+	
+	static TextureManager* getInstance() {
+		if (instance == NULL)
+			instance = new TextureManager();
+		return instance;
+	};
+	Texture* getTexture(const char* filename);
+
+private:
+	static TextureManager* instance;
+	TextureManager();
+};*/
 #endif
