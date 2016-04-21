@@ -128,21 +128,23 @@ void Game::render(void)
 		for (int i = -100; i < 100; i++)
 		{
 			m.setTranslation(i * 10, 0, 0); //Para hacer benchmarking pintamos 100 aviones
+			Matrix44 mvp = m * camera->viewprojection_matrix;			
 
 			if (Vector3(i * 10, 0, 0).distance(camera->eye) > 100) //Escogemos la textura que toca
 			{render_mesh = mesh_low;}else{render_mesh = mesh;}
 
+			float size = max(max(render_mesh->boundingBox.half_size.x, render_mesh->boundingBox.half_size.y), render_mesh->boundingBox.half_size.z);
 
-			Matrix44 mvp = m * camera->viewprojection_matrix;
-
-			shader->enable();
-			shader->setMatrix44("u_model", m);
-			shader->setMatrix44("u_mvp", mvp);
-
-			texture->bind();
-			render_mesh->render(GL_TRIANGLES, shader);
-			texture->unbind();
-			shader->disable();			
+			//if (camera->clipper.SphereInFrustum(i * 10, 0, 0, size) == true)
+			//{		
+				shader->enable();
+				shader->setMatrix44("u_model", m);
+				shader->setMatrix44("u_mvp", mvp);
+				//texture->bind();
+				render_mesh->render(GL_TRIANGLES, shader);
+				//texture->unbind();
+				shader->disable();
+			//}
 		}
 		
 	}
@@ -150,10 +152,7 @@ void Game::render(void)
 	{
 		glPushMatrix();
 		m.multGL();
-		texture->bind();
-		mesh->render(GL_TRIANGLES, shader);
-		texture->unbind();
-
+		mesh->render(GL_TRIANGLES, shader);	
 		glPopMatrix();
 	}
     

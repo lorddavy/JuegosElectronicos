@@ -7,6 +7,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+//#include "clipper.h"
 #include "framework.h"
 
 class Camera
@@ -54,6 +55,8 @@ public:
 	//compute the matrices
 	void updateViewMatrix();
 	void updateProjectionMatrix();
+
+	//Clipper clipper;
 };
 
 

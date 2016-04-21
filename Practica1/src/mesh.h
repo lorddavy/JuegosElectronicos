@@ -59,6 +59,8 @@ public:
 	bool writeBIN(const char * filename);
 	bool readBIN(const char * filename);
 	std::vector<float> calcBoundingBox();
+
+	sBounding boundingBox;
 };
 
 #endif
