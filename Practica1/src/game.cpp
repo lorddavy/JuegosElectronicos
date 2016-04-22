@@ -137,9 +137,7 @@ void Game::render(void)
 				shader->enable();
 				shader->setMatrix44("u_model", m);
 				shader->setMatrix44("u_mvp", mvp);
-				texture->bind();
 				render_mesh->render(GL_TRIANGLES, shader);
-				texture->unbind();
 				shader->disable();
 			}
 		}
@@ -175,6 +173,9 @@ void Game::render(void)
 			}
 		}
 	}
+
+	//Dibujamos texto en pantalla
+	//drawText(0, 0, "Numero de aviones: 40000", Vector3(0, 0, 0), 4);
     
     glDisable( GL_BLEND );
 
