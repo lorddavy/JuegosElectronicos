@@ -1,15 +1,18 @@
 #include "game.h"
 #include "utils.h"
 #include "mesh.h"
+#include "textureManager.h"
 #include "texture.h"
 #include "rendertotexture.h"
 #include "shader.h"
+//#include <algorithm>
 
 #include <cmath>
 
 //some globals
 Mesh* mesh = NULL;
 Mesh* mesh_low = NULL; //Low Quality Mesh
+TextureManager* textureManager = TextureManager::getInstance();
 Texture* texture = NULL;
 Shader* shader = NULL;
 float angle = 0;
@@ -52,13 +55,12 @@ void Game::init(void)
 	mesh = new Mesh();
 	mesh_low = new Mesh();
 
-	//mesh->createPlane(10);
-
-	/*if (mesh->loadASE("data/meshes/box.ASE") == false)
+	shader = new Shader();
+	if (!shader->load("data/shaders/simple.vs", "data/shaders/simple.fs"))
 	{
-		std::cout << "file not found" << std::endl;
+		std::cout << "shader not found or error" << std::endl;
 		exit(0);
-	}*/
+	}
 
 	//Carga de las mallas de los objetos
 	if (mesh->readBIN("data/meshes/spitfire/spitfire.ASE.bin") == false)
@@ -79,17 +81,13 @@ void Game::init(void)
 		}
 	}
 
+
 	//Las mallas las subimos a la GPU para que sea más eficiente el renderizado
 	mesh->uploadToVRAM();
 	mesh_low->uploadToVRAM();
 
-
-	shader = new Shader();
-	if( !shader->load("data/shaders/simple.vs","data/shaders/simple.fs") )
-	{
-		std::cout << "shader not found or error" << std::endl;
-		exit(0);
-	}
+	//Cargamos Texture. Eso tendra que ir dentro del mesh manager
+	texture = TextureManager::getInstance()->getTexture("data/meshes/spitfire/spitfire_color_spec.tga");
 
 	//hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
@@ -98,9 +96,7 @@ void Game::init(void)
 //what to do when the image has to be draw
 void Game::render(void)
 {
-	Mesh* render_mesh = NULL;
-	texture = new Texture();
-	texture->load("data/textures/test.tga");
+	Mesh* render_mesh = NULL; //Tendremos que quitarlo!!!
 
 	glClearColor(1.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -123,9 +119,10 @@ void Game::render(void)
 	m.rotate(angle * DEG2RAD, Vector3(0,1,0) ); //build a rotation matrix
 
 	//draw the plane
-	if(1) //render using shader
+	if(0) //render using shader
 	{
-		for (int i = -100; i < 100; i++)
+		//for (int i = -25; i < 25; i++)
+		for (int i = 0; i < 1; i++)
 		{
 			m.setTranslation(i * 10, 0, 0); //Para hacer benchmarking pintamos 100 aviones
 			Matrix44 mvp = m * camera->viewprojection_matrix;			
@@ -140,9 +137,9 @@ void Game::render(void)
 				shader->enable();
 				shader->setMatrix44("u_model", m);
 				shader->setMatrix44("u_mvp", mvp);
-				//texture->bind();
+				texture->bind();
 				render_mesh->render(GL_TRIANGLES, shader);
-				//texture->unbind();
+				texture->unbind();
 				shader->disable();
 			//}
 		}
@@ -152,7 +149,9 @@ void Game::render(void)
 	{
 		glPushMatrix();
 		m.multGL();
-		mesh->render(GL_TRIANGLES, shader);	
+		texture->bind();
+		mesh->render(GL_TRIANGLES);	
+		texture->unbind();
 		glPopMatrix();
 	}
     
