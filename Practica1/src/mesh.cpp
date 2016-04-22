@@ -452,7 +452,7 @@ bool Mesh::writeBIN(const char * filename)
 	header.num_vertices = vertices.size();
 	header.num_normals = normals.size();
 	header.num_uvs = uvs.size();
-	header.num_colors = colors.size();
+	//header.num_colors = colors.size();
 
 	//Guardamos Bounding box	
 	bounds = calcBoundingBox();
@@ -461,6 +461,7 @@ bool Mesh::writeBIN(const char * filename)
 	boundingBox.half_size = Vector3(bounds[1] - boundingBox.center.x, bounds[3] - boundingBox.center.y, bounds[5] - boundingBox.center.z);
 
 	//Creamos el fichero binario
+	//std::string pathname = "../../bin/";
 	FILE* f = fopen(filename, "wb");
 
 		if (f == NULL)
@@ -473,8 +474,8 @@ bool Mesh::writeBIN(const char * filename)
 	fwrite(&boundingBox, sizeof(sBounding), 1, f);
 	fwrite(&vertices[0], sizeof(Vector3), vertices.size(), f);
 	fwrite(&normals[0], sizeof(Vector3), normals.size(), f);
-	fwrite(&uvs[0], sizeof(Vector3), uvs.size(), f);
-	fwrite(&colors[0], sizeof(Vector3), colors.size(), f);
+	fwrite(&uvs[0], sizeof(Vector2), uvs.size(), f);
+	//fwrite(&colors[0], sizeof(Vector3), colors.size(), f);
 
 	//Cerramos el fichero
 	fclose(f);
@@ -554,24 +555,20 @@ bool Mesh::readBIN(const char * filename)
 			fread(&vertices[0], sizeof(Vector3), header.num_vertices, f);
 
 			//Leemos y guardamos normales
+			normals.resize(header.num_normals);
 			if (normals.size())
-			{
-				normals.resize(header.num_normals);
 				fread(&normals[0], sizeof(Vector3), header.num_normals, f);
-			}
 
 			//Leemos y guardamos uvs
+			uvs.resize(header.num_uvs);
 			if (uvs.size())
-			{
-				uvs.resize(header.num_uvs);
-				fread(&uvs[0], sizeof(Vector3), header.num_uvs, f);
-			}
+				fread(&uvs[0], sizeof(Vector2), header.num_uvs, f);
 
-			if (colors.size())
+			/*if (colors.size())
 			{
 				colors.resize(header.num_colors);
 				fread(&colors[0], sizeof(Vector3), header.num_colors, f);
-			}
+			}*/
 		}
 		else {
 
