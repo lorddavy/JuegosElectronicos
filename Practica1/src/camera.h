@@ -7,7 +7,6 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-//#include "clipper.h"
 #include "framework.h"
 
 class Camera
@@ -32,6 +31,9 @@ public:
 	//for orthogonal projection
 	float left,right,top,bottom;
 
+	//planes
+	float frustum[6][4];
+
 	//matrices
 	Matrix44 view_matrix;
 	Matrix44 projection_matrix;
@@ -52,11 +54,15 @@ public:
 	void setOrthographic(float left, float right, float bottom, float top, float near_plane, float far_plane);
 	void lookAt(const Vector3& eye, const Vector3& center, const Vector3& up);
 
+	void extractFrustum();
+
 	//compute the matrices
 	void updateViewMatrix();
 	void updateProjectionMatrix();
 
-	//Clipper clipper;
+	//culling
+	bool testPointInFrustum( Vector3 v );
+	bool testSphereInFrustum( Vector3 v, float radius);
 };
 
 

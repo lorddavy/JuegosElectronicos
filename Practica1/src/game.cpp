@@ -132,8 +132,8 @@ void Game::render(void)
 
 			float size = max(max(render_mesh->boundingBox.half_size.x, render_mesh->boundingBox.half_size.y), render_mesh->boundingBox.half_size.z);
 
-			//if (camera->clipper.SphereInFrustum(i * 10, 0, 0, size) == true)
-			//{		
+			if (camera->testSphereInFrustum(Vector3(i * 10, 0, 0), size) == true)
+			{		
 				shader->enable();
 				shader->setMatrix44("u_model", m);
 				shader->setMatrix44("u_mvp", mvp);
@@ -141,18 +141,39 @@ void Game::render(void)
 				render_mesh->render(GL_TRIANGLES, shader);
 				texture->unbind();
 				shader->disable();
-			//}
+			}
 		}
 		
 	}
 	else //render using fixed pipeline (DEPRECATED)
 	{
-		glPushMatrix();
-		m.multGL();
-		texture->bind();
-		mesh->render(GL_TRIANGLES);	
-		texture->unbind();
-		glPopMatrix();
+
+		for (int i = -100; i < 100; i++)
+		{
+			for (int j = -100; j < 100; j++)
+			{
+				m.setTranslation(i * 10, j * 10, 0); //Para hacer benchmarking pintamos 100 aviones
+				Matrix44 mvp = m * camera->viewprojection_matrix;
+
+				if (Vector3(i * 10, j * 10, 0).distance(camera->eye) > 100) //Escogemos la mesh que toca según distancia
+					render_mesh = mesh_low;
+				else
+					render_mesh = mesh;
+
+				//Hacemos frustum culling para pintar solo lo que hay en frustum
+				float size = max(max(render_mesh->boundingBox.half_size.x, render_mesh->boundingBox.half_size.y), render_mesh->boundingBox.half_size.z);
+				if (camera->testSphereInFrustum(Vector3(i * 10, j * 10, 0), size) == true)
+				{
+					glPushMatrix();
+					m.multGL();
+					texture->bind();
+					render_mesh->render(GL_TRIANGLES);
+					texture->unbind();
+					glPopMatrix();
+				}
+
+			}
+		}
 	}
     
     glDisable( GL_BLEND );
