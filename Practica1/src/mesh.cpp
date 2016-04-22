@@ -461,7 +461,8 @@ bool Mesh::writeBIN(const char * filename)
 	boundingBox.half_size = Vector3(bounds[1] - boundingBox.center.x, bounds[3] - boundingBox.center.y, bounds[5] - boundingBox.center.z);
 
 	//Creamos el fichero binario
-	//std::string pathname = "../../bin/";
+	
+	std::string pathname = "../bin/";
 	FILE* f = fopen(filename, "wb");
 
 		if (f == NULL)
