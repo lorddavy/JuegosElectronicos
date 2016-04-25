@@ -69,26 +69,6 @@ void Game::init(void)
 	mesh = MeshManager::getInstance()->getMesh("data/meshes/spitfire/spitfire.ASE");
 	mesh_low = MeshManager::getInstance()->getMesh("data/meshes/spitfire/spitfire_low.ASE");
 
-	//Desde aqui -> Todo este codigo dentro del mesh Manager
-	/*if (mesh->readBIN("data/meshes/spitfire/spitfire.ASE.bin") == false)
-	{
-		if (mesh->loadASE("data/meshes/spitfire/spitfire.ASE") == false)
-		{
-			std::cout << "file not found" << std::endl;
-			exit(0);
-		}
-	}
-
-	if (mesh_low->readBIN("data/meshes/spitfire/spitfire_low.ASE.bin") == false)
-	{
-		if (mesh_low->loadASE("data/meshes/spitfire/spitfire_low.ASE") == false)
-		{
-			std::cout << "file not found" << std::endl;
-			exit(0);
-	}*/
-	//Hasta aqui -> Todo este codigo dentro del mesh Manager
-
-
 	//Las mallas las subimos a la GPU para que sea más eficiente el renderizado
 	mesh->uploadToVRAM();
 	mesh_low->uploadToVRAM();
@@ -157,7 +137,8 @@ void Game::render(void)
 		{
 			for (int j = -100; j < 100; j++)
 			{
-				m.setTranslation(i * 10, j * 10, 0); //Para hacer benchmarking pintamos 100 aviones
+				//m.setTranslation(i * 10, j * 10, 0); //Para hacer benchmarking pintamos 100 aviones
+				m.setTranslation(i * 10, j * 10, 100 * cos(time + j) * sin(time + i)); 
 				Matrix44 mvp = m * camera->viewprojection_matrix;
 
 				if (Vector3(i * 10, j * 10, 0).distance(camera->eye) > 100) //Escogemos la mesh que toca segï¿½n distancia
@@ -179,6 +160,9 @@ void Game::render(void)
 
 			}
 		}
+
+		drawText(0, 0, "Numero de aviones: 40000", Vector3(255, 0, 0), 4);
+
 	}
 
 	//Dibujamos texto en pantalla
