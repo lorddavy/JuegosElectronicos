@@ -67,9 +67,10 @@ void Game::init(void)
 	//Carga de las mallas de los objetos
 
 	mesh = MeshManager::getInstance()->getMesh("data/meshes/spitfire/spitfire.ASE");
+	mesh_low = MeshManager::getInstance()->getMesh("data/meshes/spitfire/spitfire_low.ASE");
 
 	//Desde aqui -> Todo este codigo dentro del mesh Manager
-	if (mesh->readBIN(".bin") == false)
+	/*if (mesh->readBIN("data/meshes/spitfire/spitfire.ASE.bin") == false)
 	{
 		if (mesh->loadASE("data/meshes/spitfire/spitfire.ASE") == false)
 		{
@@ -84,8 +85,7 @@ void Game::init(void)
 		{
 			std::cout << "file not found" << std::endl;
 			exit(0);
-		}
-	}
+	}*/
 	//Hasta aqui -> Todo este codigo dentro del mesh Manager
 
 
