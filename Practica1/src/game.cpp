@@ -1,5 +1,6 @@
 #include "game.h"
 #include "utils.h"
+#include "meshManager.h"
 #include "mesh.h"
 #include "textureManager.h"
 #include "texture.h"
@@ -10,6 +11,7 @@
 #include <cmath>
 
 //some globals
+MeshManager* meshmanager = MeshManager::getInstance();
 Mesh* mesh = NULL;
 Mesh* mesh_low = NULL; //Low Quality Mesh
 TextureManager* textureManager = TextureManager::getInstance();
@@ -63,14 +65,18 @@ void Game::init(void)
 	}
 
 	//Carga de las mallas de los objetos
-	if (mesh->readBIN("data/meshes/spitfire/spitfire.ASE.bin") == false)
+
+	mesh = MeshManager::getInstance()->getMesh("data/meshes/spitfire/spitfire.ASE");
+
+	//Desde aqui -> Todo este codigo dentro del mesh Manager
+	if (mesh->readBIN(".bin") == false)
 	{
 		if (mesh->loadASE("data/meshes/spitfire/spitfire.ASE") == false)
 		{
 			std::cout << "file not found" << std::endl;
 			exit(0);
 		}
-	}	
+	}
 
 	if (mesh_low->readBIN("data/meshes/spitfire/spitfire_low.ASE.bin") == false)
 	{
@@ -80,6 +86,7 @@ void Game::init(void)
 			exit(0);
 		}
 	}
+	//Hasta aqui -> Todo este codigo dentro del mesh Manager
 
 
 	//Las mallas las subimos a la GPU para que sea más eficiente el renderizado
@@ -153,7 +160,7 @@ void Game::render(void)
 				m.setTranslation(i * 10, j * 10, 0); //Para hacer benchmarking pintamos 100 aviones
 				Matrix44 mvp = m * camera->viewprojection_matrix;
 
-				if (Vector3(i * 10, j * 10, 0).distance(camera->eye) > 100) //Escogemos la mesh que toca según distancia
+				if (Vector3(i * 10, j * 10, 0).distance(camera->eye) > 100) //Escogemos la mesh que toca segï¿½n distancia
 					render_mesh = mesh_low;
 				else
 					render_mesh = mesh;
