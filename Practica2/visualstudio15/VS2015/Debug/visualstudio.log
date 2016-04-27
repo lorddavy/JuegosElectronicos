@@ -1,19 +1,5 @@
 ﻿  entity.cpp
-c:\users\u93032\documents\github\juegoselectronicos\practica2\src\entity.h(21): error C2143: error de sintaxis: falta ';' delante de '~'
-c:\users\u93032\documents\github\juegoselectronicos\practica2\src\entity.h(21): error C4430: falta el especificador de tipo; se presupone int. Nota: C++ no admite default-int
-c:\users\u93032\documents\github\juegoselectronicos\practica2\src\entity.h(24): error C2039: 'String': no es un miembro de 'std'
-  c:\program files (x86)\microsoft visual studio 14.0\vc\include\map(15): note: vea la declaración de 'std'
-c:\users\u93032\documents\github\juegoselectronicos\practica2\src\entity.h(24): error C3646: 'name': especificador de invalidación desconocido
-c:\users\u93032\documents\github\juegoselectronicos\practica2\src\entity.h(24): error C4430: falta el especificador de tipo; se presupone int. Nota: C++ no admite default-int
-c:\users\u93032\documents\github\juegoselectronicos\practica2\src\entity.h(27): error C2059: error de sintaxis: ':'
-c:\users\u93032\documents\github\juegoselectronicos\practica2\src\entity.h(27): error C2334: símbolos (token) inesperados delante de ':'; se pasará por alto el cuerpo de función aparente
-c:\users\u93032\documents\github\juegoselectronicos\practica2\src\entity.h(59): error C2504: 'Entity': clase base sin definir
-c:\users\u93032\documents\github\juegoselectronicos\practica2\src\entity.cpp(6): error C2535: 'Entity::Entity(void)': función miembro ya definida o declarada
-  c:\users\u93032\documents\github\juegoselectronicos\practica2\src\entity.h(20): note: vea la declaración de 'Entity::Entity'
-c:\users\u93032\documents\github\juegoselectronicos\practica2\src\entity.cpp(11): error C2535: 'Entity::~Entity(void)': función miembro ya definida o declarada
-  c:\users\u93032\documents\github\juegoselectronicos\practica2\src\entity.h(21): note: vea la declaración de 'Entity::~Entity'
-c:\users\u93032\documents\github\juegoselectronicos\practica2\src\entity.cpp(27): error C3254: 'Entity': la clase contiene la invalidación explícita 'render', pero no deriva de una interfaz que contiene la declaración de función
-c:\users\u93032\documents\github\juegoselectronicos\practica2\src\entity.cpp(27): error C2838: 'render': nombre completo no válido en la declaración de miembro
-c:\users\u93032\documents\github\juegoselectronicos\practica2\src\entity.cpp(27): error C2535: 'void Entity::render(Camera *)': función miembro ya definida o declarada
-  c:\users\u93032\documents\github\juegoselectronicos\practica2\src\entity.cpp(14): note: vea la declaración de 'Entity::render'
-c:\users\u93032\documents\github\juegoselectronicos\practica2\src\entity.cpp(38): fatal error C1004: se encontró un final de archivo no esperado
+camera.obj : warning LNK4075: se omite '/EDITANDCONTINUE' debido a la especificación '/OPT:LBR'
+LINK : warning LNK4098: la biblioteca predeterminada'LIBCMT' entra en conflicto con otras bibliotecas; use la biblioteca /NODEFAULTLIB:biblioteca
+glew32s.lib(glew.obj) : warning LNK4099: no se encontró PDB 'vc120.pdb' con 'glew32s.lib(glew.obj)' o en 'C:\Users\Davy\Documents\GitHub\JuegosElectronicos\Practica2\vc120.pdb'; se vinculará el objeto sin tener en cuenta información de depuración
+  visualstudio.vcxproj -> C:\Users\Davy\Documents\GitHub\JuegosElectronicos\Practica2\visualstudio15\VS2015\..\..\visualstudio_debug.exe

@@ -3,6 +3,7 @@
 
 #include "framework.h"
 #include "utils.h"
+//#include "includes.h"
 #include "mesh.h"
 #include "texture.h"
 #include "camera.h"
@@ -18,13 +19,13 @@ class Entity
 public:
 
 	Entity(); //Constructor
-	Virtual ~Entity();	//Destructor
+	virtual ~Entity();	//Destructor
 
 	unsigned int uid;
-	std::String name;
+	std::string name;
 	Matrix44 local_matrix;
 	Matrix44 global_matrix;
-	std:vector<Entity*> children;
+	std::vector<Entity*> children;
 	Entity* parent;
 
 	void addEntity(Entity*);
@@ -40,12 +41,6 @@ public:
 		else
 			global_matrix = local_matrix;
 		return global_matrix;
-	}
-
-	void addEntity(Entity* e)
-	{
-		e->parent = this;
-		children.push_back(e);
 	}
 
 	void removeEntity(Entity* e)
