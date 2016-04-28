@@ -1,5 +1,6 @@
 #include "game.h"
 #include "utils.h"
+#include "scene.h"
 #include "meshManager.h"
 #include "mesh.h"
 #include "textureManager.h"
@@ -11,6 +12,10 @@
 #include <cmath>
 
 //some globals
+Game* Game::instance = NULL;
+
+Scene* scene = Scene::getInstance();
+
 MeshManager* meshmanager = MeshManager::getInstance();
 Mesh* mesh = NULL;
 Mesh* mesh_low = NULL; //Low Quality Mesh
@@ -20,7 +25,7 @@ Shader* shader = NULL;
 float angle = 0;
 RenderToTexture* rt = NULL;
 
-Game* Game::instance = NULL;
+
 
 Game::Game(SDL_Window* window)
 {
@@ -52,6 +57,9 @@ void Game::init(void)
 	camera = new Camera();
 	camera->lookAt(Vector3(0,25,25),Vector3(0,0,0), Vector3(0,1,0)); //position the camera and point to 0,0,0
 	camera->setPerspective(70,window_width/(float)window_height,0.1,10000); //set the projection, we want to be perspective
+
+	//Carga del skybox
+	scene->createLevel("cubemap");
 
 	//create a plane mesh
 	mesh = new Mesh();

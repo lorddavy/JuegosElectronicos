@@ -28,11 +28,12 @@ public:
 	std::vector<Entity*> children;
 	Entity* parent;
 
-	void addEntity(Entity*);
-	Vector3 getPosition();
-
 	virtual void render(Camera* camera);
 	virtual void update(float dt);
+
+	void addEntity(Entity*);
+	void removeEntity(Entity*);
+	//Vector3 getPosition();
 
 	Matrix44 getGlobalMatrix()
 	{
@@ -42,13 +43,6 @@ public:
 			global_matrix = local_matrix;
 		return global_matrix;
 	}
-
-	void removeEntity(Entity* e)
-	{
-		/*e->parent = this;
-		children.push_back(e);*/
-	}
-
 };
 
 class EntityMesh : public Entity {
