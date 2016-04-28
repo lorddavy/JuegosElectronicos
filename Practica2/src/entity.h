@@ -50,13 +50,24 @@ public:
 	Mesh* mesh;
 	Mesh* low_mesh;
 	Texture* texture;
-	Vector3* color;
+	Vector3* color;	
+
+	bool frustum_text = true;
+
+	EntityMesh();
+	~EntityMesh();
 
 	void render(Camera* camera);
 	void update(float dt);
 
-	EntityMesh();
-	virtual ~EntityMesh();
+	void setup(const char* mesh, const char* texture, const char* low_mesh = NULL)
+	{
+		//this->mesh = this->mesh->get(mesh);
+		/*if (texture)
+		this->texture = ...;
+		if (low_mesh)
+		this->low_mesh = ...;*/
+	}
 };
 
 
