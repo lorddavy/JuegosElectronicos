@@ -37,14 +37,8 @@ public:
 	void removeEntity(Entity*);
 	//Vector3 getPosition();
 
-	Matrix44 getGlobalMatrix()
-	{
-		if (parent)
-			global_matrix = parent->local_matrix * getGlobalMatrix();
-		else
-			global_matrix = local_matrix;
-		return global_matrix;
-	}
+	Matrix44 getGlobalMatrix();
+	
 };
 
 class EntityMesh : public Entity {
