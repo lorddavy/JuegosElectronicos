@@ -5,6 +5,8 @@
 #include "utils.h"
 //#include "includes.h"
 #include "mesh.h"
+#include "meshManager.h"
+#include "textureManager.h"
 #include "texture.h"
 #include "camera.h"
 
@@ -48,7 +50,7 @@ public:
 class EntityMesh : public Entity {
 public:
 	Mesh* mesh;
-	Mesh* low_mesh;
+	Mesh* mesh_low;
 	Texture* texture;
 	Vector3* color;	
 
@@ -60,14 +62,7 @@ public:
 	void render(Camera* camera);
 	void update(float dt);
 
-	void setup(const char* mesh, const char* texture, const char* low_mesh = NULL)
-	{
-		//this->mesh = this->mesh->get(mesh);
-		/*if (texture)
-		this->texture = ...;
-		if (low_mesh)
-		this->low_mesh = ...;*/
-	}
+	void setup(const char* mesh, const char* texture, const char* mesh_low = NULL);
 };
 
 

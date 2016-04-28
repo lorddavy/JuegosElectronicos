@@ -59,5 +59,17 @@ void EntityMesh::update(float dt)
 
 }
 
+void EntityMesh::setup(const char* mesh, const char* texture, const char* mesh_low = NULL)
+{
+	this->mesh = MeshManager::getInstance()->getMesh(mesh);
+	if (texture)
+		this->texture = TextureManager::getInstance()->getTexture(texture);
+	if (mesh_low)
+		this->mesh_low = MeshManager::getInstance()->getMesh(mesh_low);
+
+	this->mesh->uploadToVRAM();
+	this->mesh_low->uploadToVRAM();
+}
+
 
 

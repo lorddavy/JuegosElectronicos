@@ -62,8 +62,8 @@ void Game::init(void)
 	scene->createLevel("cubemap");
 
 	//create a plane mesh
-	mesh = new Mesh();
-	mesh_low = new Mesh();
+	//mesh = new Mesh();
+	//mesh_low = new Mesh();
 
 	shader = new Shader();
 	if (!shader->load("data/shaders/simple.vs", "data/shaders/simple.fs"))

@@ -1,10 +1,4 @@
-﻿  entity.cpp
-c:\users\davy\documents\github\juegoselectronicos\practica2\src\entity.cpp(17): warning C4018: '<': no coinciden signed/unsigned
-c:\users\davy\documents\github\juegoselectronicos\practica2\src\entity.cpp(23): warning C4018: '<': no coinciden signed/unsigned
-  Generando código...
-  Compilando...
-  scene.cpp
-  game.cpp
+﻿  game.cpp
 c:\users\davy\documents\github\juegoselectronicos\practica2\src\game.cpp(59): warning C4305: 'argumento': truncamiento de 'double' a 'float'
 c:\users\davy\documents\github\juegoselectronicos\practica2\src\game.cpp(114): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
 c:\users\davy\documents\github\juegoselectronicos\practica2\src\game.cpp(122): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
@@ -24,8 +18,11 @@ c:\users\davy\documents\github\juegoselectronicos\practica2\src\game.cpp(207): w
 c:\users\davy\documents\github\juegoselectronicos\practica2\src\game.cpp(212): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
 c:\users\davy\documents\github\juegoselectronicos\practica2\src\game.cpp(213): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
 c:\users\davy\documents\github\juegoselectronicos\practica2\src\game.cpp(217): warning C4244: '+=': conversión de 'double' a 'float'; posible pérdida de datos
+  entity.cpp
+c:\users\davy\documents\github\juegoselectronicos\practica2\src\entity.cpp(17): warning C4018: '<': no coinciden signed/unsigned
+c:\users\davy\documents\github\juegoselectronicos\practica2\src\entity.cpp(23): warning C4018: '<': no coinciden signed/unsigned
+c:\users\davy\documents\github\juegoselectronicos\practica2\src\entity.cpp(62): error C2572: 'EntityMesh::setup': nueva definición de parámetro predeterminado: parámetro 1
+  c:\users\davy\documents\github\juegoselectronicos\practica2\src\entity.h(65): note: vea la declaración de 'EntityMesh::setup'
   Generando código...
-camera.obj : warning LNK4075: se omite '/EDITANDCONTINUE' debido a la especificación '/OPT:LBR'
-LINK : warning LNK4098: la biblioteca predeterminada'LIBCMT' entra en conflicto con otras bibliotecas; use la biblioteca /NODEFAULTLIB:biblioteca
-glew32s.lib(glew.obj) : warning LNK4099: no se encontró PDB 'vc120.pdb' con 'glew32s.lib(glew.obj)' o en 'C:\Users\Davy\Documents\GitHub\JuegosElectronicos\Practica2\vc120.pdb'; se vinculará el objeto sin tener en cuenta información de depuración
-  visualstudio.vcxproj -> C:\Users\Davy\Documents\GitHub\JuegosElectronicos\Practica2\visualstudio15\VS2015\..\..\visualstudio_debug.exe
+  Omitiendo... (no se detectaron cambios relevantes)
+  scene.cpp
