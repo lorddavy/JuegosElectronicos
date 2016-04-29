@@ -536,8 +536,7 @@ std::vector<float> Mesh::calcBoundingBox()
 bool Mesh::readBIN(const char * filename)
 {
 	sMeshBin header;
-	sBounding boundingBox;
-
+	
 	//Abrimos el fichero binario
 	if (FILE* f = fopen(filename, "rb"))
 	{

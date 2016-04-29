@@ -9,6 +9,8 @@
 //Header For the Scene
 class Scene {
 public:
+EntityMesh* skybox;
+
 Entity* root;
 
 static Scene* getInstance() {

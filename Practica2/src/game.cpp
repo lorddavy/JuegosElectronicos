@@ -15,8 +15,6 @@
 Game* Game::instance = NULL;
 
 Scene* scene = Scene::getInstance();
-Entity* root = new Entity();
-
 
 MeshManager* meshmanager = MeshManager::getInstance();
 Mesh* mesh = NULL;
@@ -64,9 +62,6 @@ void Game::init(void)
 	scene->createLevel("cubemap");
 
 	//create a plane mesh
-	//mesh = new Mesh();
-	//mesh_low = new Mesh();
-
 	shader = new Shader();
 	if (!shader->load("data/shaders/simple.vs", "data/shaders/simple.fs"))
 	{
@@ -75,36 +70,26 @@ void Game::init(void)
 	}
 
 	//Carga de las mallas de los objetos
-
-	/*EntityMesh* spitfire = new EntityMesh();
-	spitfire->setup("data/meshes/spitfire/spitfire.ASE", "data/meshes/spitfire/spitfire_color_spec.tga" , "data/meshes/spitfire/spitfire_low.ASE");
 	
-	for (int i = -100; i < 100; i++)
-	{
-		for (int j = -100; j < 100; j++)
-		{
-			spitfire->global_matrix.setTranslation(i * 10, j * 10, 100 * cos(time + j) * sin(time + i));
-			root->addEntity(spitfire);
 
+	for (int i = -10; i < 10; i++)
+	{
+		for (int j = -10; j < 10; j++)
+		{
+			EntityMesh* spitfire = new EntityMesh();
+			EntityMesh* prev_entity = NULL;
+			spitfire->setup("data/meshes/spitfire/spitfire.ASE", "data/meshes/spitfire/spitfire_color_spec.tga", "data/meshes/spitfire/spitfire_low.ASE");
+			spitfire->mesh->uploadToVRAM();
+			spitfire->mesh_low->uploadToVRAM();
+			spitfire->global_matrix.setTranslation(i * 10, j * 10, 0);
+			
 			if (prev_entity)
 				prev_entity->addEntity(spitfire);
 			else
-				root->addEntity(spitfire);
-			//prev_entity = spitfire;
+				scene->root->addEntity(spitfire);
+			prev_entity = spitfire;
 		}
-	}*/
-
-	//Código antiguo:
-
-	//mesh = MeshManager::getInstance()->getMesh("data/meshes/spitfire/spitfire.ASE");
-	//mesh_low = MeshManager::getInstance()->getMesh("data/meshes/spitfire/spitfire_low.ASE");
-
-	//Las mallas las subimos a la GPU para que sea más eficiente el renderizado
-	//mesh->uploadToVRAM();
-	//mesh_low->uploadToVRAM();
-
-	//Cargamos Texture. Eso tendra que ir dentro del mesh manager
-	//texture = TextureManager::getInstance()->getTexture("data/meshes/spitfire/spitfire_color_spec.tga");
+	}
 
 	//hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
@@ -166,44 +151,21 @@ void Game::render(void)
 	}
 	else //render using fixed pipeline (DEPRECATED)
 	{	
-		EntityMesh* spitfire = new EntityMesh();
-		EntityMesh* prev_entity = new EntityMesh();
-		spitfire->setup("data/meshes/spitfire/spitfire.ASE", "data/meshes/spitfire/spitfire_color_spec.tga", "data/meshes/spitfire/spitfire_low.ASE");
-		for (int i = -100; i < 100; i++)
-		{
-			for (int j = -100; j < 100; j++)
-			{
-				spitfire->global_matrix.setTranslation(i * 10, j * 10, 100 * cos(time + j) * sin(time + i));
-				spitfire->render(camera);
-			}
-		}
 		
-		//root->render(camera);
 
+		glDisable(GL_DEPTH_TEST);
+		//scene->skybox->global_matrix.setTranslation(camera->eye.x, camera->eye.y, camera->eye.z);
+			//scene->skybox->render(camera);
+		glEnable(GL_DEPTH_TEST);
 
-		//Código anterior:
+		//skybox_root->local_matrix.setTranslation(camera->eye.x, ...);
+			//skybox_root->render(camera);
 
-		//m.setTranslation(i * 10, j * 10, 100 * cos(time + j) * sin(time + i));
-		//Matrix44 mvp = m * camera->viewprojection_matrix;
+		glClear(GL_DEPTH_BUFFER_BIT);
 
-		/*if (Vector3(i * 10, j * 10, 0).distance(camera->eye) > 100) //Escogemos la mesh que toca segï¿½n distancia
-		render_mesh = mesh_low;
-		else
-		render_mesh = mesh;*/
+		scene->root->render(camera);
 
-		//Hacemos frustum culling para pintar solo lo que hay en frustum
-		//float size = max(max(render_mesh->boundingBox.half_size.x, render_mesh->boundingBox.half_size.y), render_mesh->boundingBox.half_size.z);
-		//if (camera->testSphereInFrustum(Vector3(i * 10, j * 10, 0), size) == true)
-		//{
-		/*glPushMatrix();
-		m.multGL();
-		texture->bind();
-		render_mesh->render(GL_TRIANGLES);
-		texture->unbind();
-		glPopMatrix();*/
-		//}
-
-		drawText(0, 0, "Numero de aviones: 40000", Vector3(255, 0, 0), 4);
+		drawText(5, 5, "Numero de aviones: 40000", Vector3(255, 0, 0), 2);
 
 
 	}

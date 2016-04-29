@@ -11,6 +11,8 @@ Entity::Entity()
 
 Entity::~Entity()
 {
+	for (int i = 0; i < children.size(); i++)
+		delete children[i];
 }
 
 void Entity::render(Camera* camera)
@@ -31,11 +33,17 @@ void Entity::addEntity(Entity* e)
 	children.push_back(e);
 }
 
+void Entity::removeEntity(Entity* e)
+{
+	/*for (int i = 0; i < children.size(); i++)
+		delete children[i];*/	
+}
+
 Matrix44 Entity::getGlobalMatrix()
 {
-	/*if (this->parent)
-		return  local_matrix * parent->getGlobalMatrix();*/
-	return this->global_matrix;
+	if (parent)
+		return local_matrix * parent->getGlobalMatrix();
+	return local_matrix;
 }
 
 //EntityMesh Class Methods
@@ -53,30 +61,20 @@ void EntityMesh::render(Camera* camera)
 {
 	if (mesh)
 	{
-		Mesh* render_mesh = this->mesh;	
-		float angle = 0;
+		Vector3 pos = global_matrix.getTranslation(); 
+		//Vector3 center = global_matrix * mesh->boundingBox.center();		
 		
-		Matrix44 global_matrix = this->getGlobalMatrix();
-		Vector3 pos = global_matrix.getTranslation(); //Por hacer función
-		//Vector3 center = global_matrix * mesh->boundingBox.center();
-		//Matrix44 m;
-		//m.setScale(1, 1, 1);
-		//m.rotate(angle * DEG2RAD, Vector3(0, 1, 0)); //build a rotation matrix
-		//Matrix44 mvp = m * camera->viewprojection_matrix;
-
-		if (pos.distance(camera->eye) > 100) //Escogemos la mesh de la calidad que toca
-		{
-			render_mesh = this->mesh_low;
-		}
-				
-		float size = max(max(render_mesh->boundingBox.half_size.x, render_mesh->boundingBox.half_size.y), render_mesh->boundingBox.half_size.z);
-		if (camera->testSphereInFrustum(pos, size) == true) //Renderizamos solo si está en frustum
+		float size = max(max(mesh->boundingBox.half_size.x, mesh->boundingBox.half_size.y), mesh->boundingBox.half_size.z);
+		if (camera->testSphereInFrustum(pos, size) == true) //Hacemos frustum culling para pintar solo lo que hay en frustum
 		{
 			glPushMatrix(); //save the opengl state
 			global_matrix.multGL(); //change the coordinates system
-			this->texture->bind(); //enable the texture			
-			render_mesh->render(GL_TRIANGLES);//render the mesh
-			this->texture->unbind(); //disable the texture
+			texture->bind(); //enable the texture	
+			if (pos.distance(camera->eye) > 100) //Escogemos la mesh de la calidad que toca
+				mesh_low->render(GL_TRIANGLES);//render the mesh
+			else
+				mesh->render(GL_TRIANGLES);//render the mesh
+			texture->unbind(); //disable the texture
 			glPopMatrix();
 		}
 	}		
@@ -93,13 +91,15 @@ void EntityMesh::update(float dt)
 void EntityMesh::setup(const char* mesh, const char* texture, const char* mesh_low)
 {
 	this->mesh = MeshManager::getInstance()->getMesh(mesh);
+	this->mesh->uploadToVRAM();
+
 	if (texture)
 		this->texture = TextureManager::getInstance()->getTexture(texture);
 	if (mesh_low)
+	{
 		this->mesh_low = MeshManager::getInstance()->getMesh(mesh_low);
-
-	this->mesh->uploadToVRAM();
-	this->mesh_low->uploadToVRAM();
+		this->mesh_low->uploadToVRAM();
+	}
 }
 
 

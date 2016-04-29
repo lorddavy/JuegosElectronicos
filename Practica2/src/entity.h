@@ -49,6 +49,7 @@ public:
 	Vector3* color;	
 
 	bool frustum_text = true;
+	bool two_sided = true;
 
 	EntityMesh();
 	~EntityMesh();
