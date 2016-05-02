@@ -10,8 +10,17 @@
 class Scene {
 public:
 EntityMesh* skybox;
+EntityMesh* planet;
 
 Entity* root;
+
+struct sSceneBin
+{
+	char format[5];
+	int rootSize;
+};
+
+sSceneBin header;
 
 static Scene* getInstance() {
 	if (instance == NULL)
@@ -19,7 +28,8 @@ static Scene* getInstance() {
 	return instance;
 };
 
-void createLevel(const char* filename);
+bool createLevel(const char * filename);
+bool loadLevel(const char* filename);
 
 private:
 static Scene* instance;

@@ -58,8 +58,32 @@ void Game::init(void)
 	camera->lookAt(Vector3(0,25,25),Vector3(0,0,0), Vector3(0,1,0)); //position the camera and point to 0,0,0
 	camera->setPerspective(70,window_width/(float)window_height,0.1,10000); //set the projection, we want to be perspective
 
-	//Carga del skybox
-	scene->createLevel("cubemap");
+	//Carga de la escena
+	//if (!scene->loadLevel("data/scenes/cubemap.bin"))
+	//{
+		scene->createLevel("cubemap");
+	//}
+	//Carga de las mallas de los objetos
+
+		for (int i = -10; i < 10; i++)
+		{
+			for (int j = -10; j < 10; j++)
+			{
+				EntityMesh* spitfire = new EntityMesh();
+				EntityMesh* prev_entity = NULL;
+				spitfire->setup("data/meshes/spitfire/spitfire.ASE", "data/meshes/spitfire/spitfire_color_spec.tga", "data/meshes/spitfire/spitfire_low.ASE");
+				spitfire->mesh->uploadToVRAM();
+				spitfire->mesh_low->uploadToVRAM();
+				spitfire->global_matrix.setTranslation(i * 10, j * 10, 0);
+
+				if (prev_entity)
+					prev_entity->addEntity(spitfire);
+				else
+					scene->root->addEntity(spitfire);
+				//header.rootSize += 1;
+				prev_entity = spitfire;
+			}
+		}
 
 	//create a plane mesh
 	shader = new Shader();
@@ -67,28 +91,6 @@ void Game::init(void)
 	{
 		std::cout << "shader not found or error" << std::endl;
 		exit(0);
-	}
-
-	//Carga de las mallas de los objetos
-	
-
-	for (int i = -10; i < 10; i++)
-	{
-		for (int j = -10; j < 10; j++)
-		{
-			EntityMesh* spitfire = new EntityMesh();
-			EntityMesh* prev_entity = NULL;
-			spitfire->setup("data/meshes/spitfire/spitfire.ASE", "data/meshes/spitfire/spitfire_color_spec.tga", "data/meshes/spitfire/spitfire_low.ASE");
-			spitfire->mesh->uploadToVRAM();
-			spitfire->mesh_low->uploadToVRAM();
-			spitfire->global_matrix.setTranslation(i * 10, j * 10, 0);
-			
-			if (prev_entity)
-				prev_entity->addEntity(spitfire);
-			else
-				scene->root->addEntity(spitfire);
-			prev_entity = spitfire;
-		}
 	}
 
 	//hide the cursor
@@ -154,16 +156,20 @@ void Game::render(void)
 		
 
 		glDisable(GL_DEPTH_TEST);
-		//scene->skybox->global_matrix.setTranslation(camera->eye.x, camera->eye.y, camera->eye.z);
-			//scene->skybox->render(camera);
+		scene->skybox->global_matrix.setTranslation(camera->eye.x, camera->eye.y, camera->eye.z);
+			scene->skybox->render(camera);
 		glEnable(GL_DEPTH_TEST);
-
-		//skybox_root->local_matrix.setTranslation(camera->eye.x, ...);
-			//skybox_root->render(camera);
 
 		glClear(GL_DEPTH_BUFFER_BIT);
 
 		scene->root->render(camera);
+
+		/*Camera cam;
+		cam = *camera;
+		cam.lookAt(Vector3(0, 0, 0), camera->center - camera->eye, Vector3(0, 1, 0));
+		cam.set();
+		scene->planet->render(&cam);
+		camera->set();*/
 
 		drawText(5, 5, "Numero de aviones: 40000", Vector3(255, 0, 0), 2);
 
@@ -212,6 +218,8 @@ void Game::update(double seconds_elapsed)
     
 
 	angle += seconds_elapsed * 10;
+	scene->planet->local_matrix.rotateLocal(seconds_elapsed, Vector3(0, 1, 0));
+
 }
 
 //Keyboard event handler (sync input)
