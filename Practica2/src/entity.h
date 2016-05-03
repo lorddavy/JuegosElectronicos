@@ -23,6 +23,8 @@ public:
 	Entity(); //Constructor
 	virtual ~Entity();	//Destructor
 
+	static std::vector<Entity*> toDestroy;
+
 	unsigned int uid;
 	std::string name;
 	Matrix44 local_matrix;
@@ -34,7 +36,9 @@ public:
 	virtual void update(float dt);
 
 	void addEntity(Entity*);
-	void removeEntity(Entity*);
+	void removeChild(Entity* ent); //No tiene que destruir nada, solo lo quita del árbol, lo desvincula, pero luego se puede poner a otro sitio
+	void destroyChild(Entity* ent, float time); // time: cuanto tiempo quiero que espere hasta destruir la entidad
+
 	//Vector3 getPosition();
 
 	Matrix44 getGlobalMatrix();

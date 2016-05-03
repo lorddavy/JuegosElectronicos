@@ -3,6 +3,8 @@
 #include "includes.h"
 #include "shader.h"
 
+std::vector<Entity*> Entity::toDestroy;
+
 //Entity Class Methods
 Entity::Entity()
 {
@@ -13,6 +15,8 @@ Entity::~Entity()
 {
 	for (int i = 0; i < children.size(); i++)
 		delete children[i];
+
+	this->parent->removeChild(this);
 }
 
 void Entity::render(Camera* camera)
@@ -33,15 +37,23 @@ void Entity::addEntity(Entity* e)
 	children.push_back(e);
 }
 
-void Entity::removeEntity(Entity* e)
+void Entity::destroyChild(Entity* ent, float time)
 {
-	/*for (int i = 0; i < children.size(); i++)
-		delete children[i];*/	
+	this->removeChild(ent);
+	toDestroy.push_back(ent);
+}
+
+void Entity::removeChild(Entity* ent) {
+	for (int i = 0; i < this->children.size(); i++) {
+		if (this->children[i] == ent) {
+			this->children.erase(this->children.begin() + i);
+		}
+	}
 }
 
 Matrix44 Entity::getGlobalMatrix()
 {
-	if (parent)
+	if (this->parent)
 		return local_matrix * parent->getGlobalMatrix();
 	return local_matrix;
 }

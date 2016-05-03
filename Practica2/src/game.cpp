@@ -210,10 +210,17 @@ void Game::update(double seconds_elapsed)
         this->mouse_position.x = center_x;
         this->mouse_position.y = center_y;
 	}
-    
 
+	//Borramos el contenedor con todo lo que se quiere destruir
+	while (scene->root->toDestroy.size() != 0) {
+		Entity* e = scene->root->toDestroy.back();
+		scene->root->toDestroy.pop_back();
+		delete e;
+	}
+    
 	angle += seconds_elapsed * 10;
 	//scene->planet->global_matrix.rotate(seconds_elapsed*100, Vector3(0, 1, 0));
+
 
 }
 
