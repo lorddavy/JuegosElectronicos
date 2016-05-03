@@ -59,10 +59,10 @@ void Game::init(void)
 	camera->setPerspective(70,window_width/(float)window_height,0.1,10000); //set the projection, we want to be perspective
 
 	//Carga de la escena
-	//if (!scene->loadLevel("data/scenes/cubemap.bin"))
-	//{
-		scene->createLevel("cubemap");
-	//}
+	if (!scene->loadLevel("data/scenes/space1.txt"))
+	{
+		scene->createLevel();
+	}
 	//Carga de las mallas de los objetos
 
 		for (int i = -10; i < 10; i++)
@@ -100,8 +100,6 @@ void Game::init(void)
 //what to do when the image has to be draw
 void Game::render(void)
 {
-	Mesh* render_mesh = NULL; //Tendremos que quitarlo!!!
-
 	glClearColor(1.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -170,14 +168,11 @@ void Game::render(void)
 		cam.set();
 		scene->planet->render(&cam);
 		camera->set();*/
-
-		drawText(5, 5, "Numero de aviones: 40000", Vector3(255, 0, 0), 2);
-
-
+		
 	}
 
 	//Dibujamos texto en pantalla
-	//drawText(0, 0, "Numero de aviones: 40000", Vector3(0, 0, 0), 4);
+	drawText(5, 5, "Outer Space", Vector3(1, 0, 0), 3);
     
     glDisable( GL_BLEND );
 
@@ -218,7 +213,7 @@ void Game::update(double seconds_elapsed)
     
 
 	angle += seconds_elapsed * 10;
-	scene->planet->local_matrix.rotateLocal(seconds_elapsed, Vector3(0, 1, 0));
+	//scene->planet->global_matrix.rotate(seconds_elapsed*100, Vector3(0, 1, 0));
 
 }
 

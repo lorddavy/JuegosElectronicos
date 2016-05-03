@@ -61,7 +61,7 @@ void EntityMesh::render(Camera* camera)
 {
 	if (mesh)
 	{
-		Vector3 pos = global_matrix.getTranslation(); 
+		Vector3 pos = local_matrix.getTranslation(); 
 		//Vector3 center = global_matrix * mesh->boundingBox.center();		
 		
 		//float size = max(max(mesh->boundingBox.half_size.x, mesh->boundingBox.half_size.y), mesh->boundingBox.half_size.z);

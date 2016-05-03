@@ -14,21 +14,13 @@ EntityMesh* planet;
 
 Entity* root;
 
-struct sSceneBin
-{
-	char format[5];
-	int rootSize;
-};
-
-sSceneBin header;
-
 static Scene* getInstance() {
 	if (instance == NULL)
 		instance = new Scene();
 	return instance;
 };
 
-bool createLevel(const char * filename);
+bool createLevel();
 bool loadLevel(const char* filename);
 
 private:
