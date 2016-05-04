@@ -96,6 +96,8 @@ void Game::init(void)
 
 	//Creación de la entidad del jugador
 	player = (EntityMesh*)Game::createEntity("spitfire");
+	player->local_matrix.setTranslation(0, 0, 0);
+
 	scene->root->addEntity(player);
 
 	//hide the cursor
@@ -278,10 +280,12 @@ Entity* Game::createEntity(const char* name)
 	{
 		EntityMesh* spitfire = new EntityMesh();
 		//creamos spitfire
-		spitfire->setup("data/meshes/spitfire/spitfire.ASE", "data/meshes/spitfire/spitfire_color_spec.tga", "data/meshes/spitfire/spitfire_low.ASE");
+		spitfire->setup("data/meshes/spitfire/spitfire.ASE",
+			"data/meshes/spitfire/spitfire_color_spec.tga",
+			"data/meshes/spitfire/spitfire_low.ASE");
 		spitfire->mesh->uploadToVRAM();
 		spitfire->mesh_low->uploadToVRAM();
-		spitfire->local_matrix.setTranslation(0, 0, 0);
+		//spitfire->local_matrix.setTranslation(0, 0, 0);
 		return spitfire;
 	}
 
