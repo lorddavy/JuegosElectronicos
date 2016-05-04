@@ -7,6 +7,7 @@
 
 #include "includes.h"
 #include "camera.h"
+#include "entity.h"
 
 class Game
 {
@@ -41,6 +42,8 @@ public:
     void onResize( SDL_Event e );
     
 	void setWindowSize(int width, int height);
+
+	Entity* createEntity(const char* name); //FACTORY
 };
 
 

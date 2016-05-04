@@ -25,7 +25,8 @@ Shader* shader = NULL;
 float angle = 0;
 RenderToTexture* rt = NULL;
 
-
+//Entidad del jugador
+EntityMesh* player;
 
 Game::Game(SDL_Window* window)
 {
@@ -65,7 +66,7 @@ void Game::init(void)
 	}
 	//Carga de las mallas de los objetos
 
-		for (int i = -10; i < 10; i++)
+		/*for (int i = -10; i < 10; i++)
 		{
 			for (int j = -10; j < 10; j++)
 			{
@@ -83,7 +84,7 @@ void Game::init(void)
 				//header.rootSize += 1;
 				prev_entity = spitfire;
 			}
-		}
+		}*/
 
 	//create a plane mesh
 	shader = new Shader();
@@ -92,6 +93,10 @@ void Game::init(void)
 		std::cout << "shader not found or error" << std::endl;
 		exit(0);
 	}
+
+	//Creación de la entidad del jugador
+	player = (EntityMesh*)Game::createEntity("spitfire");
+	scene->root->addEntity(player);
 
 	//hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
@@ -261,4 +266,26 @@ void Game::setWindowSize(int width, int height)
 	window_width = width;
 	window_height = height;
 }
+
+
+//Factory de entidades
+Entity* Game::createEntity(const char* name)
+{
+	Entity* entity = new Entity();
+	std::string str = name;
+
+	if (str == "spitfire")
+	{
+		EntityMesh* spitfire = new EntityMesh();
+		//creamos spitfire
+		spitfire->setup("data/meshes/spitfire/spitfire.ASE", "data/meshes/spitfire/spitfire_color_spec.tga", "data/meshes/spitfire/spitfire_low.ASE");
+		spitfire->mesh->uploadToVRAM();
+		spitfire->mesh_low->uploadToVRAM();
+		spitfire->local_matrix.setTranslation(0, 0, 0);
+		return spitfire;
+	}
+
+	return entity;
+}
+
 
