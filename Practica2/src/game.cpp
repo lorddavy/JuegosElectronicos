@@ -74,7 +74,7 @@ void Game::init(void)
 				spitfire->setup("data/meshes/spitfire/spitfire.ASE", "data/meshes/spitfire/spitfire_color_spec.tga", "data/meshes/spitfire/spitfire_low.ASE");
 				spitfire->mesh->uploadToVRAM();
 				spitfire->mesh_low->uploadToVRAM();
-				spitfire->global_matrix.setTranslation(i * 10, j * 10, 0);
+				spitfire->local_matrix.setTranslation(i * 10, j * 10, 0);
 
 				if (prev_entity)
 					prev_entity->addEntity(spitfire);
@@ -154,7 +154,7 @@ void Game::render(void)
 		
 
 		glDisable(GL_DEPTH_TEST);
-		scene->skybox->global_matrix.setTranslation(camera->eye.x, camera->eye.y, camera->eye.z);
+		scene->skybox->local_matrix.setTranslation(camera->eye.x, camera->eye.y, camera->eye.z);
 			scene->skybox->render(camera);
 		glEnable(GL_DEPTH_TEST);
 

@@ -53,7 +53,7 @@ void Entity::removeChild(Entity* ent) {
 
 Matrix44 Entity::getGlobalMatrix()
 {
-	if (this->parent)
+	if (parent)
 		return local_matrix * parent->getGlobalMatrix();
 	return local_matrix;
 }
@@ -73,6 +73,7 @@ void EntityMesh::render(Camera* camera)
 {
 	if (mesh)
 	{
+		Matrix44 global_matrix = getGlobalMatrix();
 		Vector3 pos = local_matrix.getTranslation(); 
 		//Vector3 center = global_matrix * mesh->boundingBox.center();		
 		
