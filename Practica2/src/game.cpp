@@ -7,6 +7,7 @@
 #include "texture.h"
 #include "rendertotexture.h"
 #include "shader.h"
+#include "vehicle.h"
 //#include <algorithm>
 
 #include <cmath>
@@ -26,7 +27,7 @@ float angle = 0;
 RenderToTexture* rt = NULL;
 
 //Entidad del jugador
-EntityMesh* player;
+Vehicle* player;
 
 Game::Game(SDL_Window* window)
 {
@@ -95,7 +96,7 @@ void Game::init(void)
 	}
 
 	//Creación de la entidad del jugador
-	player = (EntityMesh*)Game::createEntity("spitfire");
+	player = (Vehicle*)Game::createEntity("vehicle");
 	player->local_matrix.setTranslation(0, 0, 0);
 
 	scene->root->addEntity(player);
@@ -226,9 +227,7 @@ void Game::update(double seconds_elapsed)
 	}
     
 	angle += seconds_elapsed * 10;
-	//scene->planet->global_matrix.rotate(seconds_elapsed*100, Vector3(0, 1, 0));
-
-
+	scene->planet->local_matrix.rotateLocal(seconds_elapsed/50, Vector3(0, 1, 0));
 }
 
 //Keyboard event handler (sync input)
@@ -276,17 +275,17 @@ Entity* Game::createEntity(const char* name)
 	Entity* entity = new Entity();
 	std::string str = name;
 
-	if (str == "spitfire")
+	if (str == "vehicle")
 	{
-		EntityMesh* spitfire = new EntityMesh();
+		Vehicle* vehicle = new Vehicle();
 		//creamos spitfire
-		spitfire->setup("data/meshes/spitfire/spitfire.ASE",
+		vehicle->setup("data/meshes/spitfire/spitfire.ASE",
 			"data/meshes/spitfire/spitfire_color_spec.tga",
 			"data/meshes/spitfire/spitfire_low.ASE");
-		spitfire->mesh->uploadToVRAM();
-		spitfire->mesh_low->uploadToVRAM();
-		//spitfire->local_matrix.setTranslation(0, 0, 0);
-		return spitfire;
+		vehicle->mesh->uploadToVRAM();
+		vehicle->mesh_low->uploadToVRAM();
+		//vehicle->local_matrix.setTranslation(0, 0, 0);
+		return vehicle;
 	}
 
 	return entity;

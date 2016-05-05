@@ -21,7 +21,7 @@ class Entity
 public:
 
 	Entity(); //Constructor
-	virtual ~Entity();	//Destructor
+	~Entity();	//Destructor
 
 	static std::vector<Entity*> toDestroy;
 
