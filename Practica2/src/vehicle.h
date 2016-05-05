@@ -12,6 +12,8 @@ public:
 	Vector3 impulse;
 	int max_impulse;
 
+	Vector3 camera_eye;
+
 	int hull;
 	int shield;
 
@@ -25,6 +27,8 @@ public:
 	void pitch();		// S and W keys
 	void roll();		// A and D keys
 	void yaw();			// Q and E keys
+
+	void update(float dt);
 
 private:
 

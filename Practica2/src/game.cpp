@@ -62,7 +62,7 @@ void Game::init(void)
 
 	//create our camera
 	camera = new Camera();
-	//camera->lookAt(Vector3(0,25,25),Vector3(0,0,0), Vector3(0,1,0)); //position the camera and point to 0,0,0
+	camera->lookAt(Vector3(0,25,25),Vector3(0,0,0), Vector3(0,1,0)); //position the camera and point to 0,0,0
 	camera->setPerspective(70,window_width/(float)window_height,0.1,10000); //set the projection, we want to be perspective
 
 
@@ -107,6 +107,7 @@ void Game::init(void)
 	//Creación de la entidad del jugador
 	player = (Vehicle*)Game::createEntity("vehicle");
 	player->local_matrix.setTranslation(0, 0, 0);
+	player->local_matrix.rotate(180 * DEG2RAD, Vector3(0, 1, 0));
 
 	scene->root->addEntity(player);
 
@@ -114,7 +115,7 @@ void Game::init(void)
 	//player_camera->lookAt(player->getGlobalMatrix() * Vector3(0, 2, -5), player->getGlobalMatrix() * Vector3(0, 0, 20), Vector3(0, 1, 0));
 
 	//current_camera = player_camera;
-	camera->lookAt(player->getGlobalMatrix() * Vector3(0, 2, -5), player->getGlobalMatrix() * Vector3(0, 0, 20), Vector3(0, 1, 0));
+	//camera->lookAt(player->getGlobalMatrix() * Vector3(0, 2, -5), player->getGlobalMatrix() * Vector3(0, 0, 20), Vector3(0, 1, 0));
 
 
 	//hide the cursor
@@ -203,10 +204,12 @@ void Game::render(void)
 
 void Game::update(double seconds_elapsed)
 {
+	double speed = seconds_elapsed * 100; //the speed is defined by the seconds_elapsed so it goes constant
+
 	//Controles de cámara libre
-	/*if (current_camera == free_camera)
-	{
-		double speed = seconds_elapsed * 100; //the speed is defined by the seconds_elapsed so it goes constant
+	//if (current_camera == free_camera)
+	//{
+		
 
 		//mouse input to rotate the cam
 		if ((mouse_state & SDL_BUTTON_LEFT) || mouse_locked) //is left button pressed?
@@ -234,17 +237,22 @@ void Game::update(double seconds_elapsed)
 			this->mouse_position.x = center_x;
 			this->mouse_position.y = center_y;
 		}
-	}
+	//}
 
-	if (current_camera == player_camera)
-	{*/
+	//if (current_camera == player_camera)
+	//{
 
-		Matrix44 global_player_matrix = player->getGlobalMatrix();
+		/*Matrix44 global_player_matrix = player->getGlobalMatrix();
 		Vector3 detras = global_player_matrix* Vector3(0, 2, -5);
 		detras = camera->eye * 0.1 + detras *0.9;
-		camera->lookAt(detras, global_player_matrix* Vector3(0, 0, 20), global_player_matrix.rotateVector(Vector3(0, 1, 0)));
+		camera->lookAt(detras, global_player_matrix* Vector3(0, 0, 20), global_player_matrix.rotateVector(Vector3(0, 1, 0)));*/
 
+		player->update(seconds_elapsed);
 		//Control del jugador
+		/*if (keystate[SDL_SCANCODE_W] || keystate[SDL_SCANCODE_UP]) camera->move(Vector3(0, 0, 1) * speed);
+		if (keystate[SDL_SCANCODE_S] || keystate[SDL_SCANCODE_DOWN]) camera->move(Vector3(0, 0, -1) * speed);
+		if (keystate[SDL_SCANCODE_A] || keystate[SDL_SCANCODE_LEFT]) camera->move(Vector3(1, 0, 0) * speed);
+		if (keystate[SDL_SCANCODE_D] || keystate[SDL_SCANCODE_RIGHT]) camera->move(Vector3(-1, 0, 0) * speed);*/
 	//}
 
 	//Borramos el contenedor con todo lo que se quiere destruir
