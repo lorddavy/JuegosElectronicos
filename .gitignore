@@ -1,9 +1,18 @@
 *.opendb
 *.sdf
 *.exe
-*.pdb
 *.suo
 *.db
 
-Practica2/visualstudio15/VS2015/Debug
+#Debug files
+*.idb
+*.ilk
+*.lastbuildstate
+*.log
+*.obj
+*.pdb
+*.tlog
 
+#Release files
+*.iobj
+*.ipdb
