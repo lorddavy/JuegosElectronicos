@@ -35,6 +35,9 @@ RenderToTexture* rt = NULL;
 //Camera* free_camera;
 //Camera* player_camera;
 
+int cameraType = 0; //Camera type 0->free 1->player
+
+
 Game::Game(SDL_Window* window)
 {
 	this->window = window;
@@ -170,18 +173,18 @@ void Game::onKeyPressed(SDL_KeyboardEvent event)
 {
 	switch (event.keysym.sym)
 	{
-	case SDLK_ESCAPE: exit(0); //ESC key, kill the app
-	case SDLK_TAB: //Change free camera-player camera
-		if (cameraType == 1)
-		{
-			cameraType = 0;
-			return;
-		}
-		if (cameraType == 0)
-		{
-			cameraType = 1;
-			return;
-		}
+		case SDLK_ESCAPE: exit(0); //ESC key, kill the app
+		case SDLK_TAB: //Change free camera-player camera
+			if (cameraType == 1)
+			{
+				cameraType = 0;
+				return;
+			}
+			if (cameraType == 0)
+			{
+				cameraType = 1;
+				return;
+			}
 	}
 }
 
