@@ -191,7 +191,7 @@ bool drawText(float x, float y, std::string text, Vector3 c, float scale )
 	num_quads = stb_easy_font_print(x, y, (char*)(text.c_str()), NULL, buffer, sizeof(buffer));
 
 	Camera cam;
-	cam.setOrthographic(0, Game::instance->window_width / scale, Game::instance->window_height / scale, 0, -1, 1);
+	cam.setOrthographic(0, Game::getInstance()->window_width / scale, Game::getInstance()->window_height / scale, 0, -1, 1);
 	cam.set();
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);

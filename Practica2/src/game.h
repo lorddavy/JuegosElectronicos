@@ -12,7 +12,16 @@
 class Game
 {
 public:
-	static Game* instance;
+	
+	static Game* getInstance(SDL_Window* window = NULL) {
+		if (instance == NULL)
+			instance = new Game(window);
+		return instance;
+	};
+
+	//Entidad del jugador
+	Entity* player;
+
 
 	//window
 	SDL_Window* window;
@@ -31,6 +40,7 @@ public:
 	bool mouse_locked; //tells if the mouse is locked (not seen)
 	
 	Camera* camera; //our global camera
+	int cameraType; //Camera type 0->free 1->player
 
 	Game(SDL_Window* window);
 	void init( void );
@@ -44,6 +54,10 @@ public:
 	void setWindowSize(int width, int height);
 
 	Entity* createEntity(const char* name); //FACTORY
+
+private:
+	static Game* instance;
+
 };
 
 

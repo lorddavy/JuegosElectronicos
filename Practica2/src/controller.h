@@ -3,11 +3,15 @@
 
 #include "includes.h"
 
+class Game;
+
 class Controller{
 public:
 
 	Controller();
 	~Controller();
+
+	void update(double dt);
 
 };
 
