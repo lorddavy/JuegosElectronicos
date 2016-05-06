@@ -33,9 +33,10 @@ RenderToTexture* rt = NULL;
 Vehicle* player;
 
 //Camaras
-Camera* current_camera;
-Camera* free_camera;
-Camera* player_camera;
+//Camera* current_camera;
+//Camera* free_camera;
+//Camera* player_camera;
+int cameraType = 0; //Camera type 0->free 1->player
 
 Game::Game(SDL_Window* window)
 {
@@ -95,6 +96,8 @@ void Game::init(void)
 
 	scene->root->addEntity(player);
 
+	cameraType = 1;
+
 	//Camera* player_camera = new Camera();
 	//player_camera->lookAt(player->getGlobalMatrix() * Vector3(0, 2, -5), player->getGlobalMatrix() * Vector3(0, 0, 20), Vector3(0, 1, 0));
 
@@ -136,6 +139,7 @@ void Game::render(void)
 	
 	//Dibujamos texto en pantalla
 	drawText(5, 5, "Outer Space", Vector3(1, 0, 0), 3);
+	drawText(5, 25, "Potencia de Impulso: 50%", Vector3(102/255, 255/255, 102/255), 2);
 
 	glColor3f(1,1,1);
     
@@ -149,48 +153,35 @@ void Game::update(double seconds_elapsed)
 {
 	double speed = seconds_elapsed * 100; //the speed is defined by the seconds_elapsed so it goes constant
 
-	//Controles de cámara libre
-	//if (current_camera == free_camera)
-	//{
-		
-	//mouse input to rotate the cam
-	if ((mouse_state & SDL_BUTTON_LEFT) || mouse_locked) //is left button pressed?
+	scene->root->update(seconds_elapsed);
+
+	//Camara libre
+	if (cameraType == 0)
 	{
-		camera->rotate(mouse_delta.x * 0.005, Vector3(0, -1, 0));
-		camera->rotate(mouse_delta.y * 0.005, camera->getLocalVector(Vector3(-1, 0, 0)));
+		//mouse input to rotate the cam
+		if ((mouse_state & SDL_BUTTON_LEFT) || mouse_locked) //is left button pressed?
+		{
+			camera->rotate(mouse_delta.x * 0.005, Vector3(0, -1, 0));
+			camera->rotate(mouse_delta.y * 0.005, camera->getLocalVector(Vector3(-1, 0, 0)));
+		}
+
+		//async input to move the camera around
+		if (keystate[SDL_SCANCODE_LSHIFT]) speed *= 10; //move faster with left shift
+		if (keystate[SDL_SCANCODE_W] || keystate[SDL_SCANCODE_UP]) camera->move(Vector3(0, 0, 1) * speed);
+		if (keystate[SDL_SCANCODE_S] || keystate[SDL_SCANCODE_DOWN]) camera->move(Vector3(0, 0, -1) * speed);
+		if (keystate[SDL_SCANCODE_A] || keystate[SDL_SCANCODE_LEFT]) camera->move(Vector3(1, 0, 0) * speed);
+		if (keystate[SDL_SCANCODE_D] || keystate[SDL_SCANCODE_RIGHT]) camera->move(Vector3(-1, 0, 0) * speed);
+
 	}
 
-	//async input to move the camera around
-	if (keystate[SDL_SCANCODE_LSHIFT]) speed *= 10; //move faster with left shift
-	if (keystate[SDL_SCANCODE_W] || keystate[SDL_SCANCODE_UP]) camera->move(Vector3(0, 0, 1) * speed);
-	if (keystate[SDL_SCANCODE_S] || keystate[SDL_SCANCODE_DOWN]) camera->move(Vector3(0, 0, -1) * speed);
-	if (keystate[SDL_SCANCODE_A] || keystate[SDL_SCANCODE_LEFT]) camera->move(Vector3(1, 0, 0) * speed);
-	if (keystate[SDL_SCANCODE_D] || keystate[SDL_SCANCODE_RIGHT]) camera->move(Vector3(-1, 0, 0) * speed);
-
-	//to navigate with the mouse fixed in the middle
-	if (mouse_locked)
+	//Camara jugador
+	if (cameraType == 1)
 	{
-		int center_x = floor(window_width*0.5);
-		int center_y = floor(window_height*0.5);
-		//center_x = center_y = 50;
-		SDL_WarpMouseInWindow(this->window, center_x, center_y); //put the mouse back in the middle of the screen
-		//SDL_WarpMouseGlobal(center_x, center_y); //put the mouse back in the middle of the screen
-
-		this->mouse_position.x = center_x;
-		this->mouse_position.y = center_y;
-	}
-
-	//}
-
-	//if (current_camera == player_camera)
-	//{
 
 		/*Matrix44 global_player_matrix = player->getGlobalMatrix();
 		Vector3 detras = global_player_matrix* Vector3(0, 2, -5);
 		detras = camera->eye * 0.1 + detras *0.9;
 		camera->lookAt(detras, global_player_matrix* Vector3(0, 0, 20), global_player_matrix.rotateVector(Vector3(0, 1, 0)));*/
-
-		scene->root->update(seconds_elapsed);
 
 		camera->lookAt(player->getGlobalMatrix() * Vector3(0, 2, -5), player->getGlobalMatrix() * Vector3(0, 0, 20), Vector3(0, 1, 0));
 
@@ -199,7 +190,20 @@ void Game::update(double seconds_elapsed)
 		if (keystate[SDL_SCANCODE_S] || keystate[SDL_SCANCODE_DOWN]) camera->move(Vector3(0, 0, -1) * speed);
 		if (keystate[SDL_SCANCODE_A] || keystate[SDL_SCANCODE_LEFT]) camera->move(Vector3(1, 0, 0) * speed);
 		if (keystate[SDL_SCANCODE_D] || keystate[SDL_SCANCODE_RIGHT]) camera->move(Vector3(-1, 0, 0) * speed);*/
-	//}
+
+		//to navigate with the mouse fixed in the middle
+		if (mouse_locked)
+		{
+			int center_x = floor(window_width*0.5);
+			int center_y = floor(window_height*0.5);
+			//center_x = center_y = 50;
+			SDL_WarpMouseInWindow(this->window, center_x, center_y); //put the mouse back in the middle of the screen
+																	 //SDL_WarpMouseGlobal(center_x, center_y); //put the mouse back in the middle of the screen
+
+			this->mouse_position.x = center_x;
+			this->mouse_position.y = center_y;
+		}
+	}	
 
 	//Borramos el contenedor con todo lo que se quiere destruir
 	while (scene->root->toDestroy.size() != 0) {
@@ -219,7 +223,17 @@ void Game::onKeyPressed( SDL_KeyboardEvent event )
 	switch(event.keysym.sym)
 	{
 		case SDLK_ESCAPE: exit(0); //ESC key, kill the app
-		//case SDLK_TAB: //current_camera = free_camera; //Change to free camera
+		case SDLK_TAB: //Change free camera-player camera
+			if (cameraType == 1)
+			{
+				cameraType = 0;
+				return;
+			}
+			if (cameraType == 0)
+			{
+				cameraType = 1;
+				return;
+			}
 	}
 }
 
