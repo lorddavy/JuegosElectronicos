@@ -4,7 +4,7 @@
 
 Vehicle::Vehicle()
 {
-	velocity = Vector3(0,0,5);
+	velocity = Vector3(0,0,100);
 	camera_eye.set(0, 2, -5);
 }
 
@@ -34,7 +34,8 @@ void Vehicle::yaw()
 
 void Vehicle::update(float dt)
 {
-	local_matrix.traslate(-velocity.x*dt, -velocity.y*dt, -velocity.z*dt);
+	Vector3 translation = velocity * -dt;
+	local_matrix.traslate(translation.x, translation.y, translation.z);
 }
 
 
