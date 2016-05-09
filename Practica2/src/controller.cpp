@@ -1,6 +1,8 @@
 #include "controller.h"
 #include "game.h"
 
+#include "vehicle.h"
+
 Controller::Controller() {
 
 }
@@ -8,18 +10,13 @@ Controller::Controller() {
 void Controller::update(double dt) {
 
 	Game* game = Game::getInstance();
-	
 	const Uint8* keystate = game->keystate;
 	Camera* camera = game->camera;
-
-
-
-
-
+	Vehicle* player = (Vehicle*) game->player;
 
 	double speed = dt * 100; //the speed is defined by the seconds_elapsed so it goes constant
-
-										  //Camara libre
+	
+	//Camara libre
 	if (game->cameraType == 0)
 	{
 		//mouse input to rotate the cam
@@ -50,8 +47,17 @@ void Controller::update(double dt) {
 		camera->lookAt(game->player->getGlobalMatrix() * Vector3(0, 2, -5), game->player->getGlobalMatrix() * Vector3(0, 0, 20), Vector3(0, 1, 0));
 
 		//Control del jugador
-		/*if (keystate[SDL_SCANCODE_W] || keystate[SDL_SCANCODE_UP]) camera->move(Vector3(0, 0, 1) * speed);
-		if (keystate[SDL_SCANCODE_S] || keystate[SDL_SCANCODE_DOWN]) camera->move(Vector3(0, 0, -1) * speed);
+		int pitchInverted = -1;
+		if (keystate[SDL_SCANCODE_W]) player->pitch(pitchInverted * 0.01 * speed);
+		if (keystate[SDL_SCANCODE_S]) player->pitch(pitchInverted * -0.01 * speed);
+		if (keystate[SDL_SCANCODE_A]) player->roll(0.01 * speed);
+		if (keystate[SDL_SCANCODE_D]) player->roll(-0.01 * speed);
+		if (keystate[SDL_SCANCODE_Q]) player->yaw(-0.01 * speed);
+		if (keystate[SDL_SCANCODE_E]) player->yaw(0.01 * speed);
+		if (keystate[SDL_SCANCODE_R]) player->accelerate(0.5 * speed);
+		if (keystate[SDL_SCANCODE_F]) player->accelerate(-0.5 * speed);
+
+		/*if (keystate[SDL_SCANCODE_S] || keystate[SDL_SCANCODE_DOWN]) camera->move(Vector3(0, 0, -1) * speed);
 		if (keystate[SDL_SCANCODE_A] || keystate[SDL_SCANCODE_LEFT]) camera->move(Vector3(1, 0, 0) * speed);
 		if (keystate[SDL_SCANCODE_D] || keystate[SDL_SCANCODE_RIGHT]) camera->move(Vector3(-1, 0, 0) * speed);*/
 

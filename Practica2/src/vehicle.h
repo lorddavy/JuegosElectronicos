@@ -8,7 +8,9 @@ class Vehicle: public EntityMesh{
 public:
 
 	Vector3 velocity;
-	int max_velocity;
+	float max_velocity;
+	float current_velocity;
+
 	Vector3 impulse;
 	int max_impulse;
 
@@ -22,11 +24,11 @@ public:
 
 	//void setup();	//	Le pasamos un fichero con todos los parametros y lo parseamos 
 
-	void applyImpulse();
+	void accelerate(float x);
 
-	void pitch();		// S and W keys
-	void roll();		// A and D keys
-	void yaw();			// Q and E keys
+	void pitch(float angle);		// S and W keys
+	void roll(float angle);			// A and D keys
+	void yaw(float angle);			// Q and E keys
 
 	void update(float dt);
 
