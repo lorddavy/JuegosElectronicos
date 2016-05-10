@@ -6,6 +6,9 @@
 #include "textureManager.h"
 #include "inputManager.h"
 
+#include "entity.h"
+#include "vehicle.h"
+
 #include "extra/textparser.h"
 
 //Source code for the Scene
@@ -18,8 +21,9 @@ Scene::Scene()
 	instance = this;
 	root = new Entity();
 
-	MeshManager* meshManager = NULL;
-	TextureManager* textureManager = NULL;
+	meshManager = NULL;
+	textureManager = NULL;
+	player = NULL;
 }
 
 Scene::~Scene()
@@ -84,4 +88,33 @@ void Scene::clearEntities() {
 		root->toDestroy.pop_back();
 		delete e;
 	}
+}
+
+void Scene::addPlayer(const char* type) {
+	//Creación de la entidad del jugador					Seguro que no se tiene que crear en scene???
+	
+	player = (Vehicle*) this->createEntity(type);
+	player->local_matrix.setTranslation(0, 0, 40);
+	player->local_matrix.rotate(270 * DEG2RAD, Vector3(0, 1, 0));
+	root->addEntity(player);
+}
+
+//Factory de entidades SCENEE
+Entity* Scene::createEntity(const char* type)
+{
+	Entity* entity = new Entity();
+	std::string str = type;
+
+	if (str == "runner")
+	{
+		Vehicle* vehicle = new Vehicle();
+		//creamos spitfire
+		vehicle->setup("data/meshes/x3_runner/x3_runner.ASE",
+			"data/meshes/x3_runner/x3_runner.tga");
+		//vehicle->mesh->uploadToVRAM();
+		//vehicle->mesh_low->uploadToVRAM();
+		return vehicle;
+	}
+
+	return entity;
 }

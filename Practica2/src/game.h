@@ -22,7 +22,7 @@ public:
 	};
 
 	//Entidad del jugador
-	Vehicle* player;
+	//Vehicle* player;
 
 	//window
 	SDL_Window* window;

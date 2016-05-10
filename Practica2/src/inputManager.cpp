@@ -1,8 +1,14 @@
 #include <assert.h>
 #include "inputManager.h"
 #include "game.h"
-
+#include "scene.h"
 #include "vehicle.h"
+
+//some globals
+/*Game* game = NULL;
+Scene* scene = NULL;
+Camera* camera = NULL;
+Vehicle* player = NULL;*/
 
 InputManager* InputManager::instance = NULL;
 
@@ -15,10 +21,19 @@ InputManager::InputManager()
 
 void InputManager::update(double dt) {
 
+	/*
+	game = Game::getInstance();
+	scene = Scene::getInstance();
+	camera = game->camera;
+	player = scene->player;
+	*/
+
 	Game* game = Game::getInstance();
-	const Uint8* keystate = game->keystate;
+	Scene* scene = Scene::getInstance();
 	Camera* camera = game->camera;
-	Vehicle* player = (Vehicle*) game->player;
+	Vehicle* player = scene->player;
+	
+	const Uint8* keystate = game->keystate;
 
 	double speed = dt * 100; //the speed is defined by the seconds_elapsed so it goes constant
 	
@@ -45,7 +60,9 @@ void InputManager::update(double dt) {
 	{
 
 		//camera->lookAt(game->player->getGlobalMatrix() * Vector3(0, 2, -5), game->player->getGlobalMatrix() * Vector3(0, 0, 20), Vector3(0, 1, 0));
-		camera->lookAt(player->getGlobalMatrix() * Vector3(0, 15, -35), player->getGlobalMatrix() * Vector3(0, 0, 20), Vector3(0, 1, 0));
+		camera->lookAt(player->getGlobalMatrix() * Vector3(0, 15, -35),
+			player->getGlobalMatrix() * Vector3(0, 0, 20),
+			player->getGlobalMatrix().rotateVector(Vector3(0, 1, 0)));
 
 		//Control del jugador
 		int pitchInverted = -1;
@@ -57,10 +74,6 @@ void InputManager::update(double dt) {
 		if (keystate[SDL_SCANCODE_E]) player->yaw(0.01 * speed);
 		if (keystate[SDL_SCANCODE_R]) player->accelerate(0.5 * speed);
 		if (keystate[SDL_SCANCODE_F]) player->accelerate(-0.5 * speed);
-
-		/*if (keystate[SDL_SCANCODE_S] || keystate[SDL_SCANCODE_DOWN]) camera->move(Vector3(0, 0, -1) * speed);
-		if (keystate[SDL_SCANCODE_A] || keystate[SDL_SCANCODE_LEFT]) camera->move(Vector3(1, 0, 0) * speed);
-		if (keystate[SDL_SCANCODE_D] || keystate[SDL_SCANCODE_RIGHT]) camera->move(Vector3(-1, 0, 0) * speed);*/
 
 		//to navigate with the mouse fixed in the middle
 		if (game->mouse_locked)
@@ -76,5 +89,4 @@ void InputManager::update(double dt) {
 		}
 	}
 
-	
 }

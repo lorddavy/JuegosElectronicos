@@ -3,11 +3,14 @@
 #define SCENE_H
 
 #include "mesh.h"
-#include "entity.h"
+//#include "entity.h"
 #include <map>
 
 class MeshManager;
 class TextureManager;
+class Entity;
+class EntityMesh;
+class Vehicle;
 
 class Scene {
 public:
@@ -20,6 +23,8 @@ public:
 	EntityMesh* planet;
 	EntityMesh* station;
 
+	Vehicle* player;
+
 	static Scene* getInstance() {
 		if (instance == NULL)
 			instance = new Scene();
@@ -30,10 +35,11 @@ public:
 	bool loadLevel(const char* filename);
 
 	void clearEntities();
+	void addPlayer(const char* type);
+	Entity* createEntity(const char* name);
 
 
 private:
-
 	static Scene* instance;
 	Scene();
 	~Scene();
