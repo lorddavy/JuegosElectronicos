@@ -98,6 +98,8 @@
     <ClCompile Include="..\..\src\rendertotexture.cpp" />
     <ClCompile Include="..\..\src\scene.cpp" />
     <ClCompile Include="..\..\src\shader.cpp" />
+    <ClCompile Include="..\..\src\shot.cpp" />
+    <ClCompile Include="..\..\src\shotManager.cpp" />
     <ClCompile Include="..\..\src\texture.cpp" />
     <ClCompile Include="..\..\src\textureManager.cpp" />
     <ClCompile Include="..\..\src\utils.cpp" />
@@ -117,6 +119,8 @@
     <ClInclude Include="..\..\src\rendertotexture.h" />
     <ClInclude Include="..\..\src\scene.h" />
     <ClInclude Include="..\..\src\shader.h" />
+    <ClInclude Include="..\..\src\shot.h" />
+    <ClInclude Include="..\..\src\shotManager.h" />
     <ClInclude Include="..\..\src\texture.h" />
     <ClInclude Include="..\..\src\textureManager.h" />
     <ClInclude Include="..\..\src\utils.h" />
