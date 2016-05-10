@@ -1,45 +1,28 @@
-#include "game.h"
-#include "utils.h"
-#include "scene.h"
-#include "meshManager.h"
-#include "mesh.h"
-#include "textureManager.h"
-#include "texture.h"
-#include "rendertotexture.h"
-#include "shader.h"
-#include "vehicle.h"
-#include "inputManager.h"
-//#include <algorithm>
-
 #include <cmath>
 
-//some globals		TODO ESTO TENDRIA QUE ESTAR DECLARADO EN EL GAME.H !!!
-Game* Game::instance = NULL;
+#include "game.h"
 
+#include "scene.h"
+#include "meshManager.h"
+#include "textureManager.h"
+#include "inputManager.h"
+
+#include "utils.h"
+#include "rendertotexture.h"
+
+#include "vehicle.h"
+
+
+
+//some globals
+Game* Game::instance = NULL;
 Scene* scene = NULL;
 
 //dentro de scene
-MeshManager* meshmanager = NULL;
-Mesh* mesh = NULL;
-Mesh* mesh_low = NULL; //Low Quality Mesh
+MeshManager* meshManager = NULL;
 TextureManager* textureManager = NULL;
-Texture* texture = NULL;
 
-
-InputManager* inputManager = NULL;
-
-
-//fuera
-Shader* shader = NULL;
-float angle = 0;
-RenderToTexture* rt = NULL;
-
-//Camaras
-//Camera* current_camera;
-//Camera* free_camera;
-//Camera* player_camera;
-
-int cameraType = 0; //Camera type 0->free 1->player
+InputManager* inputManager = NULL;	//dentro de scene???? PROBLEMAS!!
 
 
 Game::Game(SDL_Window* window)
@@ -55,7 +38,6 @@ Game::Game(SDL_Window* window)
 
 	keystate = NULL;
 	mouse_locked = false;
-	cameraType = 0;
 }
 
 //Here we have already GL working, so we can create meshes and textures
@@ -69,13 +51,13 @@ void Game::init(void)
 	glEnable(GL_CULL_FACE); //render both sides of every triangle
 	glEnable(GL_DEPTH_TEST); //check the occlusions using the Z buffer
 
-							 //create our camera
-	camera = new Camera();
+	camera = new Camera(); //create our camera
 	camera->lookAt(Vector3(0, 25, 25), Vector3(0, 0, 0), Vector3(0, 1, 0)); //position the camera and point to 0,0,0
 	camera->setPerspective(70, window_width / (float)window_height, 0.1, 10000); //set the projection, we want to be perspective
+	cameraType = 0; //Camera type 0->free 1->player
 
 	scene = Scene::getInstance();
-	meshmanager = MeshManager::getInstance();
+	meshManager = MeshManager::getInstance();
 	textureManager = TextureManager::getInstance();
 
 	//free_camera = camera;
@@ -83,16 +65,8 @@ void Game::init(void)
 	//Carga de la escena
 	if (!scene->loadLevel("data/scenes/space1.txt"))
 	{
-		scene->createLevel(); // dentor del loadLevel
+		scene->createLevel(); // dentro del loadLevel
 	}
-
-	//create a plane mesh
-	/*shader = new Shader(); // Dentro de Entity
-	if (!shader->load("data/shaders/simple.vs", "data/shaders/simple.fs"))
-	{
-	std::cout << "shader not found or error" << std::endl;
-	exit(0);
-	}*/
 
 	//Creación de la entidad del jugador
 	player = (Vehicle*)Game::createEntity("vehicle");
@@ -108,7 +82,6 @@ void Game::init(void)
 
 	//current_camera = player_camera;
 	//camera->lookAt(player->getGlobalMatrix() * Vector3(0, 2, -5), player->getGlobalMatrix() * Vector3(0, 0, 20), Vector3(0, 1, 0));
-
 
 	//hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
@@ -170,7 +143,6 @@ void Game::update(double seconds_elapsed)
 	}
 
 	//Rotación del planeta
-	angle += seconds_elapsed * 10;
 	scene->planet->local_matrix.rotateLocal(seconds_elapsed / 50, Vector3(0, 1, 0));
 }
 

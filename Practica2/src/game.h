@@ -41,6 +41,9 @@ public:
 	
 	Camera* camera; //our global camera
 	int cameraType; //Camera type 0->free 1->player
+	//Camera* current_camera;
+	//Camera* free_camera;
+	//Camera* player_camera;
 
 	Game(SDL_Window* window);
 	void init( void );
