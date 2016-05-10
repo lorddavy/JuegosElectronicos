@@ -4,6 +4,7 @@
 #include "scene.h"
 #include "meshManager.h"
 #include "textureManager.h"
+#include "inputManager.h"
 
 #include "extra/textparser.h"
 
@@ -19,8 +20,6 @@ Scene::Scene()
 
 	MeshManager* meshManager = NULL;
 	TextureManager* textureManager = NULL;
-
-
 }
 
 Scene::~Scene()
@@ -61,12 +60,28 @@ bool Scene::createLevel()
 bool Scene::loadLevel(const char* filename)
 {
 	//Cargamos el nivel de un archivo
-	TextParser t;
+	//TextParser t;
 
-	if (FILE* f = fopen(filename, "rb"))
-	{
-		return true;
+	std::stringstream ss;
+
+	if (FILE* f = fopen(filename, "rb")) {
+		ss << "Level loaded: " << filename;
+		std::cout << ss.str() << std::endl;
 	}
-
+	else {
+		createLevel();
+		ss << "Level " << filename << " doesn't exist!";
+		std::cout << ss.str() << std::endl;
+	}
+	
 	return false;
+}
+
+void Scene::clearEntities() {
+	//Borramos el contenedor con todo lo que se quiere destruir
+	while (root->toDestroy.size() != 0) {
+		Entity* e = root->toDestroy.back();
+		root->toDestroy.pop_back();
+		delete e;
+	}
 }

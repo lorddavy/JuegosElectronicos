@@ -7,12 +7,17 @@ class Game;
 
 class InputManager{
 public:
-
-	InputManager();
-	~InputManager();
+	static InputManager* getInstance() {
+		if (instance == NULL)
+			instance = new InputManager();
+		return instance;
+	};
 
 	void update(double dt);
 
+private:
+	static InputManager* instance;
+	InputManager();
 };
 
 #endif

@@ -1,10 +1,16 @@
+#include <assert.h>
 #include "inputManager.h"
 #include "game.h"
 
 #include "vehicle.h"
 
-InputManager::InputManager() {
+InputManager* InputManager::instance = NULL;
 
+InputManager::InputManager()
+{
+	assert(instance == NULL && "must be only one"); //must be only one, en release no petará
+	std::cout << "InputManager created" << std::endl;
+	instance = this;
 }
 
 void InputManager::update(double dt) {

@@ -1,7 +1,5 @@
 #include "vehicle.h"
 
-// Implementamos los métodos de vehicle.h
-
 Vehicle::Vehicle()
 {
 	velocity = Vector3(0,0,1);
@@ -29,8 +27,8 @@ void Vehicle::accelerate(float x)
 		current_velocity = -max_velocity;
 	}
 
-	std::cout << "Velocity: (" << this->velocity.x << ", " << this->velocity.y << ", " << this->velocity.z << ") " << std::endl;
-	std::cout << "current_velocity: " << this->current_velocity << std::endl << std::endl;
+	//std::cout << "Velocity: (" << this->velocity.x << ", " << this->velocity.y << ", " << this->velocity.z << ") " << std::endl;
+	//std::cout << "current_velocity: " << this->current_velocity << std::endl << std::endl;
 }
 
 void Vehicle::pitch(float angle)
@@ -57,7 +55,7 @@ void Vehicle::update(float dt)
 	local_matrix.traslate(translation.x, translation.y, translation.z);
 }
 
-std::string Vehicle::getVelocity() {
+std::string Vehicle::getVelocity() {	// No se usa
 	std::stringstream ss;
 	ss << (int)current_velocity / max_velocity * 100;
 	return ss.str();

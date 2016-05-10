@@ -7,8 +7,9 @@
 
 #include "includes.h"
 #include "camera.h"
-#include "entity.h"
-#include "vehicle.h"
+
+class Entity;
+class Vehicle;
 
 class Game
 {

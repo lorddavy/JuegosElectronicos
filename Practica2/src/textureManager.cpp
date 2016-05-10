@@ -1,14 +1,14 @@
-#include "TextureManager.h"
 #include <assert.h>
+#include "TextureManager.h"
 
 //Source code for the Textures Manager
 TextureManager* TextureManager::instance = NULL;
 
 TextureManager::TextureManager()
 {
-assert(instance == NULL && "must be only one"); //must be only one, en release no petará
-std::cout << "TextureManager created" << std::endl;
-instance = this;
+	assert(instance == NULL && "must be only one"); //must be only one, en release no petará
+	std::cout << "TextureManager created" << std::endl;
+	instance = this;
 }
 
 Texture* TextureManager::getTexture(const char* filename)

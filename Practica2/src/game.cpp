@@ -1,7 +1,6 @@
 #include <cmath>
 
 #include "game.h"
-
 #include "scene.h"
 #include "inputManager.h"
 
@@ -14,11 +13,7 @@
 //some globals
 Game* Game::instance = NULL;
 Scene* scene = NULL;
-
-//dentro de scene
-
-
-InputManager* inputManager = NULL;	//dentro de scene???? PROBLEMAS!!
+InputManager* inputManager = NULL;
 
 
 Game::Game(SDL_Window* window)
@@ -55,16 +50,13 @@ void Game::init(void)
 	scene = Scene::getInstance();
 	scene->meshManager = MeshManager::getInstance();
 	scene->textureManager = TextureManager::getInstance();
+	inputManager = InputManager::getInstance();
 
 	//free_camera = camera;
 
-	//Carga de la escena
-	if (!scene->loadLevel("data/scenes/space1.txt"))
-	{
-		scene->createLevel(); // dentro del loadLevel
-	}
+	scene->loadLevel("data/scenes/space1.txt");
 
-	//Creación de la entidad del jugador
+	//Creación de la entidad del jugador					Seguro que no se tiene que crear en scene???
 	player = (Vehicle*)Game::createEntity("vehicle");
 	player->local_matrix.setTranslation(0, 0, 40);
 	player->local_matrix.rotate(270 * DEG2RAD, Vector3(0, 1, 0));
@@ -131,12 +123,14 @@ void Game::update(double seconds_elapsed)
 
 	inputManager->update(seconds_elapsed);
 
+	scene->clearEntities();
+
 	//Borramos el contenedor con todo lo que se quiere destruir
-	while (scene->root->toDestroy.size() != 0) {
+	/*while (scene->root->toDestroy.size() != 0) {
 		Entity* e = scene->root->toDestroy.back();
 		scene->root->toDestroy.pop_back();
 		delete e;
-	}
+	}*/
 
 	//Rotación del planeta
 	scene->planet->local_matrix.rotateLocal(seconds_elapsed / 50, Vector3(0, 1, 0));

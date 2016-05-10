@@ -29,6 +29,8 @@ public:
 	bool createLevel();
 	bool loadLevel(const char* filename);
 
+	void clearEntities();
+
 
 private:
 
