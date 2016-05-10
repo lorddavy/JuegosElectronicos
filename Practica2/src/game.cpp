@@ -3,8 +3,6 @@
 #include "game.h"
 
 #include "scene.h"
-#include "meshManager.h"
-#include "textureManager.h"
 #include "inputManager.h"
 
 #include "utils.h"
@@ -13,14 +11,12 @@
 #include "vehicle.h"
 
 
-
 //some globals
 Game* Game::instance = NULL;
 Scene* scene = NULL;
 
 //dentro de scene
-MeshManager* meshManager = NULL;
-TextureManager* textureManager = NULL;
+
 
 InputManager* inputManager = NULL;	//dentro de scene???? PROBLEMAS!!
 
@@ -57,8 +53,8 @@ void Game::init(void)
 	cameraType = 0; //Camera type 0->free 1->player
 
 	scene = Scene::getInstance();
-	meshManager = MeshManager::getInstance();
-	textureManager = TextureManager::getInstance();
+	scene->meshManager = MeshManager::getInstance();
+	scene->textureManager = TextureManager::getInstance();
 
 	//free_camera = camera;
 

@@ -6,29 +6,35 @@
 #include "entity.h"
 #include <map>
 
-//Header For the Scene
+class MeshManager;
+class TextureManager;
+
 class Scene {
 public:
-EntityMesh* skybox;
-EntityMesh* planet;
-EntityMesh* station;
 
+	MeshManager* meshManager;
+	TextureManager* textureManager;
 
-Entity* root;
+	Entity* root;
+	EntityMesh* skybox;
+	EntityMesh* planet;
+	EntityMesh* station;
 
-static Scene* getInstance() {
-	if (instance == NULL)
-		instance = new Scene();
-	return instance;
-};
+	static Scene* getInstance() {
+		if (instance == NULL)
+			instance = new Scene();
+		return instance;
+	};
 
-bool createLevel();
-bool loadLevel(const char* filename);
+	bool createLevel();
+	bool loadLevel(const char* filename);
+
 
 private:
-static Scene* instance;
-Scene();
-~Scene();
+
+	static Scene* instance;
+	Scene();
+	~Scene();
 };
 
 #endif

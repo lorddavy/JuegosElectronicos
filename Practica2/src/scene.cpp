@@ -1,6 +1,10 @@
-#include "scene.h"
 #include <iostream>
 #include <assert.h>
+
+#include "scene.h"
+#include "meshManager.h"
+#include "textureManager.h"
+
 #include "extra/textparser.h"
 
 //Source code for the Scene
@@ -12,6 +16,11 @@ Scene::Scene()
 	std::cout << "Scene created" << std::endl;
 	instance = this;
 	root = new Entity();
+
+	MeshManager* meshManager = NULL;
+	TextureManager* textureManager = NULL;
+
+
 }
 
 Scene::~Scene()
