@@ -57,4 +57,8 @@ void Vehicle::update(float dt)
 	local_matrix.traslate(translation.x, translation.y, translation.z);
 }
 
-
+std::string Vehicle::getVelocity() {
+	std::stringstream ss;
+	ss << (int)current_velocity / max_velocity * 100;
+	return ss.str();
+}

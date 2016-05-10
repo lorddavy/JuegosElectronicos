@@ -87,7 +87,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\camera.cpp" />
     <ClCompile Include="..\..\src\clipper.cpp" />
-    <ClCompile Include="..\..\src\controller.cpp" />
+    <ClCompile Include="..\..\src\inputManager.cpp" />
     <ClCompile Include="..\..\src\entity.cpp" />
     <ClCompile Include="..\..\src\extra\textparser.cpp" />
     <ClCompile Include="..\..\src\framework.cpp" />
@@ -106,7 +106,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\src\camera.h" />
     <ClInclude Include="..\..\src\clipper.h" />
-    <ClInclude Include="..\..\src\controller.h" />
+    <ClInclude Include="..\..\src\inputManager.h" />
     <ClInclude Include="..\..\src\entity.h" />
     <ClInclude Include="..\..\src\extra\textparser.h" />
     <ClInclude Include="..\..\src\framework.h" />

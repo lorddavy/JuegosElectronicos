@@ -1,13 +1,13 @@
-#include "controller.h"
+#include "inputManager.h"
 #include "game.h"
 
 #include "vehicle.h"
 
-Controller::Controller() {
+InputManager::InputManager() {
 
 }
 
-void Controller::update(double dt) {
+void InputManager::update(double dt) {
 
 	Game* game = Game::getInstance();
 	const Uint8* keystate = game->keystate;
@@ -38,12 +38,6 @@ void Controller::update(double dt) {
 	//Camara jugador
 	if (game->cameraType == 1)
 	{
-
-		/*Matrix44 global_player_matrix = player->getGlobalMatrix();
-		Vector3 detras = global_player_matrix* Vector3(0, 2, -5);
-		detras = camera->eye * 0.1 + detras *0.9;
-		camera->lookAt(detras, global_player_matrix* Vector3(0, 0, 20), global_player_matrix.rotateVector(Vector3(0, 1, 0)));*/
-
 		camera->lookAt(game->player->getGlobalMatrix() * Vector3(0, 2, -5), game->player->getGlobalMatrix() * Vector3(0, 0, 20), Vector3(0, 1, 0));
 
 		//Control del jugador

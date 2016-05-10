@@ -8,7 +8,7 @@
 #include "rendertotexture.h"
 #include "shader.h"
 #include "vehicle.h"
-#include "controller.h"
+#include "inputManager.h"
 //#include <algorithm>
 
 #include <cmath>
@@ -17,14 +17,19 @@
 Game* Game::instance = NULL;
 
 Scene* scene = NULL;
+
+//dentro de scene
 MeshManager* meshmanager = NULL;
 Mesh* mesh = NULL;
 Mesh* mesh_low = NULL; //Low Quality Mesh
 TextureManager* textureManager = NULL;
 Texture* texture = NULL;
 
-Controller* controller = NULL;
 
+InputManager* inputManager = NULL;
+
+
+//fuera
 Shader* shader = NULL;
 float angle = 0;
 RenderToTexture* rt = NULL;
@@ -140,7 +145,9 @@ void Game::render(void)
 
 	//Dibujamos texto en pantalla
 	drawText(5, 5, "Outer Space", Vector3(1, 0, 0), 3);
-	drawText(5, 25, "Potencia de Impulso: 50%", Vector3(102 / 255, 255 / 255, 102 / 255), 2);
+	
+	/*std::string impulse = "Velocidad: " + (Vehicle*)player->getVelocity() + "%";
+	drawText(5, 25, impulse, Vector3(102 / 255, 255 / 255, 102 / 255), 2);*/
 
 	glColor3f(1, 1, 1);
 
@@ -154,7 +161,7 @@ void Game::update(double seconds_elapsed)
 {
 	scene->root->update(seconds_elapsed);
 
-	controller->update(seconds_elapsed);
+	inputManager->update(seconds_elapsed);
 
 	//Borramos el contenedor con todo lo que se quiere destruir
 	while (scene->root->toDestroy.size() != 0) {

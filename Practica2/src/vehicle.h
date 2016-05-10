@@ -32,6 +32,8 @@ public:
 
 	void update(float dt);
 
+	std::string getVelocity();
+
 private:
 
 };
