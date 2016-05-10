@@ -1,6 +1,7 @@
-#include "meshManager.h"
-#include <iostream>
 #include <assert.h>
+#include <sstream>
+#include "includes.h"
+#include "meshManager.h"
 
 //Source code for the Textures Manager
 MeshManager* MeshManager::instance = NULL;
@@ -18,9 +19,11 @@ Mesh* MeshManager::getMesh(const char* filename)
 	if (it != s_map.end())
 		return it->second;
 
-	char path[100];
-	strcpy(path, filename);
-	strcat(path, ".bin");
+	std::stringstream ss;
+	ss << filename << ".bin";
+	std::string str = ss.str();
+	const char* path = str.c_str();
+
 
 	Mesh* mesh = new Mesh();
 	if (mesh->readBIN(path) == false)
