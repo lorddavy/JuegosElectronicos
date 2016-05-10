@@ -34,7 +34,6 @@ Shader* shader = NULL;
 float angle = 0;
 RenderToTexture* rt = NULL;
 
-
 //Camaras
 //Camera* current_camera;
 //Camera* free_camera;
@@ -97,8 +96,8 @@ void Game::init(void)
 
 	//Creación de la entidad del jugador
 	player = (Vehicle*)Game::createEntity("vehicle");
-	player->local_matrix.setTranslation(0, 0, 0);
-	player->local_matrix.rotate(180 * DEG2RAD, Vector3(0, 1, 0));
+	player->local_matrix.setTranslation(0, 0, 40);
+	player->local_matrix.rotate(270 * DEG2RAD, Vector3(0, 1, 0));
 
 	scene->root->addEntity(player);
 
@@ -146,8 +145,8 @@ void Game::render(void)
 	//Dibujamos texto en pantalla
 	drawText(5, 5, "Outer Space", Vector3(1, 0, 0), 3);
 	
-	/*std::string impulse = "Velocidad: " + (Vehicle*)player->getVelocity() + "%";
-	drawText(5, 25, impulse, Vector3(102 / 255, 255 / 255, 102 / 255), 2);*/
+	std::string impulse = "Potencia de Impulso: " + player->getImpulse() + "%";
+	drawText(5, 25, impulse, Vector3(102 / 255, 255 / 255, 102 / 255), 2);
 
 	glColor3f(1, 1, 1);
 
@@ -235,12 +234,10 @@ Entity* Game::createEntity(const char* name)
 	{
 		Vehicle* vehicle = new Vehicle();
 		//creamos spitfire
-		vehicle->setup("data/meshes/spitfire/spitfire.ASE",
-			"data/meshes/spitfire/spitfire_color_spec.tga",
-			"data/meshes/spitfire/spitfire_low.ASE");
-		vehicle->mesh->uploadToVRAM();
-		vehicle->mesh_low->uploadToVRAM();
-		//vehicle->local_matrix.setTranslation(0, 0, 0);
+		vehicle->setup("data/meshes/x3_runner/x3_runner.ASE",
+			"data/meshes/x3_runner/x3_runner.tga");
+		//vehicle->mesh->uploadToVRAM();
+		//vehicle->mesh_low->uploadToVRAM();
 		return vehicle;
 	}
 

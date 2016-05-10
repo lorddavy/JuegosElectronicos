@@ -8,6 +8,7 @@
 #include "includes.h"
 #include "camera.h"
 #include "entity.h"
+#include "vehicle.h"
 
 class Game
 {
@@ -20,8 +21,7 @@ public:
 	};
 
 	//Entidad del jugador
-	Entity* player;
-
+	Vehicle* player;
 
 	//window
 	SDL_Window* window;

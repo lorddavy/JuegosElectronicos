@@ -33,6 +33,7 @@ public:
 	void update(float dt);
 
 	std::string getVelocity();
+	std::string getImpulse();
 
 private:
 

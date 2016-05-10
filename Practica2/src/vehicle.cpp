@@ -62,3 +62,15 @@ std::string Vehicle::getVelocity() {
 	ss << (int)current_velocity / max_velocity * 100;
 	return ss.str();
 }
+
+std::string Vehicle::getImpulse()
+{
+	int impulse;
+	impulse = this->current_velocity/ this->max_velocity * 100;
+
+	std::ostringstream strs;
+	strs << impulse;
+	return strs.str();
+}
+
+

@@ -38,7 +38,9 @@ void InputManager::update(double dt) {
 	//Camara jugador
 	if (game->cameraType == 1)
 	{
+
 		camera->lookAt(game->player->getGlobalMatrix() * Vector3(0, 2, -5), game->player->getGlobalMatrix() * Vector3(0, 0, 20), Vector3(0, 1, 0));
+		//camera->lookAt(player->getGlobalMatrix() * Vector3(0, 15, -35), player->getGlobalMatrix() * Vector3(0, 0, 20), Vector3(0, 1, 0));
 
 		//Control del jugador
 		int pitchInverted = -1;
