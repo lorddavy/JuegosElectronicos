@@ -6,7 +6,7 @@ Vehicle::Vehicle()
 {
 	velocity = Vector3(0,0,1);
 	current_velocity = 30;
-	max_velocity = 100;
+	max_velocity = 500;
 	camera_eye.set(0, 2, -5);
 }
 
@@ -21,12 +21,12 @@ Vehicle::~Vehicle()
 void Vehicle::accelerate(float x)
 {
 	current_velocity += x;
-
-	velocity = getGlobalMatrix() * Vector3(0, 0, -1);
-	velocity.normalize();
 	
 	if (current_velocity > max_velocity){
 		current_velocity = max_velocity;
+	}
+	else if (-current_velocity > max_velocity) {
+		current_velocity = -max_velocity;
 	}
 
 	std::cout << "Velocity: (" << this->velocity.x << ", " << this->velocity.y << ", " << this->velocity.z << ") " << std::endl;
@@ -50,6 +50,9 @@ void Vehicle::yaw(float angle)
 
 void Vehicle::update(float dt)
 {
+	velocity = this->getGlobalMatrix().rotateVector(Vector3(0, 0, -1));
+	velocity.normalize();
+
 	Vector3 translation = velocity * current_velocity * -dt;
 	local_matrix.traslate(translation.x, translation.y, translation.z);
 }
