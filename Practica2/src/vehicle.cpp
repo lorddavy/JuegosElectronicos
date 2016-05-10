@@ -57,4 +57,14 @@ void Vehicle::update(float dt)
 	local_matrix.traslate(translation.x, translation.y, translation.z);
 }
 
+std::string Vehicle::getImpulse()
+{
+	int impulse;
+	impulse = this->current_velocity/ this->max_velocity * 100;
+
+	std::ostringstream strs;
+	strs << impulse;
+	return strs.str();
+}
+
 

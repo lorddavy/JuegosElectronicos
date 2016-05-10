@@ -11,6 +11,8 @@ class Scene {
 public:
 EntityMesh* skybox;
 EntityMesh* planet;
+EntityMesh* station;
+
 
 Entity* root;
 
