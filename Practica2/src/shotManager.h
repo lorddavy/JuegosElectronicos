@@ -18,7 +18,7 @@ public:
 		return instance;
 	};
 
-	void createShot(Vector3 pos, Vector3 vel, float ttl, void* owner);
+	void createShot(char type, Vector3 origin, Vector3 end, Vector3 vel, float ttl, Entity* owner);
 
 	void render(Camera* camera);
 	void update(float dt);

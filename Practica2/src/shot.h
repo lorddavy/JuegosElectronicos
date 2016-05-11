@@ -10,12 +10,12 @@ class Shot{
 public:
 
 public:
-	Vector3 position;
-	Vector3 last_position;
+	Vector3 origin_position;
+	Vector3 end_position;	
 
 	Vector3 velocity;
 	char type;
-	void* owner;
+	Entity* owner;
 	float ttl; //tiempo de vida
 
 
