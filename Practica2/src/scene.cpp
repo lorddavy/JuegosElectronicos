@@ -23,7 +23,7 @@ Scene::Scene()
 
 	meshManager = NULL;
 	textureManager = NULL;
-	player = NULL;
+	runner = NULL;
 }
 
 Scene::~Scene()
@@ -58,6 +58,11 @@ bool Scene::createLevel()
 	station->two_sided = true;
 	root->addEntity(station);
 
+	//Nave (runner)
+	runner = (Vehicle*) createEntity("runner");
+	runner->local_matrix.setTranslation(0, 0, 40);
+	runner->local_matrix.rotate(270 * DEG2RAD, Vector3(0, 1, 0));
+	root->addEntity(runner);
 	return true;
 }
 
@@ -81,7 +86,7 @@ bool Scene::loadLevel(const char* filename)
 	return false;
 }
 
-void Scene::clearEntities() {
+void Scene::clearRemovedEntities() {
 	//Borramos el contenedor con todo lo que se quiere destruir
 	while (root->toDestroy.size() != 0) {
 		Entity* e = root->toDestroy.back();
@@ -90,14 +95,10 @@ void Scene::clearEntities() {
 	}
 }
 
-void Scene::addPlayer(const char* type) {
-	//Creación de la entidad del jugador					Seguro que no se tiene que crear en scene???
+/*void Scene::addPlayer(const char* filename) {
+	//Todos estos parametros tienen que leerse desde un fichero	
 	
-	player = (Vehicle*) this->createEntity(type);
-	player->local_matrix.setTranslation(0, 0, 40);
-	player->local_matrix.rotate(270 * DEG2RAD, Vector3(0, 1, 0));
-	root->addEntity(player);
-}
+}*/
 
 //Factory de entidades SCENEE
 Entity* Scene::createEntity(const char* type)

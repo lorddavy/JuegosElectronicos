@@ -29,9 +29,9 @@ void InputManager::update(double dt) {
 	*/
 
 	Game* game = Game::getInstance();
-	Scene* scene = Scene::getInstance();
+	//Scene* scene = Scene::getInstance();
 	Camera* camera = game->camera;
-	Vehicle* player = scene->player;
+	Vehicle* player = game->player;
 	
 	const Uint8* keystate = game->keystate;
 

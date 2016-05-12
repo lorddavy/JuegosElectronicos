@@ -56,7 +56,17 @@ void Game::init(void)
 
 	scene->loadLevel("data/scenes/space1.txt");
 
-	scene->addPlayer("runner");
+	player = scene->runner;
+
+	//scene->addPlayer("data/scenes/player.txt");
+	/*
+	player = (Vehicle*) this->createEntity("runner");
+	player->local_matrix.setTranslation(0, 0, 40);
+	player->local_matrix.rotate(270 * DEG2RAD, Vector3(0, 1, 0));
+	
+	scene->root->addEntity(player);
+	*/
+
 
 	cameraType = 1;
 
@@ -101,7 +111,7 @@ void Game::render(void)
 	//Dibujamos texto en pantalla
 	drawText(5, 5, "Outer Space", Vector3(1, 0, 0), 3);
 	
-	std::string impulse = "Potencia de Impulso: " + scene->player->getImpulse() + "%";
+	std::string impulse = "Potencia de Impulso: " + player->getImpulse() + "%";
 	drawText(5, 25, impulse, Vector3(102 / 255, 255 / 255, 102 / 255), 2);
 
 	glColor3f(1, 1, 1);
@@ -115,10 +125,8 @@ void Game::render(void)
 void Game::update(double seconds_elapsed)
 {
 	scene->root->update(seconds_elapsed);
-
 	inputManager->update(seconds_elapsed);
-
-	scene->clearEntities();
+	scene->clearRemovedEntities();
 
 	//Borramos el contenedor con todo lo que se quiere destruir
 	/*while (scene->root->toDestroy.size() != 0) {
@@ -182,7 +190,7 @@ void Game::setWindowSize(int width, int height)
 
 
 //Factory de entidades
-Entity* Game::createEntity(const char* name)
+/*Entity* Game::createEntity(const char* name)
 {
 	Entity* entity = new Entity();
 	std::string str = name;
@@ -200,5 +208,5 @@ Entity* Game::createEntity(const char* name)
 
 	return entity;
 }
-
+*/
 

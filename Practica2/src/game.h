@@ -46,6 +46,8 @@ public:
 	//Camera* free_camera;
 	//Camera* player_camera;
 
+	Vehicle* player;
+
 	Game(SDL_Window* window);
 	void init( void );
 	void render( void );
@@ -57,7 +59,7 @@ public:
     
 	void setWindowSize(int width, int height);
 
-	Entity* createEntity(const char* name); //FACTORY
+	//Entity* createEntity(const char* name); //FACTORY
 
 private:
 	static Game* instance;

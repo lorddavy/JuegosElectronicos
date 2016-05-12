@@ -22,8 +22,7 @@ public:
 	EntityMesh* skybox;
 	EntityMesh* planet;
 	EntityMesh* station;
-
-	Vehicle* player;
+	Vehicle* runner;
 
 	static Scene* getInstance() {
 		if (instance == NULL)
@@ -34,8 +33,8 @@ public:
 	bool createLevel();
 	bool loadLevel(const char* filename);
 
-	void clearEntities();
-	void addPlayer(const char* type);
+	void clearRemovedEntities();
+	//void addPlayer(const char* filename);
 	Entity* createEntity(const char* name);
 
 
