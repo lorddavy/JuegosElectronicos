@@ -1,0 +1,419 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\src\camera.cpp" />
+    <ClCompile Include="..\..\src\clipper.cpp" />
+    <ClCompile Include="..\..\src\inputManager.cpp" />
+    <ClCompile Include="..\..\src\entity.cpp" />
+    <ClCompile Include="..\..\src\extra\textparser.cpp" />
+    <ClCompile Include="..\..\src\framework.cpp" />
+    <ClCompile Include="..\..\src\game.cpp" />
+    <ClCompile Include="..\..\src\main.cpp" />
+    <ClCompile Include="..\..\src\mesh.cpp" />
+    <ClCompile Include="..\..\src\meshManager.cpp" />
+    <ClCompile Include="..\..\src\rendertotexture.cpp" />
+    <ClCompile Include="..\..\src\scene.cpp" />
+    <ClCompile Include="..\..\src\shader.cpp" />
+    <ClCompile Include="..\..\src\shot.cpp" />
+    <ClCompile Include="..\..\src\shotManager.cpp" />
+    <ClCompile Include="..\..\src\texture.cpp" />
+    <ClCompile Include="..\..\src\textureManager.cpp" />
+    <ClCompile Include="..\..\src\utils.cpp" />
+    <ClCompile Include="..\..\src\vehicle.cpp" />
+    <ClCompile Include="..\..\src\extra\coldet\src\box.cpp">
+      <Filter>coldet\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\coldet\src\box_bld.cpp">
+      <Filter>coldet\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\coldet\src\coldet.cpp">
+      <Filter>coldet\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\coldet\src\coldet_bld.cpp">
+      <Filter>coldet\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\coldet\src\math3d.cpp">
+      <Filter>coldet\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\coldet\src\mytritri.cpp">
+      <Filter>coldet\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\coldet\src\sysdep.cpp">
+      <Filter>coldet\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\coldet\src\tritri.c">
+      <Filter>coldet\src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\camera.h" />
+    <ClInclude Include="..\..\src\clipper.h" />
+    <ClInclude Include="..\..\src\inputManager.h" />
+    <ClInclude Include="..\..\src\entity.h" />
+    <ClInclude Include="..\..\src\extra\textparser.h" />
+    <ClInclude Include="..\..\src\framework.h" />
+    <ClInclude Include="..\..\src\game.h" />
+    <ClInclude Include="..\..\src\includes.h" />
+    <ClInclude Include="..\..\src\mesh.h" />
+    <ClInclude Include="..\..\src\meshManager.h" />
+    <ClInclude Include="..\..\src\rendertotexture.h" />
+    <ClInclude Include="..\..\src\scene.h" />
+    <ClInclude Include="..\..\src\shader.h" />
+    <ClInclude Include="..\..\src\shot.h" />
+    <ClInclude Include="..\..\src\shotManager.h" />
+    <ClInclude Include="..\..\src\texture.h" />
+    <ClInclude Include="..\..\src\textureManager.h" />
+    <ClInclude Include="..\..\src\utils.h" />
+    <ClInclude Include="..\..\src\vehicle.h" />
+    <ClInclude Include="..\..\src\extra\coldet\src\box.h">
+      <Filter>coldet\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\coldet\src\coldet.h">
+      <Filter>coldet\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\coldet\src\coldetimpl.h">
+      <Filter>coldet\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\coldet\src\math3d.h">
+      <Filter>coldet\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\coldet\src\mytritri.h">
+      <Filter>coldet\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\coldet\src\sysdep.h">
+      <Filter>coldet\src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="coldet">
+      <UniqueIdentifier>{03ceed84-28c0-4b03-b0c8-16efefc69931}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="coldet\doc">
+      <UniqueIdentifier>{ee5dd09f-6c3b-4b8f-83ac-812aaeaf4dde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="coldet\src">
+      <UniqueIdentifier>{a97c8a61-2937-4aa9-82c9-9ebc9015309c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="coldet\doc\html">
+      <UniqueIdentifier>{1e0af726-6020-4e89-b1bf-b98c4a6eaec5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="coldet\src\Debug">
+      <UniqueIdentifier>{72d74376-25f2-476a-99c2-ae935a625a56}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\extra\coldet\COPYING">
+      <Filter>coldet</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\annotated.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\box_bld_cpp.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\box_bld_cpp-source.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\box_cpp.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\box_cpp-source.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\box_h.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\box_h-source.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\class_Box.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\class_BoxedTriangle.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\class_BoxedTriangle-members.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\class_Box-members.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\class_BoxTreeInnerNode.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\class_BoxTreeInnerNode-members.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\class_BoxTreeNode.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\class_BoxTreeNode-members.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\class_Check.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\class_Check-members.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\class_CollisionModel3D.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\class_CollisionModel3DImpl.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\class_CollisionModel3DImpl-members.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\class_CollisionModel3D-members.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\class_Inconsistency.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\class_RotationState.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\class_RotationState-members.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\class_TimeoutExpired.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\class_Triangle.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\class_TriangleDesc.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\class_TriangleDesc-members.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\class_Triangle-members.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\coldet_bld_cpp.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\coldet_bld_cpp-source.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\coldet_cpp.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\coldet_cpp-source.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\coldet_dsp.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\coldet_dsp-source.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\coldet_h.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\coldet_h-source.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\coldetimpl_h.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\coldetimpl_h-source.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\doxygen.css">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\files.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\functions.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\globals.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\hierarchy.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\index.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\makefile_g++.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\makefile_g++-source.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\math3d_cpp.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\math3d_cpp-source.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\math3d_h.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\math3d_h-source.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\mytritri_cpp.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\mytritri_cpp-source.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\mytritri_h.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\mytritri_h-source.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\struct_Matrix3.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\struct_Matrix3D.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\struct_Matrix3D-members.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\struct_Matrix3-members.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\struct_Plane.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\struct_Plane-members.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\struct_Vector3D.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\struct_Vector3D-members.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\sysdep_cpp.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\sysdep_cpp-source.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\sysdep_h.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\sysdep_h-source.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\tritri_c.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\html\tritri_c-source.html">
+      <Filter>coldet\doc\html</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\doc\quickstart.html">
+      <Filter>coldet\doc</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\src\coldet.dsp">
+      <Filter>coldet\src</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\src\coldet.vcxproj">
+      <Filter>coldet\src</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\src\coldet.vcxproj.filters">
+      <Filter>coldet\src</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\src\coldet.vcxproj.user">
+      <Filter>coldet\src</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\src\makefile.g++">
+      <Filter>coldet\src</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\src\Debug\box.sbr">
+      <Filter>coldet\src\Debug</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\src\Debug\box_bld.sbr">
+      <Filter>coldet\src\Debug</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\src\Debug\coldet.bsc">
+      <Filter>coldet\src\Debug</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\src\Debug\coldet.dll">
+      <Filter>coldet\src\Debug</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\src\Debug\coldet.sbr">
+      <Filter>coldet\src\Debug</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\src\Debug\coldet.vcxprojResolveAssemblyReference.cache">
+      <Filter>coldet\src\Debug</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\src\Debug\coldet_bld.sbr">
+      <Filter>coldet\src\Debug</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\src\Debug\math3d.sbr">
+      <Filter>coldet\src\Debug</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\src\Debug\mytritri.sbr">
+      <Filter>coldet\src\Debug</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\src\Debug\sysdep.sbr">
+      <Filter>coldet\src\Debug</Filter>
+    </None>
+    <None Include="..\..\src\extra\coldet\src\Debug\tritri.sbr">
+      <Filter>coldet\src\Debug</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\src\extra\coldet\readme.txt">
+      <Filter>coldet</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\src\extra\coldet\doc\html\class_Box.gif">
+      <Filter>coldet\doc\html</Filter>
+    </Image>
+    <Image Include="..\..\src\extra\coldet\doc\html\class_BoxedTriangle.gif">
+      <Filter>coldet\doc\html</Filter>
+    </Image>
+    <Image Include="..\..\src\extra\coldet\doc\html\class_BoxTreeInnerNode.gif">
+      <Filter>coldet\doc\html</Filter>
+    </Image>
+    <Image Include="..\..\src\extra\coldet\doc\html\class_BoxTreeNode.gif">
+      <Filter>coldet\doc\html</Filter>
+    </Image>
+    <Image Include="..\..\src\extra\coldet\doc\html\class_CollisionModel3D.gif">
+      <Filter>coldet\doc\html</Filter>
+    </Image>
+    <Image Include="..\..\src\extra\coldet\doc\html\class_CollisionModel3DImpl.gif">
+      <Filter>coldet\doc\html</Filter>
+    </Image>
+    <Image Include="..\..\src\extra\coldet\doc\html\class_Triangle.gif">
+      <Filter>coldet\doc\html</Filter>
+    </Image>
+    <Image Include="..\..\src\extra\coldet\doc\html\class_TriangleDesc.gif">
+      <Filter>coldet\doc\html</Filter>
+    </Image>
+    <Image Include="..\..\src\extra\coldet\doc\html\doxygen.gif">
+      <Filter>coldet\doc\html</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="..\..\src\extra\coldet\src\Debug\coldet.dll.embed.manifest">
+      <Filter>coldet\src\Debug</Filter>
+    </Manifest>
+    <Manifest Include="..\..\src\extra\coldet\src\Debug\coldet.dll.intermediate.manifest">
+      <Filter>coldet\src\Debug</Filter>
+    </Manifest>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="..\..\src\extra\coldet\src\Debug\coldet.dll.embed.manifest.res">
+      <Filter>coldet\src\Debug</Filter>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\src\extra\coldet\src\Debug\coldet_manifest.rc">
+      <Filter>coldet\src\Debug</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
