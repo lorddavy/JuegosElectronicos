@@ -30,6 +30,8 @@ public:
 	void roll(float angle);			// A and D keys
 	void yaw(float angle);			// Q and E keys
 
+	void shoot(char type);			// SPACE key
+
 	void update(float dt);
 
 	std::string getVelocity();

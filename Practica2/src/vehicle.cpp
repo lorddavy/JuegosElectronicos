@@ -1,4 +1,5 @@
 #include "vehicle.h"
+#include "shotManager.h"
 
 Vehicle::Vehicle()
 {
@@ -71,4 +72,18 @@ std::string Vehicle::getImpulse()
 	return strs.str();
 }
 
+void Vehicle::shoot(char type)
+{
+	if (type == 'b')
+	{
+		ShotManager* shotManager = ShotManager::getInstance();
+		Matrix44 global = getGlobalMatrix();
+		Vector3 origin = global * Vector3(0, 0, 10);
+
+		Vector3 end = global * Vector3(0, 0, 500);
+		Vector3 vel = global.rotateVector(Vector3(0, 0, 0));
+
+		shotManager->createShot('b', origin, end, vel, 10, this);
+	}
+}
 
