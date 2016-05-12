@@ -1,10 +1,14 @@
-#include "mesh.h"
 #include <cassert>
+#include <exception>
+
 #include "includes.h"
-#include "shader.h"
 #include "utils.h"
+
+#include "mesh.h"
+#include "shader.h"
 #include "extra/textparser.h"
 
+//Constructors and destructors
 Mesh::Mesh()
 {
 	vertices_vbo_id = 0;
@@ -36,8 +40,7 @@ void Mesh::clear()
 	uvs.clear();
 	colors.clear();
 }
-
-
+//Renders
 void Mesh::render(int primitive)
 {
 	assert(vertices.size() && "No vertices in this mesh");
@@ -181,7 +184,7 @@ void Mesh::render(int primitive, Shader* sh)
 	if (color_location != -1) glDisableVertexAttribArray(color_location);
 	glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
 }
-
+//To upload the mesh to the GPU
 void Mesh::uploadToVRAM()
 {
 	//delete old
@@ -216,7 +219,7 @@ void Mesh::uploadToVRAM()
 	}
 
 }
-
+//createQuad and createPlane functions
 void Mesh::createQuad(float center_x, float center_y, float w, float h, bool flip_uvs)
 {
 	vertices.clear();
@@ -250,7 +253,6 @@ void Mesh::createQuad(float center_x, float center_y, float w, float h, bool fli
 	normals.push_back(Vector3(0.0f, 0.0f, 1.0f));
 }
 
-
 void Mesh::createPlane(float size)
 {
 	vertices.clear();
@@ -283,7 +285,7 @@ void Mesh::createPlane(float size)
 	uvs.push_back(Vector2(1, 1));
 	uvs.push_back(Vector2(0, 0));
 }
-
+//Load the ASE File of the Mesh
 bool Mesh::loadASE(const char* filename)
 {
 	float parseTime = 0;
@@ -439,7 +441,7 @@ bool Mesh::loadASE(const char* filename)
 
 	return true;
 }
-
+//Write the BIN file
 bool Mesh::writeBIN(const char * filename)
 {
 	
@@ -483,7 +485,55 @@ bool Mesh::writeBIN(const char * filename)
 
 	return true;
 }
+//Read the BIN file
+bool Mesh::readBIN(const char * filename)
+{
+	sMeshBin header;
 
+	//Abrimos el fichero binario
+	if (FILE* f = fopen(filename, "rb"))
+	{
+
+		//Leemos y guardamos cabecera
+		fread(&header, sizeof(sMeshBin), 1, f);
+
+		//Comprobamos el formato
+		if (header.format[0] == 'M' && header.format[1] == 'E' && header.format[2] == 'S' && header.format[3] == 'H')
+		{
+			//Leemos y guardamos la bounding box
+			fread(&boundingBox, sizeof(sBounding), 1, f);
+
+			//Leemos y guardamos vertices
+			vertices.resize(header.num_vertices);
+			fread(&vertices[0], sizeof(Vector3), header.num_vertices, f);
+
+			//Leemos y guardamos normales
+			normals.resize(header.num_normals);
+			if (normals.size())
+				fread(&normals[0], sizeof(Vector3), header.num_normals, f);
+
+			//Leemos y guardamos uvs
+			uvs.resize(header.num_uvs);
+			if (uvs.size())
+				fread(&uvs[0], sizeof(Vector2), header.num_uvs, f);
+
+			/*if (colors.size())
+			{
+			colors.resize(header.num_colors);
+			fread(&colors[0], sizeof(Vector3), header.num_colors, f);
+			}*/
+		}
+		else {
+
+			std::cout << "Archivo binario de formato desconocido" << std::endl;
+			return false;
+		}
+		return true;
+	}
+
+	return false;
+}
+//Calculate the Bounding Box of the Mesh
 std::vector<float> Mesh::calcBoundingBox()
 {
 	std::vector<float> bounds;
@@ -533,53 +583,27 @@ std::vector<float> Mesh::calcBoundingBox()
 	return bounds;
 }
 
-bool Mesh::readBIN(const char * filename)
+
+bool Mesh::createCollisionModel()
 {
-	sMeshBin header;
-	
-	//Abrimos el fichero binario
-	if (FILE* f = fopen(filename, "rb"))
+	try
 	{
+		collision_model = newCollisionModel3D();
+		collision_model->setTriangleNumber(vertices.size() / 3);
+		for (int i = 0; i < vertices.size() / 3; i + 3)
 
-		//Leemos y guardamos cabecera
-		fread(&header, sizeof(sMeshBin), 1, f);
-
-		//Comprobamos el formato
-		if (header.format[0] == 'M' && header.format[1] == 'E' && header.format[2] == 'S' && header.format[3] == 'H')
-		{
-			//Leemos y guardamos la bounding box
-			fread(&boundingBox, sizeof(sBounding), 1, f);
-
-			//Leemos y guardamos vertices
-			vertices.resize(header.num_vertices);
-			fread(&vertices[0], sizeof(Vector3), header.num_vertices, f);
-
-			//Leemos y guardamos normales
-			normals.resize(header.num_normals);
-			if (normals.size())
-				fread(&normals[0], sizeof(Vector3), header.num_normals, f);
-
-			//Leemos y guardamos uvs
-			uvs.resize(header.num_uvs);
-			if (uvs.size())
-				fread(&uvs[0], sizeof(Vector2), header.num_uvs, f);
-
-			/*if (colors.size())
-			{
-				colors.resize(header.num_colors);
-				fread(&colors[0], sizeof(Vector3), header.num_colors, f);
-			}*/
-		}
-		else {
-
-			std::cout << "Archivo binario de formato desconocido" << std::endl;
-			return false;
-		}
-		return true;
+			collision_model->addTriangle(vertices[i].x, vertices[i].y, vertices[i].z,
+				vertices[i + 1].x, vertices[i + 1].y, vertices[i + 1].z,
+				vertices[i + 2].x, vertices[i + 2].y, vertices[i + 2].z);
+		collision_model->finalize();
+	}
+	catch (int e)
+	{
+		std::cout << "An exception occurred. Exception Nr. " << e << '\n';
+		return false;
 	}
 
-	return false;
-	
+	return true;
 }
 
 
