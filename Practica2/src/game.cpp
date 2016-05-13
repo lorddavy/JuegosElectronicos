@@ -1,23 +1,21 @@
 //This code works
 #include <cmath>
-#include "utils.h"
-#include "rendertotexture.h"
 
 #include "game.h"
 #include "scene.h"
-
 #include "inputManager.h"
-#include "shotManager.h"
+
+#include "utils.h"
+#include "rendertotexture.h"
 
 #include "vehicle.h"
+
 
 //some globals
 Game* Game::instance = NULL;
 Scene* scene = NULL;
-
-//Managers
 InputManager* inputManager = NULL;
-ShotManager* shotManager = NULL;
+
 
 Game::Game(SDL_Window* window)
 {
@@ -51,12 +49,9 @@ void Game::init(void)
 	cameraType = 0; //Camera type 0->free 1->player
 
 	scene = Scene::getInstance();
-
-	//Managers
 	scene->meshManager = MeshManager::getInstance();
 	scene->textureManager = TextureManager::getInstance();
 	inputManager = InputManager::getInstance();
-	shotManager = ShotManager::getInstance();
 
 	//free_camera = camera;
 
@@ -113,7 +108,6 @@ void Game::render(void)
 	drawGrid(500); //background grid
 
 	scene->root->render(camera);
-	shotManager->render(camera);
 
 	//Dibujamos texto en pantalla
 	drawText(5, 5, "Outer Space", Vector3(1, 0, 0), 3);
@@ -131,14 +125,11 @@ void Game::render(void)
 
 void Game::update(double seconds_elapsed)
 {
-	//Updates
 	scene->root->update(seconds_elapsed);
 	inputManager->update(seconds_elapsed);
-	shotManager->update(seconds_elapsed*time);
-
-	//Borramos el contenedor con todo lo que se quiere destruir
 	scene->clearRemovedEntities();
 
+	//Borramos el contenedor con todo lo que se quiere destruir
 	/*while (scene->root->toDestroy.size() != 0) {
 		Entity* e = scene->root->toDestroy.back();
 		scene->root->toDestroy.pop_back();
