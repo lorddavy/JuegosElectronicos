@@ -604,11 +604,20 @@ bool Mesh::createCollisionModel()
 	return true;
 }
 
-bool Mesh::testIntRayMesh(Matrix44 model, Vector3 start, Vector3 front)
+//Tests de colisiones
+bool Mesh::testIntRayMesh(Matrix44 model, Vector3 start, Vector3 front, bool closest, float min, float max)
 {
 	collision_model->setTransform(model.m);
-	if(collision_model->rayCollision(start.v, front.v, true)) return true;
+	
+	if (collision_model->rayCollision(start.v, front.v)) return true;
 	return false;
 }
+
+/*bool Mesh::testIntSphereMesh(Matrix44 model, Vector3 origin, float radius)
+{
+	collision_model->setTransform(model.m);	
+		if (collision_model->sphereCollision(origin, radius)) return true;
+	return false;
+}*/
 
 

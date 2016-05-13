@@ -43,7 +43,7 @@ bool Scene::createLevel()
 	planet = new EntityMesh();
 	planet->setup("data/meshes/planet/sphere.ASE", "data/meshes/planet/planet_color.tga");
 	planet->local_matrix.setTranslation(0, 0, -200);
-	planet->local_matrix.scale(10, 10, 10);
+	//planet->local_matrix.scale(10, 10, 10);
 	planet->frustum_text = false;
 	planet->two_sided = true;
 	planet->mesh->createCollisionModel();

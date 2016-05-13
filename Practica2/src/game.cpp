@@ -144,15 +144,16 @@ void Game::update(double seconds_elapsed)
 	{
 		Shot& shot = shotManager->shots[i];
 		
-		if (scene->planet->mesh->testIntRayMesh(scene->planet->local_matrix, shot.origin_position, shot.end_position))
+		if (scene->planet->mesh->testIntRayMesh(scene->planet->local_matrix, shot.origin_position, shot.end_position-shot.origin_position))
 		{
-			Vector3 CollisionPoint;
-			std::cout << " NIGGIS" << std::endl;
+			float collisionPoint[3];
+			scene->planet->mesh->collision_model->getCollisionPoint(collisionPoint, true);
+			std::cout << "Colisión en: " << collisionPoint[0] << ", " << collisionPoint[1] << ", " << collisionPoint[2] << std::endl;
 		}
 	}
 
 	//Rotación del planeta
-	scene->planet->local_matrix.rotateLocal(seconds_elapsed / 50, Vector3(0, 1, 0));
+	//scene->planet->local_matrix.rotateLocal(seconds_elapsed / 50, Vector3(0, 1, 0));
 }
 
 //Keyboard event handler (sync input)
