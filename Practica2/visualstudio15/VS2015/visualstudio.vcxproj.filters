@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\src\camera.cpp" />
+    <ClCompile Include="..\..\src\clipper.cpp" />
+    <ClCompile Include="..\..\src\inputManager.cpp" />
+    <ClCompile Include="..\..\src\entity.cpp" />
+    <ClCompile Include="..\..\src\extra\textparser.cpp" />
+    <ClCompile Include="..\..\src\framework.cpp" />
+    <ClCompile Include="..\..\src\game.cpp" />
+    <ClCompile Include="..\..\src\main.cpp" />
+    <ClCompile Include="..\..\src\mesh.cpp" />
+    <ClCompile Include="..\..\src\meshManager.cpp" />
+    <ClCompile Include="..\..\src\rendertotexture.cpp" />
+    <ClCompile Include="..\..\src\scene.cpp" />
+    <ClCompile Include="..\..\src\shader.cpp" />
+    <ClCompile Include="..\..\src\shot.cpp" />
+    <ClCompile Include="..\..\src\shotManager.cpp" />
+    <ClCompile Include="..\..\src\texture.cpp" />
+    <ClCompile Include="..\..\src\textureManager.cpp" />
+    <ClCompile Include="..\..\src\utils.cpp" />
+    <ClCompile Include="..\..\src\vehicle.cpp" />
+    <ClCompile Include="..\..\src\extra\coldet\src\box.cpp">
+      <Filter>coldet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\coldet\src\box_bld.cpp">
+      <Filter>coldet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\coldet\src\coldet.cpp">
+      <Filter>coldet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\coldet\src\coldet_bld.cpp">
+      <Filter>coldet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\coldet\src\math3d.cpp">
+      <Filter>coldet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\coldet\src\mytritri.cpp">
+      <Filter>coldet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\coldet\src\sysdep.cpp">
+      <Filter>coldet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\coldet\src\tritri.c">
+      <Filter>coldet</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\camera.h" />
+    <ClInclude Include="..\..\src\clipper.h" />
+    <ClInclude Include="..\..\src\inputManager.h" />
+    <ClInclude Include="..\..\src\entity.h" />
+    <ClInclude Include="..\..\src\extra\textparser.h" />
+    <ClInclude Include="..\..\src\framework.h" />
+    <ClInclude Include="..\..\src\game.h" />
+    <ClInclude Include="..\..\src\includes.h" />
+    <ClInclude Include="..\..\src\mesh.h" />
+    <ClInclude Include="..\..\src\meshManager.h" />
+    <ClInclude Include="..\..\src\rendertotexture.h" />
+    <ClInclude Include="..\..\src\scene.h" />
+    <ClInclude Include="..\..\src\shader.h" />
+    <ClInclude Include="..\..\src\shot.h" />
+    <ClInclude Include="..\..\src\shotManager.h" />
+    <ClInclude Include="..\..\src\texture.h" />
+    <ClInclude Include="..\..\src\textureManager.h" />
+    <ClInclude Include="..\..\src\utils.h" />
+    <ClInclude Include="..\..\src\vehicle.h" />
+    <ClInclude Include="..\..\src\extra\coldet\src\box.h">
+      <Filter>coldet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\coldet\src\coldet.h">
+      <Filter>coldet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\coldet\src\coldetimpl.h">
+      <Filter>coldet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\coldet\src\math3d.h">
+      <Filter>coldet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\coldet\src\mytritri.h">
+      <Filter>coldet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\coldet\src\sysdep.h">
+      <Filter>coldet</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="coldet">
+      <UniqueIdentifier>{fe8ae6ac-1da6-4ca0-83d6-532112ba9fab}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
