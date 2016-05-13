@@ -67,6 +67,7 @@ public:
 	//Modelo de colisiones
 	CollisionModel3D* collision_model = NULL;
 	bool createCollisionModel();
+	bool testIntRayMesh(Matrix44 model, Vector3 start, Vector3 front);
 
 };
 

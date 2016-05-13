@@ -588,7 +588,7 @@ bool Mesh::createCollisionModel()
 	{
 		collision_model = newCollisionModel3D();
 		collision_model->setTriangleNumber(vertices.size() / 3);
-		for (int i = 0; i < vertices.size() / 3; i + 3)
+		for (int i = 0; i < (vertices.size()/3); i += 3)
 
 			collision_model->addTriangle(vertices[i].x, vertices[i].y, vertices[i].z,
 				vertices[i + 1].x, vertices[i + 1].y, vertices[i + 1].z,
@@ -602,6 +602,13 @@ bool Mesh::createCollisionModel()
 	}
 
 	return true;
+}
+
+bool Mesh::testIntRayMesh(Matrix44 model, Vector3 start, Vector3 front)
+{
+	collision_model->setTransform(model.m);
+	if(collision_model->rayCollision(start.v, front.v, true)) return true;
+	return false;
 }
 
 

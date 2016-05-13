@@ -29,6 +29,7 @@ void ShotManager::createShot(char type, Vector3 origin, Vector3 end, Vector3 vel
 			shot.velocity = vel;
 			shot.ttl = ttl;
 			shot.owner = owner;
+			shot.active = true;
 		}
 	}
 }
@@ -40,7 +41,7 @@ void ShotManager::render(Camera* camera)
 	{
 	Shot& shot = shots[i];
 
-		if (shot.ttl > 0)
+		if (shot.active && shot.ttl > 0)
 		{
 			mesh.vertices.push_back(shots[0].origin_position);			
 			mesh.vertices.push_back(shots[0].end_position);	
@@ -61,21 +62,25 @@ void ShotManager::render(Camera* camera)
 
 void ShotManager::update(float dt)
 {
-
 	for (int i = 0; i < MAX_SHOTS; ++i)
 	{
-	Shot& shot = shots[i];
+		Shot& shot = shots[i];
 
-		if (shot.ttl > 0)
+		if (shot.active)
 		{
-			//std::cout << shot.ttl << "\n" << std::endl;
-			if (shot.type == 'b')
+			if (shot.ttl > 0)
 			{
-				shot.ttl -= 1;
-				shot.origin_position = shot.owner->getGlobalMatrix()*Vector3(0, 0, 10);
-				shot.end_position = shot.owner->getGlobalMatrix()*Vector3(0, 0, 500);
+				//std::cout << shot.ttl << "\n" << std::endl;
+				if (shot.type == 'b')
+				{
+					shot.ttl -= 1;
+					shot.origin_position = shot.owner->getGlobalMatrix()*Vector3(0, 0, 10);
+					shot.end_position = shot.owner->getGlobalMatrix()*Vector3(0, 0, 500);
+				}
 			}
-			
+			else {
+				shot.active = false;
+			}
 		}
 	}
 }

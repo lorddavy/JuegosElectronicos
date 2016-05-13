@@ -139,11 +139,17 @@ void Game::update(double seconds_elapsed)
 	//Borramos el contenedor con todo lo que se quiere destruir
 	scene->clearRemovedEntities();
 
-	/*while (scene->root->toDestroy.size() != 0) {
-		Entity* e = scene->root->toDestroy.back();
-		scene->root->toDestroy.pop_back();
-		delete e;
-	}*/
+	//Comprobamos colisiones
+	for (int i = 0; i < 50; i++)
+	{
+		Shot& shot = shotManager->shots[i];
+		
+		if (scene->planet->mesh->testIntRayMesh(scene->planet->local_matrix, shot.origin_position, shot.end_position))
+		{
+			Vector3 CollisionPoint;
+			std::cout << " NIGGIS" << std::endl;
+		}
+	}
 
 	//Rotación del planeta
 	scene->planet->local_matrix.rotateLocal(seconds_elapsed / 50, Vector3(0, 1, 0));

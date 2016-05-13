@@ -18,6 +18,7 @@ public:
 	Entity* owner;
 	float ttl; //tiempo de vida
 
+	bool active;
 
 	Shot(); //Constructor
 	 ~Shot();	//Destructor

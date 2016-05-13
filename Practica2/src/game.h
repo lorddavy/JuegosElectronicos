@@ -21,9 +21,6 @@ public:
 		return instance;
 	};
 
-	//Entidad del jugador
-	//Vehicle* player;
-
 	//window
 	SDL_Window* window;
 	int window_width;
@@ -46,6 +43,7 @@ public:
 	//Camera* free_camera;
 	//Camera* player_camera;
 
+	//Entidad del jugador
 	Vehicle* player;
 
 	Game(SDL_Window* window);

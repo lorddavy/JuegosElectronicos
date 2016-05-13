@@ -46,6 +46,7 @@ bool Scene::createLevel()
 	planet->local_matrix.scale(10, 10, 10);
 	planet->frustum_text = false;
 	planet->two_sided = true;
+	planet->mesh->createCollisionModel();
 	root->addEntity(planet);
 
 	//Estación espacial
@@ -56,12 +57,14 @@ bool Scene::createLevel()
 	station->local_matrix.scale(0.5, 0.5, 0.5);
 	station->frustum_text = false;
 	station->two_sided = true;
+	station->mesh->createCollisionModel();
 	root->addEntity(station);
 
 	//Nave (runner)
 	runner = (Vehicle*) createEntity("runner");
 	runner->local_matrix.setTranslation(0, 0, 40);
 	runner->local_matrix.rotate(270 * DEG2RAD, Vector3(0, 1, 0));
+	runner->mesh->createCollisionModel();
 	root->addEntity(runner);
 	return true;
 }
@@ -100,7 +103,7 @@ void Scene::clearRemovedEntities() {
 	
 }*/
 
-//Factory de entidades SCENEE
+//Factory de entidades SCENE
 Entity* Scene::createEntity(const char* type)
 {
 	Entity* entity = new Entity();
