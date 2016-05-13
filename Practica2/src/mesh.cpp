@@ -582,4 +582,26 @@ bool Mesh::readBIN(const char * filename)
 	
 }
 
+bool Mesh::createCollisionModel()
+{
+	try
+	{
+		collision_model = newCollisionModel3D();
+		collision_model->setTriangleNumber(vertices.size() / 3);
+		for (int i = 0; i < vertices.size() / 3; i + 3)
+
+			collision_model->addTriangle(vertices[i].x, vertices[i].y, vertices[i].z,
+				vertices[i + 1].x, vertices[i + 1].y, vertices[i + 1].z,
+				vertices[i + 2].x, vertices[i + 2].y, vertices[i + 2].z);
+		collision_model->finalize();
+	}
+	catch (int e)
+	{
+		std::cout << "An exception occurred. Exception Nr. " << e << '\n';
+		return false;
+	}
+
+	return true;
+}
+
 

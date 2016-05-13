@@ -8,6 +8,8 @@
 #include <vector>
 #include "framework.h"
 
+#include "extra/coldet/coldet.h"
+
 class Shader;
 
 class Mesh
@@ -61,6 +63,11 @@ public:
 	std::vector<float> calcBoundingBox();
 
 	sBounding boundingBox;
+
+	//Modelo de colisiones
+	CollisionModel3D* collision_model = NULL;
+	bool createCollisionModel();
+
 };
 
 #endif
