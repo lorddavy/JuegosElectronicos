@@ -87,6 +87,14 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\camera.cpp" />
     <ClCompile Include="..\..\src\clipper.cpp" />
+    <ClCompile Include="..\..\src\extra\coldet\box.cpp" />
+    <ClCompile Include="..\..\src\extra\coldet\box_bld.cpp" />
+    <ClCompile Include="..\..\src\extra\coldet\coldet.cpp" />
+    <ClCompile Include="..\..\src\extra\coldet\coldet_bld.cpp" />
+    <ClCompile Include="..\..\src\extra\coldet\math3d.cpp" />
+    <ClCompile Include="..\..\src\extra\coldet\mytritri.cpp" />
+    <ClCompile Include="..\..\src\extra\coldet\sysdep.cpp" />
+    <ClCompile Include="..\..\src\extra\coldet\tritri.c" />
     <ClCompile Include="..\..\src\inputManager.cpp" />
     <ClCompile Include="..\..\src\entity.cpp" />
     <ClCompile Include="..\..\src\extra\textparser.cpp" />
@@ -108,6 +116,12 @@
   <ItemGroup>
     <ClInclude Include="..\..\src\camera.h" />
     <ClInclude Include="..\..\src\clipper.h" />
+    <ClInclude Include="..\..\src\extra\coldet\box.h" />
+    <ClInclude Include="..\..\src\extra\coldet\coldet.h" />
+    <ClInclude Include="..\..\src\extra\coldet\coldetimpl.h" />
+    <ClInclude Include="..\..\src\extra\coldet\math3d.h" />
+    <ClInclude Include="..\..\src\extra\coldet\mytritri.h" />
+    <ClInclude Include="..\..\src\extra\coldet\sysdep.h" />
     <ClInclude Include="..\..\src\inputManager.h" />
     <ClInclude Include="..\..\src\entity.h" />
     <ClInclude Include="..\..\src\extra\textparser.h" />

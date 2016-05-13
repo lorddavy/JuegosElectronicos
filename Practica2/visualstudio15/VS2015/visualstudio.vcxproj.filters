@@ -20,28 +20,28 @@
     <ClCompile Include="..\..\src\textureManager.cpp" />
     <ClCompile Include="..\..\src\utils.cpp" />
     <ClCompile Include="..\..\src\vehicle.cpp" />
-    <ClCompile Include="..\..\src\extra\coldet\src\box.cpp">
+    <ClCompile Include="..\..\src\extra\coldet\box.cpp">
       <Filter>coldet</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\extra\coldet\src\box_bld.cpp">
+    <ClCompile Include="..\..\src\extra\coldet\box_bld.cpp">
       <Filter>coldet</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\extra\coldet\src\coldet.cpp">
+    <ClCompile Include="..\..\src\extra\coldet\coldet.cpp">
       <Filter>coldet</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\extra\coldet\src\coldet_bld.cpp">
+    <ClCompile Include="..\..\src\extra\coldet\coldet_bld.cpp">
       <Filter>coldet</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\extra\coldet\src\math3d.cpp">
+    <ClCompile Include="..\..\src\extra\coldet\math3d.cpp">
       <Filter>coldet</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\extra\coldet\src\mytritri.cpp">
+    <ClCompile Include="..\..\src\extra\coldet\mytritri.cpp">
       <Filter>coldet</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\extra\coldet\src\sysdep.cpp">
+    <ClCompile Include="..\..\src\extra\coldet\sysdep.cpp">
       <Filter>coldet</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\extra\coldet\src\tritri.c">
+    <ClCompile Include="..\..\src\extra\coldet\tritri.c">
       <Filter>coldet</Filter>
     </ClCompile>
   </ItemGroup>
@@ -65,22 +65,22 @@
     <ClInclude Include="..\..\src\textureManager.h" />
     <ClInclude Include="..\..\src\utils.h" />
     <ClInclude Include="..\..\src\vehicle.h" />
-    <ClInclude Include="..\..\src\extra\coldet\src\box.h">
+    <ClInclude Include="..\..\src\extra\coldet\box.h">
       <Filter>coldet</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\extra\coldet\src\coldet.h">
+    <ClInclude Include="..\..\src\extra\coldet\coldet.h">
       <Filter>coldet</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\extra\coldet\src\coldetimpl.h">
+    <ClInclude Include="..\..\src\extra\coldet\coldetimpl.h">
       <Filter>coldet</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\extra\coldet\src\math3d.h">
+    <ClInclude Include="..\..\src\extra\coldet\math3d.h">
       <Filter>coldet</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\extra\coldet\src\mytritri.h">
+    <ClInclude Include="..\..\src\extra\coldet\mytritri.h">
       <Filter>coldet</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\extra\coldet\src\sysdep.h">
+    <ClInclude Include="..\..\src\extra\coldet\sysdep.h">
       <Filter>coldet</Filter>
     </ClInclude>
   </ItemGroup>
