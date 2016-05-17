@@ -37,11 +37,12 @@ public:
 	Vector2 mouse_delta; //mouse movement in the last frame
 	bool mouse_locked; //tells if the mouse is locked (not seen)
 	
-	Camera* camera; //our global camera
+	//Camera* camera; //our global camera
 	int cameraType; //Camera type 0->free 1->player
-	//Camera* current_camera;
-	//Camera* free_camera;
-	//Camera* player_camera;
+	
+	Camera* current_camera;
+	Camera* free_camera;
+	Camera* player_camera;
 
 	//Entidad del jugador
 	Vehicle* player;

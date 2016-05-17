@@ -1,4 +1,3 @@
-//This code works
 #include <cmath>
 #include "utils.h"
 #include "rendertotexture.h"
@@ -10,6 +9,8 @@
 #include "shotManager.h"
 
 #include "vehicle.h"
+
+//free_camera, player_camera, current_camera !!
 
 //some globals
 Game* Game::instance = NULL;
@@ -45,10 +46,11 @@ void Game::init(void)
 	glEnable(GL_CULL_FACE); //render both sides of every triangle
 	glEnable(GL_DEPTH_TEST); //check the occlusions using the Z buffer
 
-	camera = new Camera(); //create our camera
-	camera->lookAt(Vector3(0, 25, 25), Vector3(0, 0, 0), Vector3(0, 1, 0)); //position the camera and point to 0,0,0
-	camera->setPerspective(70, window_width / (float)window_height, 0.1, 10000); //set the projection, we want to be perspective
-	cameraType = 0; //Camera type 0->free 1->player
+	//Free camera
+	free_camera = new Camera();
+	free_camera->setPerspective(70, window_width / (float)window_height, 0.1, 10000);
+	free_camera->lookAt(Vector3(0, 25, 25), Vector3(0, 0, 0), Vector3(0, 1, 0));
+	current_camera = free_camera;
 
 	scene = Scene::getInstance();
 
@@ -64,23 +66,11 @@ void Game::init(void)
 
 	player = scene->runner;
 
-	//scene->addPlayer("data/scenes/player.txt");
-	/*
-	player = (Vehicle*) this->createEntity("runner");
-	player->local_matrix.setTranslation(0, 0, 40);
-	player->local_matrix.rotate(270 * DEG2RAD, Vector3(0, 1, 0));
-	
-	scene->root->addEntity(player);
-	*/
-
-
-	cameraType = 1;
-
-	//Camera* player_camera = new Camera();
-	//player_camera->lookAt(player->getGlobalMatrix() * Vector3(0, 2, -5), player->getGlobalMatrix() * Vector3(0, 0, 20), Vector3(0, 1, 0));
-
-	//current_camera = player_camera;
-	//camera->lookAt(player->getGlobalMatrix() * Vector3(0, 2, -5), player->getGlobalMatrix() * Vector3(0, 0, 20), Vector3(0, 1, 0));
+	//Player_camera
+	player_camera = new Camera();
+	player_camera->setPerspective(70, window_width / (float)window_height, 0.1, 10000);
+	player_camera->lookAt(player->getGlobalMatrix() * Vector3(0, 2, -5), player->getGlobalMatrix() * Vector3(0, 0, 20), Vector3(0, 1, 0));
+	current_camera = player_camera;
 
 	//hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
@@ -97,23 +87,23 @@ void Game::render(void)
 
 	// Clear the window and the depth buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+		
 	//Put the camera matrices on the stack of OpenGL (only for fixed rendering)
-	camera->set();
+	current_camera->set();
 
 	//Draw out world
 
 	glDisable(GL_DEPTH_TEST);
-	scene->skybox->local_matrix.setTranslation(camera->eye.x, camera->eye.y, camera->eye.z);
-	scene->skybox->render(camera);
+	scene->skybox->local_matrix.setTranslation(current_camera->eye.x, current_camera->eye.y, current_camera->eye.z);
+	scene->skybox->render(current_camera);
 	glEnable(GL_DEPTH_TEST);
 
 	glClear(GL_DEPTH_BUFFER_BIT);
 
 	drawGrid(500); //background grid
 
-	scene->root->render(camera);
-	shotManager->render(camera);
+	scene->root->render(current_camera);
+	shotManager->render(current_camera);
 
 	//Dibujamos texto en pantalla
 	drawText(5, 5, "Outer Space", Vector3(1, 0, 0), 3);
@@ -161,18 +151,16 @@ void Game::onKeyPressed(SDL_KeyboardEvent event)
 {
 	switch (event.keysym.sym)
 	{
-		case SDLK_ESCAPE: exit(0); //ESC key, kill the app
-		case SDLK_TAB: //Change free camera-player camera
-			if (cameraType == 1)
-			{
-				cameraType = 0;
-				return;
-			}
-			if (cameraType == 0)
-			{
-				cameraType = 1;
-				return;
-			}
+	case SDLK_ESCAPE: exit(0); //ESC key, kill the app
+	case SDLK_TAB: //Change free camera-player camera
+		if (current_camera == free_camera)
+			current_camera = player_camera;
+		else if (current_camera == player_camera){
+			free_camera->lookAt(player->getGlobalMatrix() * Vector3(0, 15, -35),
+				player->getGlobalMatrix() * Vector3(0, 0, 20),
+				player->getGlobalMatrix().rotateVector(Vector3(0, 1, 0)));
+			current_camera = free_camera;
+		}
 	}
 }
 
@@ -200,7 +188,7 @@ void Game::setWindowSize(int width, int height)
 	*/
 
 	glViewport(0, 0, width, height);
-	camera->aspect = width / (float)height;
+	current_camera->aspect = width / (float)height;
 	window_width = width;
 	window_height = height;
 }
