@@ -586,23 +586,15 @@ bool Mesh::readBIN(const char * path)
 }
 
 bool Mesh::createCollisionModel()
-{
-	try
-	{
+{	
 		collision_model = newCollisionModel3D();
 		collision_model->setTriangleNumber(vertices.size() / 3);
 		for (int i = 0; i < (vertices.size()/3); i += 3)
 
-			collision_model->addTriangle(vertices[i].x, vertices[i].y, vertices[i].z,
-				vertices[i + 1].x, vertices[i + 1].y, vertices[i + 1].z,
-				vertices[i + 2].x, vertices[i + 2].y, vertices[i + 2].z);
+			collision_model->addTriangle(vertices[i].x, -vertices[i].z, vertices[i].y,
+				vertices[i + 1].x, vertices[i + 1].z, -vertices[i + 1].y,
+				vertices[i + 2].x, vertices[i + 2].z, -vertices[i + 2].y);
 		collision_model->finalize();
-	}
-	catch (int e)
-	{
-		std::cout << "An exception occurred. Exception Nr. " << e << '\n';
-		return false;
-	}
 
 	return true;
 }
@@ -616,11 +608,16 @@ bool Mesh::testIntRayMesh(Matrix44 model, Vector3 start, Vector3 front, bool clo
 	return false;
 }
 
-/*bool Mesh::testIntSphereMesh(Matrix44 model, Vector3 origin, float radius)
+bool Mesh::testIntSphereMesh(Matrix44 model, Vector3 origin, float radius)
 {
+	float point[3];
+	point[0] = origin.x;
+	point[1] = origin.y;
+	point[2] = origin.z;
 	collision_model->setTransform(model.m);	
-		if (collision_model->sphereCollision(origin, radius)) return true;
+	if (collision_model->sphereCollision(point, radius)) return true;
+
 	return false;
-}*/
+}
 
 

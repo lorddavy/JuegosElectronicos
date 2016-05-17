@@ -20,6 +20,8 @@ Scene* scene = NULL;
 InputManager* inputManager = NULL;
 ShotManager* shotManager = NULL;
 
+//std::vector<Vector3> debugPoints;
+
 Game::Game(SDL_Window* window)
 {
 	this->window = window;
@@ -111,6 +113,21 @@ void Game::render(void)
 	std::string impulse = "Potencia de Impulso: " + player->getImpulse() + "%";
 	drawText(5, 25, impulse, Vector3(102 / 255, 255 / 255, 102 / 255), 2);
 
+
+	/*if (debugPoints.size())
+	{
+		glEnable(GL_BLEND);
+		Mesh* debugMesh = new Mesh();
+		for (int i = 0; i < debugPoints.size(); i++)
+		{
+			debugMesh->vertices.push_back(Vector3(debugPoints[i].x, debugPoints[i].y, debugPoints[i].z));
+			debugMesh->colors.push_back(Vector4(1, 0, 0, 0));
+		}
+
+		debugMesh->render(1);
+
+	}*/
+
 	glColor3f(1, 1, 1);
 
 	glDisable(GL_BLEND);
@@ -134,16 +151,29 @@ void Game::update(double seconds_elapsed)
 	{
 		Shot& shot = shotManager->shots[i];
 		
-		if (scene->planet->mesh->testIntRayMesh(scene->planet->local_matrix, shot.origin_position, shot.end_position-shot.origin_position))
-		{
-			float collisionPoint[3];
-			scene->planet->mesh->collision_model->getCollisionPoint(collisionPoint, true);
-			std::cout << "Colisión en: " << collisionPoint[0] << ", " << collisionPoint[1] << ", " << collisionPoint[2] << std::endl;
+		if (shot.active) {
+			if (scene->planet->mesh->testIntRayMesh(scene->planet->getGlobalMatrix(), player->getGlobalMatrix() * shot.origin_position, player->getGlobalMatrix() * (shot.end_position - shot.origin_position)))
+			{
+				float collisionPoint[3];
+				scene->planet->mesh->collision_model->getCollisionPoint(collisionPoint, true);
+				float t1[9], t2[9];
+				scene->planet->mesh->collision_model->getCollidingTriangles(t1, t2, false);
+
+				//debugPoints.push_back(Vector3(collisionPoint[0], collisionPoint[1], collisionPoint[2]));
+				std::cout << "Colisión en: " << collisionPoint[0] << ", " << collisionPoint[1] << ", " << collisionPoint[2] << std::endl;
+			}
 		}
+
+		float radius = player->mesh->boundingBox.half_size.z;
+		if (scene->planet->mesh->testIntSphereMesh(scene->planet->getGlobalMatrix(), player->getGlobalMatrix() * player->mesh->boundingBox.center, radius))
+		{
+			std::cout << "Colision" << std::endl;
+		}
+		//std::cout << (player->getGlobalMatrix() * player->mesh->boundingBox.center).x << std::endl;
 	}
 
 	//Rotación del planeta
-	//scene->planet->local_matrix.rotateLocal(seconds_elapsed / 50, Vector3(0, 1, 0));
+	scene->planet->local_matrix.rotateLocal(seconds_elapsed / 50, Vector3(0, 1, 0));
 }
 
 //Keyboard event handler (sync input)

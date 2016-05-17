@@ -73,7 +73,7 @@ void EntityMesh::render(Camera* camera)
 {
 	if (mesh)
 	{
-		Matrix44 global_matrix = getGlobalMatrix();
+		global_matrix = getGlobalMatrix();
 		Vector3 pos = local_matrix.getTranslation(); 
 		//Vector3 center = global_matrix * mesh->boundingBox.center();		
 		

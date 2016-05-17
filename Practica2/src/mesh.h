@@ -25,6 +25,8 @@ public:
 	unsigned int uvs_vbo_id;
 	unsigned int colors_vbo_id;
 
+	int num_triangles;
+
 	std::vector<float> bounds;
 
 	//Definimos la estructura de la cabecera
