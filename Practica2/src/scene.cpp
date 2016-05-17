@@ -43,7 +43,9 @@ bool Scene::createLevel()
 	planet = new EntityMesh();
 	planet->setup("data/meshes/planet/sphere.ASE", "data/meshes/planet/planet_color.tga");
 	planet->local_matrix.setTranslation(0, 0, -200);
-	//planet->local_matrix.scale(10, 10, 10);
+	planet->local_matrix.scale(10, 10, 10);
+	planet->global_matrix = planet->getGlobalMatrix();
+
 	planet->frustum_text = false;
 	planet->two_sided = true;
 	planet->mesh->createCollisionModel();
@@ -64,6 +66,8 @@ bool Scene::createLevel()
 	runner = (Vehicle*) createEntity("runner");
 	runner->local_matrix.setTranslation(0, 0, 40);
 	runner->local_matrix.rotate(270 * DEG2RAD, Vector3(0, 1, 0));
+	runner->global_matrix = planet->getGlobalMatrix();
+
 	runner->mesh->createCollisionModel();
 	root->addEntity(runner);
 	return true;
