@@ -29,6 +29,7 @@ public:
 	void pitch(float angle);		// S and W keys
 	void roll(float angle);			// A and D keys
 	void yaw(float angle);			// Q and E keys
+	void stop();					//X key
 
 	void shoot(char type);			// SPACE key
 

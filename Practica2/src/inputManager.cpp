@@ -67,6 +67,8 @@ void InputManager::update(double dt) {
 	//Yaw
 	if (keystate[SDL_SCANCODE_Q]) player->yaw(-0.01 * speed);
 	if (keystate[SDL_SCANCODE_E]) player->yaw(0.01 * speed);
+	//Stop
+	if (keystate[SDL_SCANCODE_X]) player->stop();
 	//Shooting Beam
 	if (keystate[SDL_SCANCODE_SPACE]) player->shoot('b');
 

@@ -47,6 +47,11 @@ void Vehicle::yaw(float angle)
 	this->local_matrix.rotateLocal(angle, Vector3(0, 1, 0));
 }
 
+void Vehicle::stop()
+{
+	current_velocity = 0;
+}
+
 void Vehicle::update(float dt)
 {
 	velocity = this->getGlobalMatrix().rotateVector(Vector3(0, 0, -1));
