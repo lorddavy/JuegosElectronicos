@@ -57,7 +57,7 @@ public:
 	void createPlane( float size );
 	void createQuad(float center_x, float center_y, float w, float h, bool flip_uvs = false);
 
-	bool loadASE(const char * filename);
+	bool loadASE(const char* filename, const char* path_bin);
 	bool writeBIN(const char * filename);
 	bool readBIN(const char * filename);
 	std::vector<float> calcBoundingBox();

@@ -34,14 +34,14 @@ bool Scene::createLevel()
 {
 	//Skybox
 	skybox = new EntityMesh();
-	skybox->setup("data/meshes/space_cubemap/space_cubemap.ASE", "data/meshes/space_cubemap/nebula_cubemap.tga");
+	skybox->setup("data/cubemap/space_cubemap/", "space_cubemap.ASE", "nebula_cubemap.tga");
 	skybox->local_matrix.scale(1000, 1000, 1000);
 	skybox->frustum_text = false;
 	//root->addEntity(skybox);
 
 	//Planeta
 	planet = new EntityMesh();
-	planet->setup("data/meshes/planet/sphere.ASE", "data/meshes/planet/planet_color.tga");
+	planet->setup("data/entityMesh/planet/", "sphere.ASE", "planet_color.tga");
 	planet->local_matrix.setTranslation(0, 0, -200);
 	//planet->local_matrix.scale(10, 10, 10);
 	planet->frustum_text = false;
@@ -51,7 +51,7 @@ bool Scene::createLevel()
 
 	//Estación espacial
 	station = new EntityMesh();
-	station->setup("data/meshes/eve_station/eve_station.ASE", "data/meshes/eve_station/eve2.tga");
+	station->setup("data/entityMesh/eve_station/", "eve_station.ASE", "eve2.tga");
 	station->local_matrix.setTranslation(-800, 450, 0);
 	station->local_matrix.rotate(270 * DEG2RAD, Vector3(0, 1, 0));
 	station->local_matrix.scale(0.5, 0.5, 0.5);
@@ -113,8 +113,7 @@ Entity* Scene::createEntity(const char* type)
 	{
 		Vehicle* vehicle = new Vehicle();
 		//creamos spitfire
-		vehicle->setup("data/meshes/x3_runner/x3_runner.ASE",
-			"data/meshes/x3_runner/x3_runner.tga");
+		vehicle->setup("data/vehicle/x3_runner/", "x3_runner.ASE", "x3_runner.tga");
 		//vehicle->mesh->uploadToVRAM();
 		//vehicle->mesh_low->uploadToVRAM();
 		return vehicle;

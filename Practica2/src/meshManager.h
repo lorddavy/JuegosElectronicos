@@ -16,7 +16,7 @@ static MeshManager* getInstance() {
 	return instance;
 };
 
-Mesh* getMesh(const char* filename);
+Mesh* getMesh(const char* path, const char* mesh);
 
 private:
 static MeshManager* instance;

@@ -44,6 +44,7 @@
     <ClCompile Include="..\..\src\extra\coldet\tritri.c">
       <Filter>coldet</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\controller.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\camera.h" />
@@ -83,6 +84,7 @@
     <ClInclude Include="..\..\src\extra\coldet\sysdep.h">
       <Filter>coldet</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\controller.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="coldet">

@@ -1,10 +1,10 @@
 #include <assert.h>
 
-#include "game.h"
-#include "scene.h"
-
 #include "inputManager.h"
 
+#include "game.h"
+#include "scene.h"
+#include "controller.h"
 #include "vehicle.h"
 
 InputManager* InputManager::instance = NULL;
@@ -20,6 +20,11 @@ void InputManager::update(double dt) {
 
 	Game* game = Game::getInstance();
 	Camera* current_camera = game->current_camera;
+
+	Controller* controller = new Controller();
+	controller->target = game->player;
+	controller->camera = game->player_camera;
+
 	Vehicle* player = game->player;
 	
 	const Uint8* keystate = game->keystate;

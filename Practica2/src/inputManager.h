@@ -4,6 +4,7 @@
 #include "includes.h"
 
 class Game;
+class Controller;
 
 class InputManager{
 public:
@@ -18,6 +19,7 @@ public:
 private:
 	static InputManager* instance;
 	InputManager();
+	Controller* controller;
 };
 
 #endif

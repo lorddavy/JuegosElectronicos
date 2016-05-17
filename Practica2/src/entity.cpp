@@ -101,18 +101,18 @@ void EntityMesh::update(float dt)
 
 }
 
-void EntityMesh::setup(const char* mesh, const char* texture, const char* mesh_low)
+void EntityMesh::setup(const char* path, const char* mesh, const char* texture, const char* mesh_low)
 {
-	this->mesh = MeshManager::getInstance()->getMesh(mesh);
+	this->mesh = MeshManager::getInstance()->getMesh(path, mesh);
 	this->mesh->uploadToVRAM();
 
 	if (texture)
-		this->texture = TextureManager::getInstance()->getTexture(texture);
+		this->texture = TextureManager::getInstance()->getTexture(path, texture);
 	else
 		this->texture = NULL;
 	if (mesh_low)
 	{
-		this->mesh_low = MeshManager::getInstance()->getMesh(mesh_low);
+		this->mesh_low = MeshManager::getInstance()->getMesh(path, mesh_low);
 		this->mesh_low->uploadToVRAM();
 	}
 	else {

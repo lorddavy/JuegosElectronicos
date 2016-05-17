@@ -15,7 +15,7 @@ public:
 		return instance;
 	};
 
-	Texture* getTexture(const char* filename);
+	Texture* getTexture(const char* path, const char* filename);
 
 private:
 	static TextureManager* instance;

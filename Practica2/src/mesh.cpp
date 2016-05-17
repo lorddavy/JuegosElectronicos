@@ -284,7 +284,7 @@ void Mesh::createPlane(float size)
 	uvs.push_back(Vector2(0, 0));
 }
 
-bool Mesh::loadASE(const char* filename)
+bool Mesh::loadASE(const char* filename, const char* path_bin)
 {
 	float parseTime = 0;
 	long initialTime = getTime();
@@ -426,9 +426,13 @@ bool Mesh::loadASE(const char* filename)
 	*/
 
 	//Guardamos archivo binario con la información
-	std::string bin_filename;
-	bin_filename = filename + std::string(".bin");
-	writeBIN(bin_filename.c_str());
+
+	/*std::stringstream ss;
+	ss << filename << ".bin";
+	std::string str = ss.str();
+	const char* path = str.c_str();*/
+
+	writeBIN(path_bin);
 
 	//Calculamos tiempo
 	float finalTime = getTime();
@@ -440,7 +444,7 @@ bool Mesh::loadASE(const char* filename)
 	return true;
 }
 
-bool Mesh::writeBIN(const char * filename)
+bool Mesh::writeBIN(const char * pathname)
 {
 	
 	//Guardamos la información de cabecera
@@ -462,8 +466,7 @@ bool Mesh::writeBIN(const char * filename)
 
 	//Creamos el fichero binario
 	
-	std::string pathname = "../bin/";
-	FILE* f = fopen(filename, "wb");
+	FILE* f = fopen(pathname, "wb");
 
 		if (f == NULL)
 		{
@@ -533,12 +536,12 @@ std::vector<float> Mesh::calcBoundingBox()
 	return bounds;
 }
 
-bool Mesh::readBIN(const char * filename)
+bool Mesh::readBIN(const char * path)
 {
 	sMeshBin header;
 	
 	//Abrimos el fichero binario
-	if (FILE* f = fopen(filename, "rb"))
+	if (FILE* f = fopen(path, "rb"))
 	{
 
 		//Leemos y guardamos cabecera
