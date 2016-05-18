@@ -63,6 +63,8 @@ Matrix44 Entity::getGlobalMatrix()
 EntityMesh::EntityMesh()
 {
 	parent = NULL;
+	texture = NULL;
+	mesh_low = NULL;
 }
 
 EntityMesh::~EntityMesh()
@@ -82,12 +84,12 @@ void EntityMesh::render(Camera* camera)
 		//{
 			glPushMatrix(); //save the opengl state
 			global_matrix.multGL(); //change the coordinates system
-			texture->bind(); //enable the texture	
+			if(texture != NULL)texture->bind(); //enable the texture	
 			if (pos.distance(camera->eye) > 100 && mesh_low) //Escogemos la mesh de la calidad que toca
 				mesh_low->render(GL_TRIANGLES);//render the mesh
 			else
 				mesh->render(GL_TRIANGLES);//render the mesh
-			texture->unbind(); //disable the texture
+			if (texture != NULL)texture->unbind(); //disable the texture
 			glPopMatrix();
 		//}
 	}		

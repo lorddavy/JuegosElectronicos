@@ -7,6 +7,7 @@
 
 #include "inputManager.h"
 #include "shotManager.h"
+#include "collisionManager.h"
 
 #include "vehicle.h"
 
@@ -19,8 +20,10 @@ Scene* scene = NULL;
 //Managers
 InputManager* inputManager = NULL;
 ShotManager* shotManager = NULL;
+CollisionManager* collisionManager = NULL;
 
 //std::vector<Vector3> debugPoints;
+//EntityMesh* debugEntityMesh = new EntityMesh();
 
 Game::Game(SDL_Window* window)
 {
@@ -61,6 +64,7 @@ void Game::init(void)
 	scene->textureManager = TextureManager::getInstance();
 	inputManager = InputManager::getInstance();
 	shotManager = ShotManager::getInstance();
+	collisionManager = CollisionManager::getInstance();
 
 	//free_camera = camera;
 
@@ -107,6 +111,13 @@ void Game::render(void)
 	scene->root->render(current_camera);
 	shotManager->render(current_camera);
 
+	//PROBANDO
+	/*Mesh* debugMesh = new Mesh();	
+	debugMesh->createQuad(0, 0, 100, 100, false);
+	debugEntityMesh->mesh = debugMesh;
+	//debugEntityMesh->texture = ;
+	scene->root->addEntity(debugEntityMesh);*/
+
 	//Dibujamos texto en pantalla
 	drawText(5, 5, "Outer Space", Vector3(1, 0, 0), 3);
 	
@@ -114,17 +125,19 @@ void Game::render(void)
 	drawText(5, 25, impulse, Vector3(102 / 255, 255 / 255, 102 / 255), 2);
 
 
+
 	/*if (debugPoints.size())
 	{
 		glEnable(GL_BLEND);
 		Mesh* debugMesh = new Mesh();
-		for (int i = 0; i < debugPoints.size(); i++)
+		
+ 		for (int i = 0; i < debugPoints.size(); i++)
 		{
-			debugMesh->vertices.push_back(Vector3(debugPoints[i].x, debugPoints[i].y, debugPoints[i].z));
-			debugMesh->colors.push_back(Vector4(1, 0, 0, 0));
+			debugMesh->createQuad(debugPoints[i].x, debugPoints[i].y, 10, 10, false);
+			debugEntityMesh->mesh = debugMesh;
+			debugEntityMesh->color = (1, 0, 0);
+			scene->root->addEntity(debugEntityMesh);
 		}
-
-		debugMesh->render(1);
 
 	}*/
 
@@ -147,7 +160,7 @@ void Game::update(double seconds_elapsed)
 	scene->clearRemovedEntities();
 
 	//Comprobamos colisiones
-	for (int i = 0; i < 50; i++)
+	/*for (int i = 0; i < 50; i++)
 	{
 		Shot& shot = shotManager->shots[i];
 		
@@ -170,8 +183,7 @@ void Game::update(double seconds_elapsed)
 			std::cout << "Colision" << std::endl;
 		}
 		//std::cout << (player->getGlobalMatrix() * player->mesh->boundingBox.center).x << std::endl;
-	}
-
+	}*/
 	//Rotación del planeta
 	scene->planet->local_matrix.rotateLocal(seconds_elapsed / 50, Vector3(0, 1, 0));
 }

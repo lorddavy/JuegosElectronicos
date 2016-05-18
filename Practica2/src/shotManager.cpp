@@ -85,3 +85,7 @@ void ShotManager::update(float dt)
 	}
 }
 
+int ShotManager::getMaxShots()
+{
+	return MAX_SHOTS;
+}
