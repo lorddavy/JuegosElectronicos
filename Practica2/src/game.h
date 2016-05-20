@@ -50,6 +50,7 @@ public:
 
 	//Controlador
 	Controller* controller;
+	Controller* spitfire_controller;
 
 	Game(SDL_Window* window);
 	void init( void );

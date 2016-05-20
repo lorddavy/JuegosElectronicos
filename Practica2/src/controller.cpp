@@ -42,9 +42,11 @@ void Controller::update(double dt) {
 		if (keystate[SDL_SCANCODE_SPACE]) target->shoot('b');
 
 		//Camara jugador
-		camera->lookAt(target->getGlobalMatrix() * Vector3(0, 15, -35),
-			target->getGlobalMatrix() * Vector3(0, 0, 20),
-			target->getGlobalMatrix().rotateVector(Vector3(0, 1, 0)));
+		if (camera != NULL) {
+			camera->lookAt(target->getGlobalMatrix() * Vector3(0, 15, -35),
+				target->getGlobalMatrix() * Vector3(0, 0, 20),
+				target->getGlobalMatrix().rotateVector(Vector3(0, 1, 0)));
+		}
 	}
 }
 

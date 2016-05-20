@@ -19,7 +19,6 @@ public:
 private:
 	static InputManager* instance;
 	InputManager();
-	//Controller* controller;
 };
 
 #endif

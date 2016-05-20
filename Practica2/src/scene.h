@@ -3,7 +3,6 @@
 #define SCENE_H
 
 #include "mesh.h"
-//#include "entity.h"
 #include <map>
 
 class MeshManager;
@@ -23,6 +22,7 @@ public:
 	EntityMesh* planet;
 	EntityMesh* station;
 	Vehicle* runner;
+	Vehicle* spitfire;
 
 	static Scene* getInstance() {
 		if (instance == NULL)

@@ -4,7 +4,6 @@
 
 #include "game.h"
 #include "scene.h"
-//#include "vehicle.h"
 #include "controller.h"
 
 InputManager* InputManager::instance = NULL;
@@ -20,10 +19,7 @@ void InputManager::update(double dt) {
 
 	Game* game = Game::getInstance();
 	Camera* current_camera = game->current_camera;
-	
-	Vehicle* player = game->player;
 	Controller* controller = game->controller;
-	
 	const Uint8* keystate = game->keystate;
 
 	double speed = dt * 100; //the speed is defined by the seconds_elapsed so it goes constant
@@ -37,16 +33,18 @@ void InputManager::update(double dt) {
 		game->free_camera->rotate(game->mouse_delta.y * 0.005, current_camera->getLocalVector(Vector3(-1, 0, 0)));
 	}
 
-	//async input to move the camera around
-	if (keystate[SDL_SCANCODE_LSHIFT]) speed *= 10; //move faster with left shift
-	if (keystate[SDL_SCANCODE_UP]) current_camera->move(Vector3(0, 0, 1) * speed);
-	if (keystate[SDL_SCANCODE_DOWN]) current_camera->move(Vector3(0, 0, -1) * speed);
-	if (keystate[SDL_SCANCODE_KP_PLUS]) current_camera->move(Vector3(0, -1, 0) * speed);
-	if (keystate[SDL_SCANCODE_KP_MINUS]) current_camera->move(Vector3(0, 1, 0) * speed);
-	if (keystate[SDL_SCANCODE_LEFT]) current_camera->move(Vector3(1, 0, 0) * speed);
-	if (keystate[SDL_SCANCODE_RIGHT]) current_camera->move(Vector3(-1, 0, 0) * speed);
-
-	controller->update(dt);
+	if (current_camera == game->free_camera) {
+		//async input to move the camera around
+		if (keystate[SDL_SCANCODE_LSHIFT]) speed *= 10; //move faster with left shift
+		if (keystate[SDL_SCANCODE_W]) current_camera->move(Vector3(0, 0, 1) * speed);
+		if (keystate[SDL_SCANCODE_S]) current_camera->move(Vector3(0, 0, -1) * speed);
+		if (keystate[SDL_SCANCODE_A]) current_camera->move(Vector3(1, 0, 0) * speed);
+		if (keystate[SDL_SCANCODE_D]) current_camera->move(Vector3(-1, 0, 0) * speed);
+		if (keystate[SDL_SCANCODE_R]) current_camera->move(Vector3(0, -1, 0) * speed);
+		if (keystate[SDL_SCANCODE_F]) current_camera->move(Vector3(0, 1, 0) * speed);
+	}
+	else if(current_camera == game->player_camera)
+		controller->update(dt);
 
 	//to navigate with the mouse fixed in the middle
 	if (game->mouse_locked)

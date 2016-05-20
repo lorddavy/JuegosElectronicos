@@ -84,6 +84,11 @@ void Game::init(void)
 	controller->setTarget(this->player);
 	controller->setCamera(player_camera);
 
+	//Spitfire
+	spitfire_controller = new Controller();
+	spitfire_controller->setTarget(scene->spitfire);
+
+
 	//hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
 }
@@ -192,6 +197,12 @@ void Game::update(double seconds_elapsed)
 	}*/
 	//Rotación del planeta
 	scene->planet->local_matrix.rotateLocal(seconds_elapsed / 50, Vector3(0, 1, 0));
+
+
+	//Spitfire
+	//scene->spitfire->velocity = (player->getGlobalMatrix() * Vector3(0, 0, 0)).normalize();
+	scene->spitfire->velocity = Vector3(-1, 1000*seconds_elapsed, 0);
+
 }
 
 //Keyboard event handler (sync input)
