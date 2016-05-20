@@ -7,7 +7,7 @@
 
 #include "inputManager.h"
 #include "shotManager.h"
-#include "collisionManager.h"
+//#include "collisionManager.h"
 
 #include "vehicle.h"
 #include "controller.h"
@@ -21,7 +21,7 @@ Scene* scene = NULL;
 //Managers
 InputManager* inputManager = NULL;
 ShotManager* shotManager = NULL;
-CollisionManager* collisionManager = NULL;
+//CollisionManager* collisionManager = NULL;
 
 //std::vector<Vector3> debugPoints;
 //EntityMesh* debugEntityMesh = new EntityMesh();
@@ -65,7 +65,7 @@ void Game::init(void)
 	scene->textureManager = TextureManager::getInstance();
 	inputManager = InputManager::getInstance();
 	shotManager = ShotManager::getInstance();
-	collisionManager = CollisionManager::getInstance();
+	//collisionManager = CollisionManager::getInstance();
 
 	//free_camera = camera;
 
