@@ -4,8 +4,8 @@
 
 #include "game.h"
 #include "scene.h"
+//#include "vehicle.h"
 #include "controller.h"
-#include "vehicle.h"
 
 InputManager* InputManager::instance = NULL;
 
@@ -20,12 +20,9 @@ void InputManager::update(double dt) {
 
 	Game* game = Game::getInstance();
 	Camera* current_camera = game->current_camera;
-
-	Controller* controller = new Controller();
-	controller->target = game->player;
-	controller->camera = game->player_camera;
-
+	
 	Vehicle* player = game->player;
+	Controller* controller = game->controller;
 	
 	const Uint8* keystate = game->keystate;
 
@@ -42,35 +39,14 @@ void InputManager::update(double dt) {
 
 	//async input to move the camera around
 	if (keystate[SDL_SCANCODE_LSHIFT]) speed *= 10; //move faster with left shift
-	if (keystate[SDL_SCANCODE_W] || keystate[SDL_SCANCODE_UP]) current_camera->move(Vector3(0, 0, 1) * speed);
-	if (keystate[SDL_SCANCODE_S] || keystate[SDL_SCANCODE_DOWN]) current_camera->move(Vector3(0, 0, -1) * speed);
-	if (keystate[SDL_SCANCODE_A] || keystate[SDL_SCANCODE_LEFT]) current_camera->move(Vector3(1, 0, 0) * speed);
-	if (keystate[SDL_SCANCODE_D] || keystate[SDL_SCANCODE_RIGHT]) current_camera->move(Vector3(-1, 0, 0) * speed);
+	if (keystate[SDL_SCANCODE_UP]) current_camera->move(Vector3(0, 0, 1) * speed);
+	if (keystate[SDL_SCANCODE_DOWN]) current_camera->move(Vector3(0, 0, -1) * speed);
+	if (keystate[SDL_SCANCODE_KP_PLUS]) current_camera->move(Vector3(0, -1, 0) * speed);
+	if (keystate[SDL_SCANCODE_KP_MINUS]) current_camera->move(Vector3(0, 1, 0) * speed);
+	if (keystate[SDL_SCANCODE_LEFT]) current_camera->move(Vector3(1, 0, 0) * speed);
+	if (keystate[SDL_SCANCODE_RIGHT]) current_camera->move(Vector3(-1, 0, 0) * speed);
 
-
-	//Camara jugador
-	game->player_camera->lookAt(player->getGlobalMatrix() * Vector3(0, 15, -35),
-		player->getGlobalMatrix() * Vector3(0, 0, 20),
-		player->getGlobalMatrix().rotateVector(Vector3(0, 1, 0)));
-
-	//Control del jugador
-	int pitchInverted = -1;
-	//Acelerar
-	if (keystate[SDL_SCANCODE_R]) player->accelerate(0.5 * speed);
-	if (keystate[SDL_SCANCODE_F]) player->accelerate(-0.5 * speed);
-	//Pitch
-	if (keystate[SDL_SCANCODE_W]) player->pitch(pitchInverted * 0.01 * speed);
-	if (keystate[SDL_SCANCODE_S]) player->pitch(pitchInverted * -0.01 * speed);
-	//Roll
-	if (keystate[SDL_SCANCODE_A]) player->roll(0.01 * speed);
-	if (keystate[SDL_SCANCODE_D]) player->roll(-0.01 * speed);
-	//Yaw
-	if (keystate[SDL_SCANCODE_Q]) player->yaw(-0.01 * speed);
-	if (keystate[SDL_SCANCODE_E]) player->yaw(0.01 * speed);
-	//Stop
-	if (keystate[SDL_SCANCODE_X]) player->stop();
-	//Shooting Beam
-	if (keystate[SDL_SCANCODE_SPACE]) player->shoot('b');
+	controller->update(dt);
 
 	//to navigate with the mouse fixed in the middle
 	if (game->mouse_locked)

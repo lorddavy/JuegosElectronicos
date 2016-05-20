@@ -3,7 +3,7 @@
 
 #include "includes.h"
 
-class Entity;
+//class Vehilce;
 class Camera;
 
 class Controller
@@ -11,9 +11,12 @@ class Controller
 public:
 	Controller();
 	~Controller();
+	
+	void update(double dt);
 
-	Entity* target;
-	Camera* camera;
+private:
+	//Vehicle* target;
+	//Camera* camera;
 
 };
 

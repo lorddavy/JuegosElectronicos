@@ -10,6 +10,7 @@
 
 class Entity;
 class Vehicle;
+class Controller;
 
 class Game
 {
@@ -46,6 +47,9 @@ public:
 
 	//Entidad del jugador
 	Vehicle* player;
+
+	//Controlador
+	Controller* controller;
 
 	Game(SDL_Window* window);
 	void init( void );

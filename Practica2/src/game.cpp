@@ -9,6 +9,7 @@
 #include "shotManager.h"
 
 #include "vehicle.h"
+#include "controller.h"
 
 //free_camera, player_camera, current_camera !!
 
@@ -67,6 +68,10 @@ void Game::init(void)
 	scene->loadLevel("data/scenes/space1.txt");
 
 	player = scene->runner;
+
+	controller = new Controller();
+	//controller->target = this->player;
+	//controller->camera = this->player_camera;
 
 	//Player_camera
 	player_camera = new Camera();
