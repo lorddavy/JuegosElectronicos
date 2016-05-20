@@ -73,15 +73,16 @@ void Game::init(void)
 
 	player = scene->runner;
 
-	controller = new Controller();
-	//controller->target = this->player;
-	//controller->camera = this->player_camera;
-
 	//Player_camera
 	player_camera = new Camera();
 	player_camera->setPerspective(70, window_width / (float)window_height, 0.1, 10000);
 	player_camera->lookAt(player->getGlobalMatrix() * Vector3(0, 2, -5), player->getGlobalMatrix() * Vector3(0, 0, 20), Vector3(0, 1, 0));
 	current_camera = player_camera;
+
+	//Player controller
+	controller = new Controller();
+	controller->setTarget(this->player);
+	controller->setCamera(player_camera);
 
 	//hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse

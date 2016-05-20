@@ -3,7 +3,7 @@
 
 #include "includes.h"
 
-//class Vehilce;
+class Vehicle;
 class Camera;
 
 class Controller
@@ -14,9 +14,12 @@ public:
 	
 	void update(double dt);
 
-private:
-	//Vehicle* target;
-	//Camera* camera;
+	void setTarget(Vehicle* target);
+	void setCamera(Camera* camera);
+
+//private:
+	Vehicle* target;
+	Camera* camera;
 
 };
 
