@@ -41,8 +41,7 @@ public:
 
 	//Vector3 getPosition();
 
-	Matrix44 getGlobalMatrix();
-	
+	Matrix44 getGlobalMatrix();	
 };
 
 class EntityMesh : public Entity {
@@ -62,6 +61,10 @@ public:
 	void update(float dt);
 
 	void setup(const char* path, const char* mesh, const char* texture, const char* mesh_low = NULL);
+
+	//Colisiones
+	void onBulletCollision();
+	void onEntityCollision();
 };
 
 

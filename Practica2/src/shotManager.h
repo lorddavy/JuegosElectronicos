@@ -23,6 +23,8 @@ public:
 	void render(Camera* camera);
 	void update(float dt);
 
+	int getMaxShots();
+
 private:
 	static ShotManager* instance;
 	ShotManager();
