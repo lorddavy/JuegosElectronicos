@@ -49,7 +49,7 @@ public:
 	Mesh* mesh;
 	Mesh* mesh_low;
 	Texture* texture;
-	Vector3* color;	
+	Vector3* color;
 
 	bool frustum_text = true;
 	bool two_sided = true;
@@ -61,11 +61,20 @@ public:
 	void update(float dt);
 
 	void setup(const char* path, const char* mesh, const char* texture, const char* mesh_low = NULL);
-
-	//Colisiones
-	void onBulletCollision();
-	void onEntityCollision();
 };
 
+class EntityCollider : public EntityMesh {
+public:
+	
+	static std::vector<EntityCollider*> static_entities;
+	static std::vector<EntityCollider*> dynamic_entities;
+
+	EntityCollider();
+	~EntityCollider();
+
+	//Colisiones
+	void onShotCollision();
+	void onEntityCollision();
+};
 
 #endif

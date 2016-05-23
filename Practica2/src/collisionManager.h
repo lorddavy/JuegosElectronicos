@@ -7,7 +7,8 @@
 
 class CollisionManager{
 public:
-	std::vector<EntityMesh*> colliders;
+	std::vector<EntityMesh*> static_entities;
+	std::vector<EntityMesh*> dynamic_entities;
 
 	static CollisionManager* getInstance() {
 		if (instance == NULL)

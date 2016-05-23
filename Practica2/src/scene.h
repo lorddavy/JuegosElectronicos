@@ -3,6 +3,7 @@
 #define SCENE_H
 
 #include "mesh.h"
+//#include "entity.h"
 #include <map>
 
 class MeshManager;
@@ -22,7 +23,6 @@ public:
 	EntityMesh* planet;
 	EntityMesh* station;
 	Vehicle* runner;
-	Vehicle* spitfire;
 
 	static Scene* getInstance() {
 		if (instance == NULL)
@@ -42,6 +42,25 @@ private:
 	static Scene* instance;
 	Scene();
 	~Scene();
+};
+
+class CollisionManager {
+public:
+	std::vector<EntityMesh*> static_entities;
+	std::vector<EntityMesh*> dynamic_entities;
+
+	static CollisionManager* getInstance() {
+		if (instance == NULL)
+			instance = new CollisionManager();
+		return instance;
+	};
+
+	void update(float dt);
+
+private:
+	static CollisionManager* instance;
+	CollisionManager();
+
 };
 
 #endif

@@ -5,7 +5,7 @@
 #include "entity.h"
 #include "shot.h"
 
-#define MAX_SHOTS 50
+#define MAX_SHOTS 300
 
 
 class ShotManager{

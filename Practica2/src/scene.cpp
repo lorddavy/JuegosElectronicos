@@ -24,7 +24,6 @@ Scene::Scene()
 	meshManager = NULL;
 	textureManager = NULL;
 	runner = NULL;
-	spitfire = NULL;
 }
 
 Scene::~Scene()
@@ -64,22 +63,13 @@ bool Scene::createLevel()
 	root->addEntity(station);
 
 	//Nave (runner)
-	runner = (Vehicle*)createEntity("runner");
+	runner = (Vehicle*) createEntity("runner");
 	runner->local_matrix.setTranslation(0, 0, 40);
 	runner->local_matrix.rotate(270 * DEG2RAD, Vector3(0, 1, 0));
-	runner->global_matrix = planet->getGlobalMatrix();
+	//runner->global_matrix = planet->getGlobalMatrix();
+
 	runner->mesh->createCollisionModel();
 	root->addEntity(runner);
-
-	//Spitfire
-	spitfire = (Vehicle*)createEntity("spitfire");
-	spitfire->local_matrix.setTranslation(100, 0, 40);
-	spitfire->local_matrix.rotate(270 * DEG2RAD, Vector3(0, 1, 0));
-	spitfire->global_matrix = planet->getGlobalMatrix();
-	spitfire->mesh->createCollisionModel();
-	root->addEntity(spitfire);
-
-
 	return true;
 }
 
@@ -126,17 +116,10 @@ Entity* Scene::createEntity(const char* type)
 	if (str == "runner")
 	{
 		Vehicle* vehicle = new Vehicle();
+		//creamos spitfire
 		vehicle->setup("data/vehicle/x3_runner/", "x3_runner.ASE", "x3_runner.tga");
-		//vehicle->mesh->uploadToVRAM();
-		//vehicle->mesh_low->uploadToVRAM();
 		return vehicle;
 	}
-	else if (str == "spitfire")
-	{
-		Vehicle* vehicle = new Vehicle();
-		vehicle->setup("data/vehicle/spitfire/", "spitfire.ASE", "spitfire_color_spec.tga", "spitfire_low.ASE");
-		return vehicle;
 
-	}
 	return entity;
 }

@@ -122,5 +122,19 @@ void EntityMesh::setup(const char* path, const char* mesh, const char* texture, 
 	}
 }
 
+EntityCollider::EntityCollider()
+{
+}
 
+EntityCollider::~EntityCollider()
+{
+}
+
+void EntityCollider::onEntityCollision()
+{
+}
+
+void EntityCollider::onShotCollision()
+{
+}
 

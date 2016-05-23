@@ -1,29 +1,25 @@
 #include "collisionManager.h"
-#include "shotManager.h"
-#include "vehicle.h"
-#include "scene.h"
-#include "game.h"
 #include <iostream>
 #include <assert.h>
 
 //Source code for the Collision Manager
-CollisionManager* CollisionManager::instance = NULL;
-ShotManager* shotManager = NULL;
+//CollisionManager* CollisionManager::instance = NULL;
+//ShotManager* shotManager = NULL;
 
-Vehicle* player;
+//Vehicle* player;
 
 CollisionManager::CollisionManager()
 {
-	assert(instance == NULL && "must be only one"); //must be only one, en release no petará
+	/*assert(instance == NULL && "must be only one"); //must be only one, en release no petará
 	std::cout << "CollisionManager created" << std::endl;
-	instance = this;
-	shotManager = ShotManager::getInstance();
+	instance = this;*/
+	//shotManager = ShotManager::getInstance();
 }
 
 //Comprobamos colisiones
 void CollisionManager::update(float dt)
 {
-	for (int i = 0; i < colliders.size(); ++i)
+	/*for (int i = 0; i < colliders.size(); ++i)
 	{
 		for (int j = 0; j < shotManager->getMaxShots(); ++j)
 		{
@@ -40,6 +36,6 @@ void CollisionManager::update(float dt)
 				}
 			}
 		}
-	}
+	}*/
 }
 

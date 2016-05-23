@@ -39,14 +39,16 @@ void Controller::update(double dt) {
 		//Stop
 		if (keystate[SDL_SCANCODE_X]) target->stop();
 		//Shooting Beam
-		if (keystate[SDL_SCANCODE_SPACE]) target->shoot('b');
+		if (keystate[SDL_SCANCODE_SPACE]) {
+			target->shoot('b');
+			target->shoot('l');
+		}
+			
 
 		//Camara jugador
-		if (camera != NULL) {
-			camera->lookAt(target->getGlobalMatrix() * Vector3(0, 15, -35),
-				target->getGlobalMatrix() * Vector3(0, 0, 20),
-				target->getGlobalMatrix().rotateVector(Vector3(0, 1, 0)));
-		}
+		camera->lookAt(target->getGlobalMatrix() * Vector3(0, 15, -35),
+			target->getGlobalMatrix() * Vector3(0, 0, 20),
+			target->getGlobalMatrix().rotateVector(Vector3(0, 1, 0)));
 	}
 }
 

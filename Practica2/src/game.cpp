@@ -24,7 +24,7 @@ ShotManager* shotManager = NULL;
 //CollisionManager* collisionManager = NULL;
 
 //std::vector<Vector3> debugPoints;
-//EntityMesh* debugEntityMesh = new EntityMesh();
+EntityMesh* debugEntityMesh = new EntityMesh();
 
 Game::Game(SDL_Window* window)
 {
@@ -84,11 +84,6 @@ void Game::init(void)
 	controller->setTarget(this->player);
 	controller->setCamera(player_camera);
 
-	//Spitfire
-	spitfire_controller = new Controller();
-	spitfire_controller->setTarget(scene->spitfire);
-
-
 	//hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
 }
@@ -124,7 +119,7 @@ void Game::render(void)
 
 	//PROBANDO
 	/*Mesh* debugMesh = new Mesh();	
-	debugMesh->createQuad(0, 0, 100, 100, false);
+	debugMesh->createQuad(300, 0, 100, 100, false);
 	debugEntityMesh->mesh = debugMesh;
 	//debugEntityMesh->texture = ;
 	scene->root->addEntity(debugEntityMesh);*/
@@ -134,7 +129,6 @@ void Game::render(void)
 	
 	std::string impulse = "Potencia de Impulso: " + player->getImpulse() + "%";
 	drawText(5, 25, impulse, Vector3(102 / 255, 255 / 255, 102 / 255), 2);
-
 
 
 	/*if (debugPoints.size())
@@ -196,13 +190,7 @@ void Game::update(double seconds_elapsed)
 		//std::cout << (player->getGlobalMatrix() * player->mesh->boundingBox.center).x << std::endl;
 	}*/
 	//Rotación del planeta
-	scene->planet->local_matrix.rotateLocal(seconds_elapsed / 50, Vector3(0, 1, 0));
-
-
-	//Spitfire
-	//scene->spitfire->velocity = (player->getGlobalMatrix() * Vector3(0, 0, 0)).normalize();
-	scene->spitfire->velocity = Vector3(-1, 1000*seconds_elapsed, 0);
-
+	//scene->planet->local_matrix.rotateLocal(seconds_elapsed / 50, Vector3(0, 1, 0));
 }
 
 //Keyboard event handler (sync input)

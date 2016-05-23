@@ -16,48 +16,85 @@ ShotManager::ShotManager()
 
 void ShotManager::createShot(char type, Vector3 origin, Vector3 end, Vector3 vel, float ttl, Entity* owner)
 {
-	for (int i = 0; i < MAX_SHOTS; ++i)
+	if (type == 'b')
 	{
-		Shot& shot = shots[i];
+		Shot& shot = shots[0];
+		shot.type = 'b';
+		shot.origin_position = origin;
+		shot.end_position = end;
+		shot.velocity = vel;
+		shot.ttl = ttl;
+		shot.owner = owner;
+		shot.active = true;
+
+		return;
+	}
+
+	for (int i = 1; i < MAX_SHOTS; ++i)
+	{
+		Shot& shot = shots[i];		
 		
-		if (type == 'b')
+		if (type == 'l')
 		{
-			Shot& shot = shots[0];
-			shot.type = 'b';
+			if (shot.active == true)
+				continue;
+
+			shot.type = 'l';
 			shot.origin_position = origin;
 			shot.end_position = end;
 			shot.velocity = vel;
 			shot.ttl = ttl;
 			shot.owner = owner;
 			shot.active = true;
+
+			return;
 		}
 	}
 }
 
 void ShotManager::render(Camera* camera)
-{
-	Mesh mesh;
+{	
 	for (int i = 0; i < MAX_SHOTS; ++i)
 	{
+	Mesh mesh;
 	Shot& shot = shots[i];
 
 		if (shot.active && shot.ttl > 0)
 		{
-			mesh.vertices.push_back(shots[0].origin_position);			
-			mesh.vertices.push_back(shots[0].end_position);	
-			mesh.colors.push_back(Vector4(1, 0.3, 0.5, 1));	
-			mesh.colors.push_back(Vector4(0, 0, 1, 1));		
+			if (shot.type == 'b')
+			{
+				Mesh mesh;
+				mesh.vertices.push_back(shots[0].origin_position);
+				mesh.vertices.push_back(shots[0].end_position);
+				mesh.colors.push_back(Vector4(1, 0.3, 0.5, 1));
+				mesh.colors.push_back(Vector4(0, 0, 1, 1));
 
-			glLineWidth(4);
-			glColor3f(1, 0, 1);
-			mesh.render(GL_LINES);
-			glColor3f(1, 1, 1);
+				if (mesh.vertices.size() == 0)
+					return;
+
+				glLineWidth(4);
+				glColor3f(1, 0, 1);
+				mesh.render(GL_LINES);
+				glColor3f(1, 1, 1);
+			}
+			if (shot.type == 'l')
+			{
+				mesh.vertices.push_back(shots[i].origin_position);
+				mesh.vertices.push_back(shots[i].end_position);
+				mesh.colors.push_back(Vector4(1, 0, 0, 1));
+				mesh.colors.push_back(Vector4(1, 1, 0.3, 1));
+
+				if (mesh.vertices.size() == 0)
+					return;
+
+				glLineWidth(2);
+				glColor3f(1, 0, 1);
+				mesh.render(GL_LINES);
+				glColor3f(1, 1, 1);
+
+			}
 		}
 	}
-	if (mesh.vertices.size() == 0)
-		return;	
-
-
 }
 
 void ShotManager::update(float dt)
@@ -76,6 +113,12 @@ void ShotManager::update(float dt)
 					shot.ttl -= 1;
 					shot.origin_position = shot.owner->getGlobalMatrix()*Vector3(0, 0, 10);
 					shot.end_position = shot.owner->getGlobalMatrix()*Vector3(0, 0, 500);
+				}
+				if (shot.type == 'l')
+				{
+					shot.ttl -= 1;
+					shot.origin_position = shot.origin_position + shot.velocity;
+					shot.end_position = shot.end_position + shot.velocity;
 				}
 			}
 			else {
