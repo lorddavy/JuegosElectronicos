@@ -23,6 +23,7 @@ public:
 	EntityMesh* planet;
 	EntityMesh* station;
 	Vehicle* runner;
+	Vehicle* spitfire;
 
 	static Scene* getInstance() {
 		if (instance == NULL)

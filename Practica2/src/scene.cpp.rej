@@ -1,0 +1,24 @@
+diff a/Practica2/src/scene.cpp b/Practica2/src/scene.cpp	(rejected hunks)
+@@ -66,19 +66,12 @@
+ 	runner = (Vehicle*)createEntity("runner");
+ 	runner->local_matrix.setTranslation(0, 0, 40);
+ 	runner->local_matrix.rotate(270 * DEG2RAD, Vector3(0, 1, 0));
+-	runner->global_matrix = planet->getGlobalMatrix();
++	//runner->global_matrix = planet->getGlobalMatrix();
+ 	runner->mesh->createCollisionModel();
++	//Lo agregamos a el vector de EntityCollider
++	//runner->dynamic_entities.push_back(runner);
+ 	root->addEntity(runner);
+ 
+-	//Spitfire
+-	spitfire = (Vehicle*)createEntity("spitfire");
+-	spitfire->local_matrix.setTranslation(100, 0, 40);
+-	spitfire->local_matrix.rotate(270 * DEG2RAD, Vector3(0, 1, 0));
+-	spitfire->global_matrix = planet->getGlobalMatrix();
+-	spitfire->mesh->createCollisionModel();
+-	root->addEntity(spitfire);
+-
+-
+ 	return true;
+ }
+ 
