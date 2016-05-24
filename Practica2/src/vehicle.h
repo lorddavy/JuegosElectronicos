@@ -26,13 +26,14 @@ public:
 
 	void accelerate(float x);
 
-	void pitch(float dt);		// S and W keys
-	void roll(float dt);			// A and D keys
-	void yaw(float dt);			// Q and E keys
+	void pitch(float angle);		// S and W keys
+	void roll(float angle);			// A and D keys
+	void yaw(float angle);			// Q and E keys
 	void stop();					//X key
 	void shoot(char type);			// SPACE key
 
-	void pointerPosition(Vector3 dir, float dt);
+	void pointerPosition(Vector3 target, float dt);
+	void balanceVehicle(Vector3 targetUp, float dt);
 
 
 	void update(float dt);

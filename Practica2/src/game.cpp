@@ -205,7 +205,10 @@ void Game::update(double seconds_elapsed)
 	//scene->spitfire->velocity = Vector3(-1, 1000*seconds_elapsed, 0);
 	
 	//scene->spitfire->pitch(0.01);
-	scene->spitfire->pointerPosition(player->getGlobalMatrix() * Vector3(0, 0, 0), seconds_elapsed);
+	spitfire_controller->target->pointerPosition(player->getGlobalMatrix() * Vector3(0, 0, 0), seconds_elapsed);
+
+	Vector3 globalPlayerUp = player->getGlobalMatrix().rotateVector(Vector3(0, 1, 0));
+	spitfire_controller->target->balanceVehicle(globalPlayerUp, seconds_elapsed);
 
 }
 
