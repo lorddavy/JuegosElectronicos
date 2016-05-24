@@ -80,6 +80,7 @@ std::string Vehicle::getImpulse()
 void Vehicle::shoot(char type)
 {
 	ShotManager* shotManager = ShotManager::getInstance();
+	//Disparo tipo beam
 	if (type == 'b')	{
 		
 		Matrix44 global = getGlobalMatrix();
@@ -90,17 +91,18 @@ void Vehicle::shoot(char type)
 
 		shotManager->createShot('b', origin, end, vel, 10, this);
 	}
+	//disparo tipo laser
 	if (type == 'l')
 	{
 		Matrix44 global = getGlobalMatrix();
-		Vector3 origin = global * Vector3(13, 0, -3);
+		Vector3 origin = global * Vector3(13, 0, -12);
 		Vector3 end = global * Vector3(13, 0, 20);
 
-		Vector3 vel = global.rotateVector(Vector3(0, 0, 7));
+		Vector3 vel = global.rotateVector(Vector3(0, 0, 15));
 
 		shotManager->createShot('l', origin, end, vel, 150, this);
 
-		origin = global * Vector3(-13, 0, -3);
+		origin = global * Vector3(-13, 0, -12);
 		end = global * Vector3(-13, 0, 20);
 
 		shotManager->createShot('l', origin, end, vel, 150, this);

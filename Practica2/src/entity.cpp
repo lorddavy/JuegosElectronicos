@@ -77,9 +77,9 @@ void EntityMesh::render(Camera* camera)
 	{
 		global_matrix = getGlobalMatrix();
 		Vector3 pos = local_matrix.getTranslation(); 
-		//Vector3 center = global_matrix * mesh->boundingBox.center();		
+		Vector3 center = global_matrix * mesh->boundingBox.center;		
 		
-		//float size = max(max(mesh->boundingBox.half_size.x, mesh->boundingBox.half_size.y), mesh->boundingBox.half_size.z);
+		float size = max(max(mesh->boundingBox.half_size.x, mesh->boundingBox.half_size.y), mesh->boundingBox.half_size.z);
 		//if (camera->testSphereInFrustum(pos, size) == true) //Hacemos frustum culling para pintar solo lo que hay en frustum
 		//{
 			glPushMatrix(); //save the opengl state

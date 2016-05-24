@@ -4,7 +4,7 @@
 #include "includes.h"
 #include "entity.h"
 
-class Vehicle: public EntityMesh{
+class Vehicle: public EntityCollider{
 public:
 
 	Vector3 velocity;

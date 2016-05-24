@@ -63,13 +63,15 @@ bool Scene::createLevel()
 	root->addEntity(station);
 
 	//Nave (runner)
-	runner = (Vehicle*) createEntity("runner");
+	runner = (Vehicle*)createEntity("runner");
 	runner->local_matrix.setTranslation(0, 0, 40);
 	runner->local_matrix.rotate(270 * DEG2RAD, Vector3(0, 1, 0));
 	//runner->global_matrix = planet->getGlobalMatrix();
-
 	runner->mesh->createCollisionModel();
+	//Lo agregamos a el vector de EntityCollider
+	//runner->dynamic_entities.push_back(runner);
 	root->addEntity(runner);
+
 	return true;
 }
 
@@ -116,7 +118,7 @@ Entity* Scene::createEntity(const char* type)
 	if (str == "runner")
 	{
 		Vehicle* vehicle = new Vehicle();
-		//creamos spitfire
+		//creamos vehiculo runner
 		vehicle->setup("data/vehicle/x3_runner/", "x3_runner.ASE", "x3_runner.tga");
 		return vehicle;
 	}

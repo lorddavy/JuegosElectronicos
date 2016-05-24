@@ -118,18 +118,17 @@ void Game::render(void)
 	shotManager->render(current_camera);
 
 	//PROBANDO
-	/*Mesh* debugMesh = new Mesh();	
+	Mesh* debugMesh = new Mesh();	
 	debugMesh->createQuad(300, 0, 100, 100, false);
 	debugEntityMesh->mesh = debugMesh;
-	//debugEntityMesh->texture = ;
-	scene->root->addEntity(debugEntityMesh);*/
+	debugEntityMesh->getGlobalMatrix();
+	scene->root->addEntity(debugEntityMesh);
 
 	//Dibujamos texto en pantalla
 	drawText(5, 5, "Outer Space", Vector3(1, 0, 0), 3);
 	
 	std::string impulse = "Potencia de Impulso: " + player->getImpulse() + "%";
 	drawText(5, 25, impulse, Vector3(102 / 255, 255 / 255, 102 / 255), 2);
-
 
 	/*if (debugPoints.size())
 	{
