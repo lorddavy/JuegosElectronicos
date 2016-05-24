@@ -87,6 +87,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\camera.cpp" />
     <ClCompile Include="..\..\src\clipper.cpp" />
+    <ClCompile Include="..\..\src\collisionManager.cpp" />
     <ClCompile Include="..\..\src\controller.cpp" />
     <ClCompile Include="..\..\src\extra\coldet\box.cpp" />
     <ClCompile Include="..\..\src\extra\coldet\box_bld.cpp" />
@@ -117,6 +118,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\src\camera.h" />
     <ClInclude Include="..\..\src\clipper.h" />
+    <ClInclude Include="..\..\src\collisionManager.h" />
     <ClInclude Include="..\..\src\controller.h" />
     <ClInclude Include="..\..\src\extra\coldet\box.h" />
     <ClInclude Include="..\..\src\extra\coldet\coldet.h" />

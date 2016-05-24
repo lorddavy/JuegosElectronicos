@@ -4,18 +4,18 @@
 #include "framework.h""
 #include "entity.h"
 #include "shot.h"
+#include "shotManager.h"
 
 class CollisionManager{
 public:
-	std::vector<EntityMesh*> colliders;
-
 	static CollisionManager* getInstance() {
 		if (instance == NULL)
 			instance = new CollisionManager();
 		return instance;
 	};
 
-	void update(float dt);
+	ShotManager* shotManager = NULL;
+	void check();
 
 private:
 	static CollisionManager* instance;

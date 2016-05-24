@@ -24,7 +24,7 @@ ShotManager* shotManager = NULL;
 //CollisionManager* collisionManager = NULL;
 
 //std::vector<Vector3> debugPoints;
-//EntityMesh* debugEntityMesh = new EntityMesh();
+EntityMesh* debugEntityMesh = new EntityMesh();
 
 Game::Game(SDL_Window* window)
 {
@@ -124,19 +124,17 @@ void Game::render(void)
 	shotManager->render(current_camera);
 
 	//PROBANDO
-	/*Mesh* debugMesh = new Mesh();	
-	debugMesh->createQuad(0, 0, 100, 100, false);
+	Mesh* debugMesh = new Mesh();	
+	debugMesh->createQuad(300, 0, 100, 100, false);
 	debugEntityMesh->mesh = debugMesh;
-	//debugEntityMesh->texture = ;
-	scene->root->addEntity(debugEntityMesh);*/
+	debugEntityMesh->getGlobalMatrix();
+	scene->root->addEntity(debugEntityMesh);
 
 	//Dibujamos texto en pantalla
 	drawText(5, 5, "Outer Space", Vector3(1, 0, 0), 3);
 	
 	std::string impulse = "Potencia de Impulso: " + player->getImpulse() + "%";
 	drawText(5, 25, impulse, Vector3(102 / 255, 255 / 255, 102 / 255), 2);
-
-
 
 	/*if (debugPoints.size())
 	{
@@ -196,9 +194,9 @@ void Game::update(double seconds_elapsed)
 		}
 		//std::cout << (player->getGlobalMatrix() * player->mesh->boundingBox.center).x << std::endl;
 	}*/
+
 	//Rotación del planeta
 	scene->planet->local_matrix.rotateLocal(seconds_elapsed / 50, Vector3(0, 1, 0));
-
 
 	//Spitfire
 	//scene->spitfire->velocity = (player->getGlobalMatrix() * Vector3(0, 0, 0)).normalize();
