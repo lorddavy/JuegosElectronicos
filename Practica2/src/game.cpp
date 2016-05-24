@@ -88,6 +88,7 @@ void Game::init(void)
 	spitfire_controller = new Controller();
 	spitfire_controller->setTarget(scene->spitfire);
 
+	//spitfire_controller->target->stop();
 
 	//hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
@@ -201,7 +202,10 @@ void Game::update(double seconds_elapsed)
 
 	//Spitfire
 	//scene->spitfire->velocity = (player->getGlobalMatrix() * Vector3(0, 0, 0)).normalize();
-	scene->spitfire->velocity = Vector3(-1, 1000*seconds_elapsed, 0);
+	//scene->spitfire->velocity = Vector3(-1, 1000*seconds_elapsed, 0);
+	
+	//scene->spitfire->pitch(0.01);
+	scene->spitfire->pointerPosition(player->getGlobalMatrix() * Vector3(0, 0, 0), seconds_elapsed);
 
 }
 

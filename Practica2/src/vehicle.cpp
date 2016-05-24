@@ -32,19 +32,19 @@ void Vehicle::accelerate(float x)
 	//std::cout << "current_velocity: " << this->current_velocity << std::endl << std::endl;
 }
 
-void Vehicle::pitch(float angle)
+void Vehicle::pitch(float dt)
 {
-	this->local_matrix.rotateLocal(angle, Vector3(1, 0, 0));
+	this->local_matrix.rotateLocal(dt, Vector3(1, 0, 0));
 }
 
-void Vehicle::roll(float angle)
+void Vehicle::roll(float dt)
 {
-	this->local_matrix.rotateLocal(angle, Vector3(0, 0, 1));
+	this->local_matrix.rotateLocal(dt, Vector3(0, 0, 1));
 }
 
-void Vehicle::yaw(float angle)
+void Vehicle::yaw(float dt)
 {
-	this->local_matrix.rotateLocal(angle, Vector3(0, 1, 0));
+	this->local_matrix.rotateLocal(dt, Vector3(0, 1, 0));
 }
 
 void Vehicle::stop()
@@ -92,3 +92,18 @@ void Vehicle::shoot(char type)
 	}
 }
 
+void Vehicle::pointerPosition(Vector3 target, float dt) {
+	
+	Vector3 position = this->getGlobalMatrix() * Vector3(0, 0, 0);
+	Vector3 targetDirection = target - position;
+	Matrix44 inverseMatrix = this->getGlobalMatrix();
+	inverseMatrix.inverse();
+
+	Vector3 globalAxis = velocity.cross(targetDirection);
+	Vector3 localAxis = inverseMatrix.rotateVector(globalAxis);
+
+	float angle = dt;
+	
+	this->local_matrix.rotateLocal(angle, localAxis);
+	
+}
