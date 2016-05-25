@@ -80,19 +80,17 @@ void Game::init(void)
 	current_camera = player_camera;
 
 	//Player controller
-	controller = new Controller();
-	controller->setTarget(this->player);
-	controller->setCamera(player_camera);
+	controller.clear();
+	controller.push_back(new Controller());
+	controller[0]->setTarget(this->player);
+	controller[0]->setCamera(player_camera);
 
 	//Spitfire
-	spitfire_controller.clear();
-
 	for (int i = 0; i < scene->spitfire.size(); i++) {
 		Controller* element = new Controller();
-		Vehicle* target = scene->spitfire[i];
-		element->setTarget(target);
-
-		spitfire_controller.push_back(element);
+		element->setTarget(scene->spitfire[i]);
+		element->followTarget(player, Vector3(-30 + i * 15, 0, 0));
+		controller.push_back(element);
 	}
 	/*spitfire_controller = new Controller();
 	Vehicle* target = scene->spitfire.front();
@@ -102,9 +100,9 @@ void Game::init(void)
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
 
 
-	for (int i = 0; i < spitfire_controller.size(); i++) {
+	/*for (int i = 0; i < controller.size(); i++) {
 		spitfire_controller[i]->followTarget(player, Vector3(-30 + i * 15, 0, 0));
-	}
+	}*/
 
 }
 
@@ -216,13 +214,7 @@ void Game::update(double seconds_elapsed)
 	//scene->spitfire->velocity = (player->getGlobalMatrix() * Vector3(0, 0, 0)).normalize();
 	//scene->spitfire->velocity = Vector3(-1, 1000*seconds_elapsed, 0);
 	
-	//scene->spitfire->pitch(0.01);
-	
-	for (int i = 0; i < spitfire_controller.size(); i++) {
-		spitfire_controller[i]->update(seconds_elapsed);
-	}
-	
-	
+	//scene->spitfire->pitch(0.01);	
 
 }
 

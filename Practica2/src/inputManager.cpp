@@ -19,7 +19,7 @@ void InputManager::update(double dt) {
 
 	Game* game = Game::getInstance();
 	Camera* current_camera = game->current_camera;
-	Controller* controller = game->controller;
+	std::vector <Controller*> controller = game->controller;
 	const Uint8* keystate = game->keystate;
 
 	double speed = dt * 100; //the speed is defined by the seconds_elapsed so it goes constant
@@ -44,8 +44,9 @@ void InputManager::update(double dt) {
 		if (keystate[SDL_SCANCODE_F]) current_camera->move(Vector3(0, 1, 0) * speed);
 	}
 	else if(current_camera == game->player_camera)
-		controller->update(dt);
-
+		for (int i = 0; i < controller.size(); i++) {
+			controller[i]->update(dt);
+		}
 	//to navigate with the mouse fixed in the middle
 	if (game->mouse_locked)
 	{

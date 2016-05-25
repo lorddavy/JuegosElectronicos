@@ -49,8 +49,8 @@ public:
 	Vehicle* player;
 
 	//Controlador
-	Controller* controller;
-	std::vector<Controller*> spitfire_controller;
+	//Controller* controller;
+	std::vector<Controller*> controller;
 
 	Game(SDL_Window* window);
 	void init( void );
