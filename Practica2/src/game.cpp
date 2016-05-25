@@ -85,10 +85,18 @@ void Game::init(void)
 	controller->setCamera(player_camera);
 
 	//Spitfire
-	spitfire_controller = new Controller();
-	spitfire_controller->setTarget(scene->spitfire);
+	spitfire_controller.clear();
 
-	//spitfire_controller->target->stop();
+	for (int i = 0; i < scene->spitfire.size(); i++) {
+		Controller* element = new Controller();
+		Vehicle* target = scene->spitfire[i];
+		element->setTarget(target);
+
+		spitfire_controller.push_back(element);
+	}
+	/*spitfire_controller = new Controller();
+	Vehicle* target = scene->spitfire.front();
+	spitfire_controller->setTarget(target);*/
 
 	//hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
@@ -124,11 +132,11 @@ void Game::render(void)
 	shotManager->render(current_camera);
 
 	//PROBANDO
-	Mesh* debugMesh = new Mesh();	
+	/*Mesh* debugMesh = new Mesh();	
 	debugMesh->createQuad(300, 0, 100, 100, false);
 	debugEntityMesh->mesh = debugMesh;
 	debugEntityMesh->getGlobalMatrix();
-	scene->root->addEntity(debugEntityMesh);
+	scene->root->addEntity(debugEntityMesh);*/
 
 	//Dibujamos texto en pantalla
 	drawText(5, 5, "Outer Space", Vector3(1, 0, 0), 3);
@@ -203,10 +211,13 @@ void Game::update(double seconds_elapsed)
 	//scene->spitfire->velocity = Vector3(-1, 1000*seconds_elapsed, 0);
 	
 	//scene->spitfire->pitch(0.01);
-	spitfire_controller->target->pointerPosition(player->getGlobalMatrix() * Vector3(0, 0, 0), seconds_elapsed);
+	
+	for (int i=0; i < spitfire_controller.size(); i++) {
+		spitfire_controller[i]->target->pointerPosition(player->getGlobalMatrix() * Vector3(-30+i*15, 0, 0), seconds_elapsed);
 
-	Vector3 globalPlayerUp = player->getGlobalMatrix().rotateVector(Vector3(0, 1, 0));
-	spitfire_controller->target->balanceVehicle(globalPlayerUp, seconds_elapsed);
+		Vector3 globalPlayerUp = player->getGlobalMatrix().rotateVector(Vector3(0, 1, 0));
+		spitfire_controller[i]->target->balanceVehicle(globalPlayerUp, seconds_elapsed);
+	}
 
 }
 

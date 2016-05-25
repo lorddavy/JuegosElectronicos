@@ -24,7 +24,7 @@ Scene::Scene()
 	meshManager = NULL;
 	textureManager = NULL;
 	runner = NULL;
-	spitfire = NULL;
+	spitfire.clear();
 }
 
 Scene::~Scene()
@@ -73,12 +73,21 @@ bool Scene::createLevel()
 	root->addEntity(runner);
 
 	//Spitfire
-	spitfire = (Vehicle*)createEntity("spitfire");
-	spitfire->local_matrix.setTranslation(100, 0, 40);
-	spitfire->local_matrix.rotate(270 * DEG2RAD, Vector3(0, 1, 0));
-	spitfire->global_matrix = planet->getGlobalMatrix();
-	spitfire->mesh->createCollisionModel();
-	root->addEntity(spitfire);
+	for (int i = 0; i < 5; i++) {
+		Vehicle* element = (Vehicle*)createEntity("spitfire");
+		element->local_matrix.setTranslation(100, 0, 40);
+		element->global_matrix = planet->getGlobalMatrix();
+		element->mesh->createCollisionModel();
+		root->addEntity(element);
+		spitfire.push_back(element);
+
+		/*spitfire = (Vehicle*)createEntity("spitfire");
+		spitfire->local_matrix.setTranslation(100, 0, 40);
+		//spitfire->local_matrix.rotate(270 * DEG2RAD, Vector3(0, 1, 0));
+		spitfire->global_matrix = planet->getGlobalMatrix();
+		spitfire->mesh->createCollisionModel();
+		root->addEntity(spitfire);*/
+	}
 
 	return true;
 }
