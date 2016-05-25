@@ -100,6 +100,12 @@ void Game::init(void)
 
 	//hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
+
+
+	for (int i = 0; i < spitfire_controller.size(); i++) {
+		spitfire_controller[i]->followTarget(player, Vector3(-30 + i * 15, 0, 0));
+	}
+
 }
 
 //what to do when the image has to be draw
@@ -212,12 +218,11 @@ void Game::update(double seconds_elapsed)
 	
 	//scene->spitfire->pitch(0.01);
 	
-	for (int i=0; i < spitfire_controller.size(); i++) {
-		spitfire_controller[i]->target->pointerPosition(player->getGlobalMatrix() * Vector3(-30+i*15, 0, 0), seconds_elapsed);
-
-		Vector3 globalPlayerUp = player->getGlobalMatrix().rotateVector(Vector3(0, 1, 0));
-		spitfire_controller[i]->target->balanceVehicle(globalPlayerUp, seconds_elapsed);
+	for (int i = 0; i < spitfire_controller.size(); i++) {
+		spitfire_controller[i]->update(seconds_elapsed);
 	}
+	
+	
 
 }
 
