@@ -10,7 +10,7 @@ class Camera;
 class Controller
 {
 public:
-	Controller();
+	Controller(bool ia = true);
 	~Controller();
 	
 	void update(double dt);
@@ -27,7 +27,7 @@ public:
 
 	Vehicle* following;
 	Vector3 formation;
-	bool AI;
+	bool IA;
 
 };
 

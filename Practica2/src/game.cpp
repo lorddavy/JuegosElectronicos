@@ -81,7 +81,7 @@ void Game::init(void)
 
 	//Player controller
 	controller.clear();
-	controller.push_back(new Controller());
+	controller.push_back(new Controller(false));
 	controller[0]->setTarget(this->player);
 	controller[0]->setCamera(player_camera);
 
@@ -89,12 +89,9 @@ void Game::init(void)
 	for (int i = 0; i < scene->spitfire.size(); i++) {
 		Controller* element = new Controller();
 		element->setTarget(scene->spitfire[i]);
-		element->followTarget(player, Vector3(-30 + i * 15, 0, 0));
+		//element->followTarget(player, Vector3(-30 + i * 15, 0, 0));
 		controller.push_back(element);
 	}
-	/*spitfire_controller = new Controller();
-	Vehicle* target = scene->spitfire.front();
-	spitfire_controller->setTarget(target);*/
 
 	//hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
@@ -210,12 +207,6 @@ void Game::update(double seconds_elapsed)
 	//Rotación del planeta
 	scene->planet->local_matrix.rotateLocal(seconds_elapsed / 50, Vector3(0, 1, 0));
 
-	//Spitfire
-	//scene->spitfire->velocity = (player->getGlobalMatrix() * Vector3(0, 0, 0)).normalize();
-	//scene->spitfire->velocity = Vector3(-1, 1000*seconds_elapsed, 0);
-	
-	//scene->spitfire->pitch(0.01);	
-
 }
 
 //Keyboard event handler (sync input)
@@ -264,26 +255,3 @@ void Game::setWindowSize(int width, int height)
 	window_width = width;
 	window_height = height;
 }
-
-
-//Factory de entidades
-/*Entity* Game::createEntity(const char* name)
-{
-	Entity* entity = new Entity();
-	std::string str = name;
-
-	if (str == "vehicle")
-	{
-		Vehicle* vehicle = new Vehicle();
-		//creamos spitfire
-		vehicle->setup("data/meshes/x3_runner/x3_runner.ASE",
-			"data/meshes/x3_runner/x3_runner.tga");
-		//vehicle->mesh->uploadToVRAM();
-		//vehicle->mesh_low->uploadToVRAM();
-		return vehicle;
-	}
-
-	return entity;
-}
-*/
-

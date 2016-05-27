@@ -73,20 +73,14 @@ bool Scene::createLevel()
 	root->addEntity(runner);
 
 	//Spitfire
-	for (int i = 0; i < 5; i++) {
+	int spitfireSize = 5;
+	for (int i = 0; i < spitfireSize; i++) {
 		Vehicle* element = (Vehicle*)createEntity("spitfire");
 		element->local_matrix.setTranslation(100, 0, 40);
 		element->global_matrix = planet->getGlobalMatrix();
 		element->mesh->createCollisionModel();
 		root->addEntity(element);
 		spitfire.push_back(element);
-
-		/*spitfire = (Vehicle*)createEntity("spitfire");
-		spitfire->local_matrix.setTranslation(100, 0, 40);
-		//spitfire->local_matrix.rotate(270 * DEG2RAD, Vector3(0, 1, 0));
-		spitfire->global_matrix = planet->getGlobalMatrix();
-		spitfire->mesh->createCollisionModel();
-		root->addEntity(spitfire);*/
 	}
 
 	return true;
@@ -120,11 +114,6 @@ void Scene::clearRemovedEntities() {
 		delete e;
 	}
 }
-
-/*void Scene::addPlayer(const char* filename) {
-	//Todos estos parametros tienen que leerse desde un fichero	
-	
-}*/
 
 //Factory de entidades SCENE
 Entity* Scene::createEntity(const char* type)

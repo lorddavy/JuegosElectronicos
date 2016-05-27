@@ -48,8 +48,6 @@ public:
 	//Entidad del jugador
 	Vehicle* player;
 
-	//Controlador
-	//Controller* controller;
 	std::vector<Controller*> controller;
 
 	Game(SDL_Window* window);

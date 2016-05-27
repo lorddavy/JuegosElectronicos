@@ -5,13 +5,13 @@
 #include "vehicle.h"
 #include "camera.h"
 
-Controller::Controller() {
+Controller::Controller(bool ia) {
 	target = NULL;
 	camera = NULL;
 	
 	following = NULL;
 	formation = Vector3(0, 0, 0);
-	AI = false;
+	IA = ia;
 }
 
 Controller::~Controller() {
@@ -23,7 +23,7 @@ void Controller::update(double dt) {
 	Game* game = Game::getInstance();
 	const Uint8* keystate = game->keystate;
 
-	if (!AI) {
+	if (!IA) {
 		double speed = dt * 100; //the speed is defined by the seconds_elapsed so it goes constant
 		int pitchInverted = -1;
 		if (target != NULL) {
@@ -54,7 +54,7 @@ void Controller::update(double dt) {
 				target->getGlobalMatrix().rotateVector(Vector3(0, 1, 0)));
 		}
 	}
-	else if (AI) {
+	else if (IA) {
 		if (following != NULL) {
 			updateFollowing(dt);
 		}
@@ -72,7 +72,7 @@ void Controller::setCamera(Camera* camera) {
 void Controller::followTarget(Vehicle* follow, Vector3 delta) {
 	following = follow;
 	formation = delta;
-	AI = true;
+	IA = true;
 }
 
 void Controller::updateFollowing(float dt) {
