@@ -12,6 +12,24 @@ Controller::Controller(bool ia) {
 	following = NULL;
 	formation = Vector3(0, 0, 0);
 	IA = ia;
+
+	waypoints.clear();
+	/*waypoints.push_back(Vector3(400, 0, 0));
+	waypoints.push_back(Vector3(600, 0, 0));
+	waypoints.push_back(Vector3(400, 0, 0));
+	waypoints.push_back(Vector3(400, 200, 0));
+	waypoints.push_back(Vector3(400, 0, 0));
+	waypoints.push_back(Vector3(400, 0, 200));
+	waypoints.push_back(Vector3(400, 0, 0));*/
+
+	waypoints.push_back(Vector3(200, 0, 0));
+	waypoints.push_back(Vector3(400, 0, 0));
+	waypoints.push_back(Vector3(400, 0, 200));
+	waypoints.push_back(Vector3(200, 0, 200));
+
+
+	
+
 }
 
 Controller::~Controller() {
@@ -22,8 +40,8 @@ void Controller::update(double dt) {
 
 	Game* game = Game::getInstance();
 	const Uint8* keystate = game->keystate;
-
-	if (!IA) {
+	
+	if (!IA & game->current_camera == game->player_camera) {
 		double speed = dt * 100; //the speed is defined by the seconds_elapsed so it goes constant
 		int pitchInverted = -1;
 		if (target != NULL) {
@@ -58,6 +76,9 @@ void Controller::update(double dt) {
 		if (following != NULL) {
 			updateFollowing(dt);
 		}
+
+		updateWaypoints(dt);
+		
 	}
 }
 
@@ -79,4 +100,31 @@ void Controller::updateFollowing(float dt) {
 	target->pointerPosition(following->getGlobalMatrix() * formation, dt);
 	Vector3 globalFollowingUp = following->getGlobalMatrix().rotateVector(Vector3(0, 1, 0));
 	target->balanceVehicle(globalFollowingUp, dt);
+}
+
+void Controller::updateWaypoints(float dt) {
+	Vector3 direction = waypoints.front() - target->getGlobalMatrix() * Vector3(0, 0, 0);
+	float distance = direction.length();
+
+	if (distance < 10) {
+		Vector3 first = waypoints.front();
+		waypoints.erase(waypoints.begin());
+		waypoints.push_back(first);
+	}
+	this->target->pointerPosition(waypoints.front(), dt);
+}
+
+void Controller::renderDebug() {
+	glLineWidth(1);
+	glColor3f(1, 0.2, 0.2);
+	glDisable(GL_TEXTURE_2D);
+	glBegin(GL_LINE_LOOP);
+	glColor3f(0.2, 1, 0.2);
+	for (int i = 0; i < waypoints.size(); i++) {
+		Vector3 currentVertex = waypoints[i];
+		glVertex3f(currentVertex.x, currentVertex.y, currentVertex.z);
+	}
+	glEnd();
+	glColor3f(1, 1, 1);
+
 }

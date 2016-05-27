@@ -43,10 +43,9 @@ void InputManager::update(double dt) {
 		if (keystate[SDL_SCANCODE_R]) current_camera->move(Vector3(0, -1, 0) * speed);
 		if (keystate[SDL_SCANCODE_F]) current_camera->move(Vector3(0, 1, 0) * speed);
 	}
-	else if(current_camera == game->player_camera)
-		for (int i = 0; i < controller.size(); i++) {
-			controller[i]->update(dt);
-		}
+	for (int i = 0; i < controller.size(); i++) {
+		controller[i]->update(dt);
+	}
 	//to navigate with the mouse fixed in the middle
 	if (game->mouse_locked)
 	{
@@ -59,6 +58,5 @@ void InputManager::update(double dt) {
 		game->mouse_position.x = center_x;
 		game->mouse_position.y = center_y;
 	}
-	//}
 
 }

@@ -21,13 +21,19 @@ public:
 	void followTarget(Vehicle* follow, Vector3 delta );
 	void updateFollowing(float dt);
 
-//private:
+	void updateWaypoints(float dt);
+
+	void renderDebug();
+
+private:
 	Vehicle* target;
 	Camera* camera;
 
 	Vehicle* following;
 	Vector3 formation;
 	bool IA;
+	std::vector<Vector3> waypoints;
+
 
 };
 
