@@ -73,7 +73,7 @@ bool Scene::createLevel()
 	root->addEntity(runner);
 
 	//Spitfire
-	int spitfireSize = 1;
+	int spitfireSize = 25;
 	for (int i = 0; i < spitfireSize; i++) {
 		Vehicle* element = (Vehicle*)createEntity("spitfire");
 		element->local_matrix.setTranslation(100, 0, 40);

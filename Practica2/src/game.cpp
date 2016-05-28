@@ -96,11 +96,6 @@ void Game::init(void)
 	//hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
 
-
-	/*for (int i = 0; i < controller.size(); i++) {
-		spitfire_controller[i]->followTarget(player, Vector3(-30 + i * 15, 0, 0));
-	}*/
-
 }
 
 //what to do when the image has to be draw

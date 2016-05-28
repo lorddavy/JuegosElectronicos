@@ -13,21 +13,19 @@ Controller::Controller(bool ia) {
 	formation = Vector3(0, 0, 0);
 	IA = ia;
 
-	waypoints.clear();
-	/*waypoints.push_back(Vector3(400, 0, 0));
-	waypoints.push_back(Vector3(600, 0, 0));
-	waypoints.push_back(Vector3(400, 0, 0));
-	waypoints.push_back(Vector3(400, 200, 0));
-	waypoints.push_back(Vector3(400, 0, 0));
-	waypoints.push_back(Vector3(400, 0, 200));
-	waypoints.push_back(Vector3(400, 0, 0));*/
+	if (IA) {
+		waypoints.clear();
+		/*waypoints.push_back(Vector3(200, 0, 0));
+		waypoints.push_back(Vector3(400, 0, 0));
+		waypoints.push_back(Vector3(400, 0, 200));
+		waypoints.push_back(Vector3(200, 0, 200));*/
 
-	waypoints.push_back(Vector3(200, 0, 0));
-	waypoints.push_back(Vector3(400, 0, 0));
-	waypoints.push_back(Vector3(400, 0, 200));
-	waypoints.push_back(Vector3(200, 0, 200));
-
-
+		Vector3 v;
+		for (int i = 0; i < 10; i++) {
+			v.random(Vector3(500, 500, 500));
+			waypoints.push_back(v);
+		}
+	}
 	
 
 }
@@ -76,8 +74,9 @@ void Controller::update(double dt) {
 		if (following != NULL) {
 			updateFollowing(dt);
 		}
-
-		updateWaypoints(dt);
+		else {
+			updateWaypoints(dt);
+		}
 		
 	}
 }
@@ -120,8 +119,18 @@ void Controller::renderDebug() {
 	glDisable(GL_TEXTURE_2D);
 	glBegin(GL_LINE_LOOP);
 	glColor3f(0.2, 1, 0.2);
-	for (int i = 0; i < waypoints.size(); i++) {
+
+	//Print all waypoints
+	/*for (int i = 0; i < waypoints.size(); i++) {
 		Vector3 currentVertex = waypoints[i];
+		glVertex3f(currentVertex.x, currentVertex.y, currentVertex.z);
+	}*/
+
+	//Print only next waypoint
+	if (waypoints.begin() != waypoints.end()) {
+		Vector3 currentVertex = waypoints.front();
+		glVertex3f(currentVertex.x, currentVertex.y, currentVertex.z);
+		currentVertex = target->getGlobalMatrix() * Vector3(0, 0, 0);
 		glVertex3f(currentVertex.x, currentVertex.y, currentVertex.z);
 	}
 	glEnd();
