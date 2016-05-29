@@ -122,6 +122,9 @@ void EntityMesh::setup(const char* path, const char* mesh, const char* texture, 
 	}
 }
 
+std::vector<EntityCollider*> EntityCollider::static_entities;
+std::vector<EntityCollider*> EntityCollider::dynamic_entities;
+
 EntityCollider::EntityCollider()
 {
 }

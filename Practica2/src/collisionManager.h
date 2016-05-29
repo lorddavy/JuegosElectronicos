@@ -2,9 +2,8 @@
 #define COLLISIONMANAGER_H
 
 #include "framework.h""
-#include "entity.h"
-#include "shot.h"
 #include "shotManager.h"
+
 
 class CollisionManager{
 public:
@@ -15,6 +14,7 @@ public:
 	};
 
 	ShotManager* shotManager = NULL;
+
 	void check();
 
 private:

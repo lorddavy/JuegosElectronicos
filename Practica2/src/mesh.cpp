@@ -591,9 +591,9 @@ bool Mesh::createCollisionModel()
 		collision_model->setTriangleNumber(vertices.size() / 3);
 		for (int i = 0; i < (vertices.size()/3); i += 3)
 
-			collision_model->addTriangle(vertices[i].x, -vertices[i].z, vertices[i].y,
-				vertices[i + 1].x, vertices[i + 1].z, -vertices[i + 1].y,
-				vertices[i + 2].x, vertices[i + 2].z, -vertices[i + 2].y);
+			collision_model->addTriangle(vertices[i].x, vertices[i].y, vertices[i].z,
+				vertices[i + 1].x, vertices[i + 1].y, vertices[i + 1].z,
+				vertices[i + 2].x, vertices[i + 2].y, vertices[i + 2].z);
 		collision_model->finalize();
 
 	return true;
