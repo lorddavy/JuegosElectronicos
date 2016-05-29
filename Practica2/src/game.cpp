@@ -7,7 +7,7 @@
 
 #include "inputManager.h"
 #include "shotManager.h"
-//#include "collisionManager.h"
+#include "collisionManager.h"
 
 #include "vehicle.h"
 #include "controller.h"
@@ -21,10 +21,10 @@ Scene* scene = NULL;
 //Managers
 InputManager* inputManager = NULL;
 ShotManager* shotManager = NULL;
-//CollisionManager* collisionManager = NULL;
+CollisionManager* collisionManager = NULL;
 
 //std::vector<Vector3> debugPoints;
-EntityMesh* debugEntityMesh = new EntityMesh();
+EntityCollider* debugEntityMesh;
 
 Game::Game(SDL_Window* window)
 {
@@ -65,7 +65,7 @@ void Game::init(void)
 	scene->textureManager = TextureManager::getInstance();
 	inputManager = InputManager::getInstance();
 	shotManager = ShotManager::getInstance();
-	//collisionManager = CollisionManager::getInstance();
+	collisionManager = CollisionManager::getInstance();
 
 	//free_camera = camera;
 
@@ -92,6 +92,16 @@ void Game::init(void)
 		//element->followTarget(player, Vector3(-30 + i * 15, 0, 0));
 		controller.push_back(element);
 	}
+	//DEBUG MESH (COLLISIONS)
+	debugEntityMesh = new EntityCollider();
+
+	Mesh* debugMesh = new Mesh();
+	debugMesh->createQuad(300, 0, 100, 100, false);
+	debugMesh->createCollisionModel();
+	debugEntityMesh->mesh = debugMesh;
+	debugEntityMesh->getGlobalMatrix();
+	debugEntityMesh->static_entities.push_back(debugEntityMesh);
+	scene->root->addEntity(debugEntityMesh);
 
 	//hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
@@ -131,41 +141,24 @@ void Game::render(void)
 	scene->root->render(current_camera);
 	shotManager->render(current_camera);
 
-	//PROBANDO
-	/*Mesh* debugMesh = new Mesh();	
-	debugMesh->createQuad(300, 0, 100, 100, false);
-	debugEntityMesh->mesh = debugMesh;
-	debugEntityMesh->getGlobalMatrix();
-	scene->root->addEntity(debugEntityMesh);*/
-
 	//Dibujamos texto en pantalla
 	drawText(5, 5, "Outer Space", Vector3(1, 0, 0), 3);
 	
 	std::string impulse = "Potencia de Impulso: " + player->getImpulse() + "%";
 	drawText(5, 25, impulse, Vector3(102 / 255, 255 / 255, 102 / 255), 2);
 
-	/*if (debugPoints.size())
-	{
-		glEnable(GL_BLEND);
-		Mesh* debugMesh = new Mesh();
-		
+	/*glEnable(GL_BLEND);	
+	if (debugPoints.size())
+	{	
  		for (int i = 0; i < debugPoints.size(); i++)
 		{
-			debugMesh->createQuad(debugPoints[i].x, debugPoints[i].y, 10, 10, false);
-			debugEntityMesh->mesh = debugMesh;
-			debugEntityMesh->color = (1, 0, 0);
-			scene->root->addEntity(debugEntityMesh);
+			
 		}
-
-	}*/
-
-	
-		
+	}
+	glDisable(GL_BLEND);
+	*/		
 
 	glColor3f(1, 1, 1);
-
-	glDisable(GL_BLEND);
-
 	//swap between front buffer and back buffer
 	SDL_GL_SwapWindow(this->window);
 }
@@ -181,30 +174,7 @@ void Game::update(double seconds_elapsed)
 	scene->clearRemovedEntities();
 
 	//Comprobamos colisiones
-	/*for (int i = 0; i < 50; i++)
-	{
-		Shot& shot = shotManager->shots[i];
-		
-		if (shot.active) {
-			if (scene->planet->mesh->testIntRayMesh(scene->planet->getGlobalMatrix(), player->getGlobalMatrix() * shot.origin_position, player->getGlobalMatrix() * (shot.end_position - shot.origin_position)))
-			{
-				float collisionPoint[3];
-				scene->planet->mesh->collision_model->getCollisionPoint(collisionPoint, true);
-				float t1[9], t2[9];
-				scene->planet->mesh->collision_model->getCollidingTriangles(t1, t2, false);
-
-				//debugPoints.push_back(Vector3(collisionPoint[0], collisionPoint[1], collisionPoint[2]));
-				std::cout << "Colisión en: " << collisionPoint[0] << ", " << collisionPoint[1] << ", " << collisionPoint[2] << std::endl;
-			}
-		}
-
-		float radius = player->mesh->boundingBox.half_size.z;
-		if (scene->planet->mesh->testIntSphereMesh(scene->planet->getGlobalMatrix(), player->getGlobalMatrix() * player->mesh->boundingBox.center, radius))
-		{
-			std::cout << "Colision" << std::endl;
-		}
-		//std::cout << (player->getGlobalMatrix() * player->mesh->boundingBox.center).x << std::endl;
-	}*/
+	collisionManager->check();
 
 	//Rotación del planeta
 	scene->planet->local_matrix.rotateLocal(seconds_elapsed / 50, Vector3(0, 1, 0));

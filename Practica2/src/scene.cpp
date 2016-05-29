@@ -69,7 +69,7 @@ bool Scene::createLevel()
 	runner->local_matrix.rotate(270 * DEG2RAD, Vector3(0, 1, 0));
 	runner->mesh->createCollisionModel();
 	//Lo agregamos a el vector de EntityCollider
-	//runner->dynamic_entities.push_back(runner);
+	runner->dynamic_entities.push_back(runner);
 	root->addEntity(runner);
 
 	//Spitfire
@@ -125,8 +125,6 @@ Entity* Scene::createEntity(const char* type)
 	{
 		Vehicle* vehicle = new Vehicle();
 		vehicle->setup("data/vehicle/x3_runner/", "x3_runner.ASE", "x3_runner.tga");
-		//vehicle->mesh->uploadToVRAM();
-		//vehicle->mesh_low->uploadToVRAM();
 		return vehicle;
 	}
 	else if (str == "spitfire")
