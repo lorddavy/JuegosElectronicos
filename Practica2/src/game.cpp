@@ -93,7 +93,7 @@ void Game::init(void)
 		controller.push_back(element);
 	}
 	//DEBUG MESH (COLLISIONS)
-	debugEntityMesh = new EntityCollider();
+	/*debugEntityMesh = new EntityCollider();
 
 	Mesh* debugMesh = new Mesh();
 	debugMesh->createQuad(300, 0, 100, 100, false);
@@ -101,7 +101,7 @@ void Game::init(void)
 	debugEntityMesh->mesh = debugMesh;
 	debugEntityMesh->getGlobalMatrix();
 	debugEntityMesh->static_entities.push_back(debugEntityMesh);
-	scene->root->addEntity(debugEntityMesh);
+	scene->root->addEntity(debugEntityMesh);*/
 
 	//hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse

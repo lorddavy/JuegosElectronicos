@@ -100,12 +100,12 @@ void Vehicle::shoot(char type)
 
 		Vector3 vel = global.rotateVector(Vector3(0, 0, 15));
 
-		shotManager->createShot('l', origin, end, vel, 150, this);
+		shotManager->createShot('l', origin, end, vel, 45, this);
 
 		origin = global * Vector3(-13, 0, -12);
 		end = global * Vector3(-13, 0, 20);
 
-		shotManager->createShot('l', origin, end, vel, 150, this);
+		shotManager->createShot('l', origin, end, vel, 45, this);
 	}
 }
 

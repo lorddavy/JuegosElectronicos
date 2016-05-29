@@ -10,6 +10,7 @@ class MeshManager;
 class TextureManager;
 class Entity;
 class EntityMesh;
+class EntityCollider;
 class Vehicle;
 
 class Scene {
@@ -20,8 +21,8 @@ public:
 
 	Entity* root;
 	EntityMesh* skybox;
-	EntityMesh* planet;
-	EntityMesh* station;
+	EntityCollider* planet;
+	EntityCollider* station;
 	Vehicle* runner;
 	std::vector<Vehicle*> spitfire;
 

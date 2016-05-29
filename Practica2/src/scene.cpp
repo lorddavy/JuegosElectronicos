@@ -36,24 +36,25 @@ bool Scene::createLevel()
 	//Skybox
 	skybox = new EntityMesh();
 	skybox->setup("data/cubemap/space_cubemap/", "space_cubemap.ASE", "nebula_cubemap.tga");
-	skybox->local_matrix.scale(1000, 1000, 1000);
+	skybox->local_matrix.scale(500, 500, 500);
 	skybox->frustum_text = false;
 	//root->addEntity(skybox);
 
 	//Planeta
-	planet = new EntityMesh();
+	planet = new EntityCollider();
 	planet->setup("data/entityMesh/planet/", "sphere.ASE", "planet_color.tga");
 	planet->local_matrix.setTranslation(0, 0, -200);
 	planet->local_matrix.scale(10, 10, 10);
 	planet->global_matrix = planet->getGlobalMatrix();
-
 	planet->frustum_text = false;
 	planet->two_sided = true;
 	planet->mesh->createCollisionModel();
+	//Lo agregamos a el vector de EntityCollider y al arbol de escena
+	//EntityCollider::static_entities.push_back(planet);
 	root->addEntity(planet);
 
 	//Estación espacial
-	station = new EntityMesh();
+	station = new EntityCollider();
 	station->setup("data/entityMesh/eve_station/", "eve_station.ASE", "eve2.tga");
 	station->local_matrix.setTranslation(-800, 450, 0);
 	station->local_matrix.rotate(270 * DEG2RAD, Vector3(0, 1, 0));
@@ -61,6 +62,8 @@ bool Scene::createLevel()
 	station->frustum_text = false;
 	station->two_sided = true;
 	station->mesh->createCollisionModel();
+	//Lo agregamos a el vector de EntityCollider y al arbol de escena
+	//EntityCollider::static_entities.push_back(station);
 	root->addEntity(station);
 
 	//Nave (runner)
@@ -68,8 +71,8 @@ bool Scene::createLevel()
 	runner->local_matrix.setTranslation(0, 0, 40);
 	runner->local_matrix.rotate(270 * DEG2RAD, Vector3(0, 1, 0));
 	runner->mesh->createCollisionModel();
-	//Lo agregamos a el vector de EntityCollider
-	runner->dynamic_entities.push_back(runner);
+	//Lo agregamos a el vector de EntityCollider y al arbol de escena
+	EntityCollider::dynamic_entities.push_back(runner);
 	root->addEntity(runner);
 
 	//Spitfire
@@ -79,8 +82,10 @@ bool Scene::createLevel()
 		element->local_matrix.setTranslation(100, 0, 40);
 		element->global_matrix = planet->getGlobalMatrix();
 		element->mesh->createCollisionModel();
-		root->addEntity(element);
 		spitfire.push_back(element);
+		//Lo agregamos a el vector de EntityCollider y al arbol de escena
+		EntityCollider::dynamic_entities.push_back(element);
+		root->addEntity(element);
 	}
 
 	return true;
