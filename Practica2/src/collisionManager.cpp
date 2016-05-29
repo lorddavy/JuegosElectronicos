@@ -25,58 +25,82 @@ void CollisionManager::check()
 			Shot& shot = shotManager->shots[j];
 
 			if (shot.active) {
+				//Miramos si hay colisión con disparo activo
 				if (EntityCollider::static_entities[i]->mesh->testIntRayMesh(EntityCollider::static_entities[i]->getGlobalMatrix(), shot.origin_position, shot.end_position - shot.origin_position))
 				{
+					//Tomamos punto y triangulos de colision
 					float collisionPoint[3];
 					EntityCollider::static_entities[i]->mesh->collision_model->getCollisionPoint(collisionPoint, true);
 					float t1[9], t2[9];
 					EntityCollider::static_entities[i]->mesh->collision_model->getCollidingTriangles(t1, t2, false);
-					std::cout << "Colisión en: " << collisionPoint[0] << ", " << collisionPoint[1] << ", " << collisionPoint[2] << std::endl;
+					
+					//Invocamos respuesta al evento
+					EntityCollider::static_entities[i]->onShotCollision(collisionPoint, t1, t2);
 				}
 			}
 		}
 	}
 
-	//Colisiones entre entidades dinamicas y disparos
+	//Colisiones para entidades dinamicas
 	for (int i = 0; i < EntityCollider::dynamic_entities.size(); ++i)
 	{
+		//Tomamos los necesario para construir la esfera
+		Matrix44 globalMatrix = EntityCollider::dynamic_entities[i]->getGlobalMatrix();
+		Vector3 center = EntityCollider::dynamic_entities[i]->mesh->boundingBox.center;
+		float radius = EntityCollider::dynamic_entities[i]->mesh->boundingBox.half_size.z;
+
+		//Colisiones entre entidades dinamicas y disparos
 		for (int j = 1; j < shotManager->getMaxShots(); ++j)
 		{
 			Shot& shot = shotManager->shots[j];
 
 			if (shot.active) {
+				//Miramos si hay colisión con disparo activo
 				if (EntityCollider::dynamic_entities[i]->mesh->testIntRayMesh(EntityCollider::dynamic_entities[i]->getGlobalMatrix(), shot.origin_position, shot.end_position - shot.origin_position))
 				{
+					//Tomamos punto y triangulos de colision
 					float collisionPoint[3];
 					EntityCollider::dynamic_entities[i]->mesh->collision_model->getCollisionPoint(collisionPoint, true);
 					float t1[9], t2[9];
 					EntityCollider::dynamic_entities[i]->mesh->collision_model->getCollidingTriangles(t1, t2, false);
-					std::cout << "Colisión en: " << collisionPoint[0] << ", " << collisionPoint[1] << ", " << collisionPoint[2] << std::endl;
+
+					//Invocamos respuesta al evento
+					EntityCollider::dynamic_entities[i]->onShotCollision(collisionPoint, t1, t2);
 				}
 			}
 		}
-	}
-
-	//Colisiones entre entidades estaticas y entidades dinamicas
-	for (int i = 0; i < EntityCollider::dynamic_entities.size(); ++i)
-	{
-		Matrix44 globalMatrix = EntityCollider::dynamic_entities[i]->getGlobalMatrix();
-		Vector3 center = EntityCollider::dynamic_entities[i]->mesh->boundingBox.center;
-		float radius = EntityCollider::dynamic_entities[i]->mesh->boundingBox.half_size.z;
-
+		
+		//Colisiones entre entidades dinamicas y entidades estaticas
 		for (int j = 0; j < EntityCollider::static_entities.size(); ++j)
 		{
-				if (EntityCollider::static_entities[j]->mesh->testIntSphereMesh(EntityCollider::static_entities[j]->getGlobalMatrix(), globalMatrix * center, radius))
-				{
-						float collisionPoint[3];
-						EntityCollider::static_entities[j]->mesh->collision_model->getCollisionPoint(collisionPoint, true);
-						float t1[9], t2[9];
-						EntityCollider::static_entities[j]->mesh->collision_model->getCollidingTriangles(t1, t2, false);
-						std::cout << "Colisión en: " << collisionPoint[0] << ", " << collisionPoint[1] << ", " << collisionPoint[2] << std::endl;
+			if (EntityCollider::static_entities[j]->mesh->testIntSphereMesh(EntityCollider::static_entities[j]->getGlobalMatrix(), globalMatrix * center, radius))
+			{
+				//Tomamos punto y triangulos de colision
+				float collisionPoint[3];
+				EntityCollider::static_entities[j]->mesh->collision_model->getCollisionPoint(collisionPoint, true);
+				float t1[9], t2[9];
+				EntityCollider::static_entities[j]->mesh->collision_model->getCollidingTriangles(t1, t2, false);
 
-				}
-				
+				//Invocamos respuesta al evento
+				EntityCollider::static_entities[j]->onEntityCollision(EntityCollider::dynamic_entities[i], collisionPoint, t1, t2);
+			}
 		}
-	}	
+
+		//Colisiones entre entidades dinamicas y otras entidades dinamicas (SIN REPETICIONES)
+		for (int j = i; j < EntityCollider::dynamic_entities.size(); ++j)
+		{
+			if (EntityCollider::dynamic_entities[j]->mesh->testIntSphereMesh(EntityCollider::dynamic_entities[j]->getGlobalMatrix(), globalMatrix * center, radius))
+			{
+				//Tomamos punto y triangulos de colision
+				float collisionPoint[3];
+				EntityCollider::dynamic_entities[j]->mesh->collision_model->getCollisionPoint(collisionPoint, true);
+				float t1[9], t2[9];
+				EntityCollider::dynamic_entities[j]->mesh->collision_model->getCollidingTriangles(t1, t2, false);
+
+				//Invocamos respuesta al evento
+				EntityCollider::dynamic_entities[j]->onEntityCollision(EntityCollider::dynamic_entities[i], collisionPoint, t1, t2);
+			}
+		}
+	}
 }
 

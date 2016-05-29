@@ -133,11 +133,13 @@ EntityCollider::~EntityCollider()
 {
 }
 
-void EntityCollider::onEntityCollision()
+//Respuesta a eventos de colisiones
+void EntityCollider::onShotCollision(float collisionPoint[3], float t1[9], float t2[9])
 {
+	std::cout << "Colisión en: " << collisionPoint[0] << ", " << collisionPoint[1] << ", " << collisionPoint[2] << std::endl;
 }
 
-void EntityCollider::onShotCollision()
+void EntityCollider::onEntityCollision(EntityCollider* entity, float collisionPoint[3], float t1[9], float t2[9])
 {
+	std::cout << "Colisión en: " << collisionPoint[0] << ", " << collisionPoint[1] << ", " << collisionPoint[2] << std::endl;
 }
-

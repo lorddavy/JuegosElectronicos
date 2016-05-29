@@ -72,9 +72,9 @@ public:
 	EntityCollider();
 	~EntityCollider();
 
-	//Colisiones
-	void onShotCollision();
-	void onEntityCollision();
+	//Respuesta a eventos de colision
+	void onShotCollision(float collisionPoint[3], float t1[9], float t2[9]);
+	void onEntityCollision(EntityCollider* entity, float collisionPoint[3], float t1[9], float t2[9]);
 };
 
 #endif
