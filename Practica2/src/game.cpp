@@ -147,6 +147,9 @@ void Game::render(void)
 	std::string impulse = "Potencia de Impulso: " + player->getImpulse() + "%";
 	drawText(5, 25, impulse, Vector3(102 / 255, 255 / 255, 102 / 255), 2);
 
+	std::string hull = "Danyos en el casco: " + player->getHull() + "%";
+	drawText(5, 45, hull, Vector3(102 / 255, 255 / 255, 102 / 255), 2);
+
 	/*glEnable(GL_BLEND);	
 	if (debugPoints.size())
 	{	

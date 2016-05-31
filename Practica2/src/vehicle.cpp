@@ -1,21 +1,33 @@
+#include "entity.h"
 #include "vehicle.h"
 #include "shotManager.h"
+#include <algorithm>
+#include <vector> 
+
+
 
 Vehicle::Vehicle()
 {
-	velocity = Vector3(0,0,1);
+	velocity = Vector3(0, 0, 1);
 	current_velocity = 30;
 	max_velocity = 500;
 	camera_eye.set(0, 2, -5);
+	hull = 100;
+	shield = 0;
 }
 
 Vehicle::~Vehicle()
 {
+	
 }
 
+//Configuración inicial
 /*void Vehicle::setup()
 {
+	
 }*/
+
+//Funciones de movimiento del vehiculo
 
 void Vehicle::accelerate(float x)
 {
@@ -52,37 +64,13 @@ void Vehicle::stop()
 	current_velocity = 0;
 }
 
-void Vehicle::update(float dt)
-{
-	velocity = this->getGlobalMatrix().rotateVector(Vector3(0, 0, -1));
-	velocity.normalize();
-
-	Vector3 translation = velocity * current_velocity * -dt;
-	local_matrix.traslate(translation.x, translation.y, translation.z);
-}
-
-std::string Vehicle::getVelocity() {	// No se usa
-	std::stringstream ss;
-	ss << (int)current_velocity / max_velocity * 100;
-	return ss.str();
-}
-
-std::string Vehicle::getImpulse()
-{
-	int impulse;
-	impulse = this->current_velocity/ this->max_velocity * 100;
-
-	std::ostringstream strs;
-	strs << impulse;
-	return strs.str();
-}
-
+//Método de disparo del vehiculo
 void Vehicle::shoot(char type)
 {
 	ShotManager* shotManager = ShotManager::getInstance();
 	//Disparo tipo beam
-	if (type == 'b')	{
-		
+	if (type == 'b') {
+
 		Matrix44 global = getGlobalMatrix();
 		Vector3 origin = global * Vector3(0, 0, 10);
 
@@ -108,6 +96,66 @@ void Vehicle::shoot(char type)
 		shotManager->createShot('l', origin, end, vel, 45, this);
 	}
 }
+//Método update del vehiculo
+void Vehicle::update(float dt)
+{
+	velocity = this->getGlobalMatrix().rotateVector(Vector3(0, 0, -1));
+	velocity.normalize();
+
+	Vector3 translation = velocity * current_velocity * -dt;
+	local_matrix.traslate(translation.x, translation.y, translation.z);
+
+	if (hull < 0)
+	{
+		Entity::destroyChild(this, 0);
+
+		auto it = find(EntityCollider::dynamic_entities.begin(), EntityCollider::dynamic_entities.end(), this);
+		EntityCollider::dynamic_entities.erase(it);
+
+	}
+
+}
+
+//Getters del vehiculo
+std::string Vehicle::getVelocity() {	// No se usa
+	std::stringstream ss;
+	ss << (int)current_velocity / max_velocity * 100;
+	return ss.str();
+}
+
+std::string Vehicle::getImpulse()
+{
+	int impulse;
+	impulse = this->current_velocity/ this->max_velocity * 100;
+
+	std::ostringstream strs;
+	strs << impulse;
+	return strs.str();
+}
+
+std::string Vehicle::getHull()
+{
+	int hull;
+	hull = 100 - this->hull;
+
+	std::ostringstream strs;
+	strs << hull;
+	return strs.str();
+}
+
+//Respuesta eventos de colisión
+void Vehicle::onShotCollision(float collisionPoint[3], float t1[9], float t2[9])
+{
+	hull -= 10;
+	std::cout << "hull:" + hull << std::endl;
+}
+void Vehicle::onEntityCollision(EntityCollider* entity, float collisionPoint[3], float t1[9], float t2[9])
+{
+	hull -= abs(current_velocity)/5;
+	//std::cout << "mlkfgjkdfa" << std::endl;
+}
+
+//???
 
 void Vehicle::pointerPosition(Vector3 target, float dt) {
 	

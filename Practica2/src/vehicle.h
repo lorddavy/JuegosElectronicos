@@ -24,8 +24,8 @@ public:
 
 	//void setup();	//	Le pasamos un fichero con todos los parametros y lo parseamos 
 
+	//Movimientos
 	void accelerate(float x);
-
 	void pitch(float angle);		// S and W keys
 	void roll(float angle);			// A and D keys
 	void yaw(float angle);			// Q and E keys
@@ -35,11 +35,17 @@ public:
 	void pointerPosition(Vector3 target, float dt);
 	void balanceVehicle(Vector3 targetUp, float dt);
 
-
+	//update
 	void update(float dt);
 
+	//Getters
 	std::string getVelocity();
 	std::string getImpulse();
+	std::string getHull();
+
+	//Respuesta a eventos de colision
+	void onShotCollision(float collisionPoint[3], float t1[9], float t2[9]);
+	void onEntityCollision(EntityCollider* entity, float collisionPoint[3], float t1[9], float t2[9]);
 
 private:
 

@@ -141,5 +141,6 @@ void EntityCollider::onShotCollision(float collisionPoint[3], float t1[9], float
 
 void EntityCollider::onEntityCollision(EntityCollider* entity, float collisionPoint[3], float t1[9], float t2[9])
 {
+	//entity->onEntityCollision(this, collisionPoint, t1, t2);
 	std::cout << "Colisión en: " << collisionPoint[0] << ", " << collisionPoint[1] << ", " << collisionPoint[2] << std::endl;
 }

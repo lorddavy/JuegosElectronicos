@@ -36,7 +36,7 @@ bool Scene::createLevel()
 	//Skybox
 	skybox = new EntityMesh();
 	skybox->setup("data/cubemap/space_cubemap/", "space_cubemap.ASE", "nebula_cubemap.tga");
-	skybox->local_matrix.scale(500, 500, 500);
+	skybox->local_matrix.scale(300, 300, 300);
 	skybox->frustum_text = false;
 	//root->addEntity(skybox);
 
