@@ -179,6 +179,8 @@ void Game::update(double seconds_elapsed)
 	//Rotación del planeta
 	scene->planet->local_matrix.rotateLocal(seconds_elapsed / 50, Vector3(0, 1, 0));
 
+	scene->spitfire.front()->current_velocity = 0;
+
 }
 
 //Keyboard event handler (sync input)
