@@ -1,6 +1,7 @@
 #include "entity.h"
 #include "vehicle.h"
 #include "shotManager.h"
+#include "game.h"
 #include <algorithm>
 #include <vector> 
 
@@ -107,11 +108,15 @@ void Vehicle::update(float dt)
 
 	if (hull < 0)
 	{
+		Game* game = Game::getInstance();
+		
 		Entity::destroyChild(this, 0);
 
 		auto it = find(EntityCollider::dynamic_entities.begin(), EntityCollider::dynamic_entities.end(), this);
 		EntityCollider::dynamic_entities.erase(it);
 
+		auto it2 = find(game->controller.begin(), game->controller.end(), this->controller);
+		game->controller.erase(it2);
 	}
 
 }
@@ -147,12 +152,13 @@ std::string Vehicle::getHull()
 void Vehicle::onShotCollision(float collisionPoint[3], float t1[9], float t2[9])
 {
 	hull -= 10;
-	std::cout << "hull:" + hull << std::endl;
+	std::cout << "Colisión en: " << collisionPoint[0] << ", " << collisionPoint[1] << ", " << collisionPoint[2] << std::endl;
 }
 void Vehicle::onEntityCollision(EntityCollider* entity, float collisionPoint[3], float t1[9], float t2[9])
 {
-	hull -= abs(current_velocity)/5;
-	//std::cout << "mlkfgjkdfa" << std::endl;
+	hull -= 1;
+	this->stop();
+	std::cout << "Colisión en: " << collisionPoint[0] << ", " << collisionPoint[1] << ", " << collisionPoint[2] << std::endl;
 }
 
 //???

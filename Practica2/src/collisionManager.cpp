@@ -48,7 +48,7 @@ void CollisionManager::check()
 		Matrix44 globalMatrix = EntityCollider::dynamic_entities[i]->getGlobalMatrix();
 		Vector3 center = EntityCollider::dynamic_entities[i]->mesh->boundingBox.center;
 		float radius = max(max(EntityCollider::dynamic_entities[i]->mesh->boundingBox.half_size.x, EntityCollider::dynamic_entities[i]->mesh->boundingBox.half_size.y), EntityCollider::dynamic_entities[i]->mesh->boundingBox.half_size.z);
-
+		radius *= 0.5;
 		//Colisiones entre entidades dinamicas y disparos
 		for (int j = 1; j < shotManager->getMaxShots(); ++j)
 		{
@@ -83,6 +83,7 @@ void CollisionManager::check()
 
 				//Invocamos respuesta al evento
 				EntityCollider::static_entities[j]->onEntityCollision(EntityCollider::dynamic_entities[i], collisionPoint, t1, t2);
+				EntityCollider::dynamic_entities[i]->onEntityCollision(EntityCollider::static_entities[j], collisionPoint, t1, t2);
 			}
 		}
 
@@ -101,6 +102,7 @@ void CollisionManager::check()
 
 					//Invocamos respuesta al evento
 					EntityCollider::dynamic_entities[j]->onEntityCollision(EntityCollider::dynamic_entities[i], collisionPoint, t1, t2);
+					EntityCollider::dynamic_entities[i]->onEntityCollision(EntityCollider::dynamic_entities[j], collisionPoint, t1, t2);
 				}
 			}
 		}

@@ -3,6 +3,7 @@
 
 #include "includes.h"
 #include "entity.h"
+#include "controller.h"
 
 class Vehicle: public EntityCollider{
 public:
@@ -25,6 +26,8 @@ public:
 	//void setup();	//	Le pasamos un fichero con todos los parametros y lo parseamos 
 
 	//Movimientos
+	Controller* controller;
+
 	void accelerate(float x);
 	void pitch(float angle);		// S and W keys
 	void roll(float angle);			// A and D keys

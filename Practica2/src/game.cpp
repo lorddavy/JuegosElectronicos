@@ -83,15 +83,18 @@ void Game::init(void)
 	controller.clear();
 	controller.push_back(new Controller(false));
 	controller[0]->setTarget(this->player);
-	controller[0]->setCamera(player_camera);
+	controller[0]->setCamera(player_camera);	
+	player->controller = controller[0];//Puntero a su controlador
 
 	//Spitfire
 	for (int i = 0; i < scene->spitfire.size(); i++) {
 		Controller* element = new Controller();
 		element->setTarget(scene->spitfire[i]);
 		//element->followTarget(player, Vector3(-30 + i * 15, 0, 0));
-		controller.push_back(element);
+		controller.push_back(element);		
+		scene->spitfire[i]->controller = element;//Puntero a su controlador
 	}
+
 	//DEBUG MESH (COLLISIONS)
 	/*debugEntityMesh = new EntityCollider();
 
