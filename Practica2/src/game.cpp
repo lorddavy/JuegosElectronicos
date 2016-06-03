@@ -152,11 +152,15 @@ void Game::render(void)
 	//Dibujamos texto en pantalla
 	drawText(5, 5, "Outer Space", Vector3(1, 0, 0), 3);
 	
-	std::string impulse = "Potencia de Impulso: " + player->getImpulse() + "%";
+	std::string impulse = "Impulse power: " + player->getImpulse() + "%";
 	drawText(5, 25, impulse, Vector3(102 / 255, 255 / 255, 102 / 255), 2);
 
-	std::string hull = "Danyos en el casco: " + player->getHull() + "%";
+	std::string hull = "Hull damage: " + player->getHull() + "%";
 	drawText(5, 45, hull, Vector3(102 / 255, 255 / 255, 102 / 255), 2);
+
+
+	//Función para renderizar la interfaz
+	//renderGUI();
 
 	/*glEnable(GL_BLEND);	
 	if (debugPoints.size())
@@ -251,15 +255,15 @@ void Game::renderGUI()
 	cam2D.set();
 
 	Mesh quad;
-	quad.createQuad(window_width*0.5, window_height*0.5, 50, 50);
+	quad.createQuad(window_width/2, window_height/2, window_width, window_height);
 
-	//Texture* tex = Texture::get("data / textures / crosshair.tga");
+	Texture* tex = scene->textureManager->getTexture("data/hud/", "portada.tga");
 
-	/*glEnable(GL_BLEND);
+	glEnable(GL_BLEND);
 	tex->bind();
 	quad.render(GL_TRIANGLES);
 	tex->unbind();
-	glDisable(GL_BLEND);*/
+	glDisable(GL_BLEND);
 
 	/*quad.createQuad(100, 100, 200, 200);
 	Texture* tex = Texture::get("data / textures / island_color_luz.tga");
