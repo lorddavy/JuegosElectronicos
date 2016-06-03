@@ -54,6 +54,7 @@ public:
 	void init( void );
 	void render( void );
 	void update( double dt );
+	void renderGUI();
 
 	void onKeyPressed( SDL_KeyboardEvent event );
 	void onMouseButton( SDL_MouseButtonEvent event );

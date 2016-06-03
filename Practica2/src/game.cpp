@@ -240,3 +240,43 @@ void Game::setWindowSize(int width, int height)
 	window_width = width;
 	window_height = height;
 }
+
+void Game::renderGUI()
+{
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
+
+	Camera cam2D;
+	cam2D.setOrthographic(0, window_width, window_height, 0, -1, 1);
+	cam2D.set();
+
+	Mesh quad;
+	quad.createQuad(window_width*0.5, window_height*0.5, 50, 50);
+
+	//Texture* tex = Texture::get("data / textures / crosshair.tga");
+
+	/*glEnable(GL_BLEND);
+	tex->bind();
+	quad.render(GL_TRIANGLES);
+	tex->unbind();
+	glDisable(GL_BLEND);*/
+
+	/*quad.createQuad(100, 100, 200, 200);
+	Texture* tex = Texture::get("data / textures / island_color_luz.tga");
+	tex->bind();
+	quad.render(GL_TRIANGLES);
+	tex->unbind();*/
+
+	/*Mesh points;
+	for (i = 0; fighters.size; i++)
+		Fighter* fighter = fighters[i]
+		Vector3 pos = fighter->getGlobalMatrix().getTranslation();
+	pos = (pos / island->halfsize) * 200.0;
+	pos.z = pos.y;
+	pos.z = 0;
+	pos.x += 100;
+	pos.y += 100;
+	points.vertices.push_back(pos);
+	glColor(1, 0, 0, 1);
+	points.render(GL_POINTS);*/
+}
