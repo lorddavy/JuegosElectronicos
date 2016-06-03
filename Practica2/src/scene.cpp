@@ -36,7 +36,7 @@ bool Scene::createLevel()
 	//Skybox
 	skybox = new EntityMesh();
 	skybox->setup("data/cubemap/space_cubemap/", "space_cubemap.ASE", "nebula_cubemap.tga");
-	skybox->local_matrix.scale(500, 500, 500);
+	skybox->local_matrix.scale(300, 300, 300);
 	skybox->frustum_text = false;
 	//root->addEntity(skybox);
 
@@ -50,7 +50,7 @@ bool Scene::createLevel()
 	planet->two_sided = true;
 	planet->mesh->createCollisionModel();
 	//Lo agregamos a el vector de EntityCollider y al arbol de escena
-	//EntityCollider::static_entities.push_back(planet);
+	EntityCollider::static_entities.push_back(planet);
 	root->addEntity(planet);
 
 	//Estación espacial
@@ -63,7 +63,7 @@ bool Scene::createLevel()
 	station->two_sided = true;
 	station->mesh->createCollisionModel();
 	//Lo agregamos a el vector de EntityCollider y al arbol de escena
-	//EntityCollider::static_entities.push_back(station);
+	EntityCollider::static_entities.push_back(station);
 	root->addEntity(station);
 
 	//Nave (runner)
@@ -79,7 +79,7 @@ bool Scene::createLevel()
 	int spitfireSize = 1;
 	for (int i = 0; i < spitfireSize; i++) {
 		Vehicle* element = (Vehicle*)createEntity("spitfire");
-		element->local_matrix.setTranslation(100, 0, 40);
+		element->local_matrix.setTranslation(200, 0, 40);
 		element->global_matrix = planet->getGlobalMatrix();
 		element->mesh->createCollisionModel();
 		spitfire.push_back(element);

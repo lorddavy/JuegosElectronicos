@@ -83,15 +83,18 @@ void Game::init(void)
 	controller.clear();
 	controller.push_back(new Controller(false));
 	controller[0]->setTarget(this->player);
-	controller[0]->setCamera(player_camera);
+	controller[0]->setCamera(player_camera);	
+	player->controller = controller[0];//Puntero a su controlador
 
 	//Spitfire
 	for (int i = 0; i < scene->spitfire.size(); i++) {
 		Controller* element = new Controller();
 		element->setTarget(scene->spitfire[i]);
 		//element->followTarget(player, Vector3(-30 + i * 15, 0, 0));
-		controller.push_back(element);
+		controller.push_back(element);		
+		scene->spitfire[i]->controller = element;//Puntero a su controlador
 	}
+
 	//DEBUG MESH (COLLISIONS)
 	/*debugEntityMesh = new EntityCollider();
 
@@ -152,6 +155,9 @@ void Game::render(void)
 	std::string impulse = "Potencia de Impulso: " + player->getImpulse() + "%";
 	drawText(5, 25, impulse, Vector3(102 / 255, 255 / 255, 102 / 255), 2);
 
+	std::string hull = "Danyos en el casco: " + player->getHull() + "%";
+	drawText(5, 45, hull, Vector3(102 / 255, 255 / 255, 102 / 255), 2);
+
 	/*glEnable(GL_BLEND);	
 	if (debugPoints.size())
 	{	
@@ -183,6 +189,8 @@ void Game::update(double seconds_elapsed)
 
 	//Rotación del planeta
 	scene->planet->local_matrix.rotateLocal(seconds_elapsed / 50, Vector3(0, 1, 0));
+
+	scene->spitfire.front()->current_velocity = 0;
 
 }
 
