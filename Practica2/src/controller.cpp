@@ -120,18 +120,22 @@ void Controller::renderDebug() {
 	glBegin(GL_LINE_LOOP);
 	glColor3f(0.2, 1, 0.2);
 
-	//Print all waypoints
-	/*for (int i = 0; i < waypoints.size(); i++) {
-		Vector3 currentVertex = waypoints[i];
-		glVertex3f(currentVertex.x, currentVertex.y, currentVertex.z);
-	}*/
-
-	//Print only next waypoint
 	if (waypoints.begin() != waypoints.end()) {
+		//Print all waypoints
+		if (1) {
+			for (int i = 0; i < waypoints.size(); i++) {
+				Vector3 currentVertex = waypoints[i];
+				glVertex3f(currentVertex.x, currentVertex.y, currentVertex.z);
+			}
+		}
+
+		//Print only next waypoint
+		glColor3f(1, 0.2, 1);
 		Vector3 currentVertex = waypoints.front();
 		glVertex3f(currentVertex.x, currentVertex.y, currentVertex.z);
 		currentVertex = target->getGlobalMatrix() * Vector3(0, 0, 0);
 		glVertex3f(currentVertex.x, currentVertex.y, currentVertex.z);
+		
 	}
 	glEnd();
 	glColor3f(1, 1, 1);

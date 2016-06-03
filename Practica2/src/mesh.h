@@ -60,6 +60,13 @@ public:
 	void createQuad(float center_x, float center_y, float w, float h, bool flip_uvs = false);
 
 	bool loadASE(const char* filename, const char* path_bin);
+
+	// loadOBJ
+	//bool loadBIN(const char* filename);
+	std::vector<std::string> tokenize(const std::string& source, const char* delimiters, bool process_strings = NULL);
+	Vector3 parseVector3(const char* text, const char separator);
+	bool loadOBJ(const char* filename, const char* path_bin);
+
 	bool writeBIN(const char * filename);
 	bool readBIN(const char * filename);
 	std::vector<float> calcBoundingBox();

@@ -444,6 +444,327 @@ bool Mesh::loadASE(const char* filename, const char* path_bin)
 	return true;
 }
 
+/*bool Mesh::loadOBJ(const char* filename, const char* path_bin) {
+	float parseTime = 0;
+	long initialTime = getTime();
+	std::string word;
+
+	vertices.clear();
+	normals.clear();
+	uvs.clear();
+	colors.clear();
+
+	TextParser t;
+	std::vector<Vector3> uniqueVertices;
+	std::vector<Vector2> textureVertices;
+
+	struct stat stbuffer;
+	stat(filename, &stbuffer);
+
+	//Creamos el Parser de la Malla
+	if (t.create(filename) == false)
+	{
+		return false;
+	}
+
+	while (!t.eof()) {
+		word = t.getword();
+		if (word == "#")
+		{
+			std::cout << "Find #" << std::endl;
+		}
+		else if (word == "V")
+		{
+			//Vertices
+			Vector3 v;
+			v.x = t.getfloat();
+			v.z = -t.getfloat();
+			v.y = t.getfloat();
+
+			uniqueVertices.push_back(v);
+
+			std::cout << "Find vertex: " << v.x << ", " << -v.z << ", " << v.y << std::endl;
+		}
+		else if (word == "VT")
+		{
+			//Texture Vertices
+			Vector2 v;
+			v.x = t.getfloat();
+			v.y = t.getfloat();
+
+			textureVertices.push_back(v);
+
+			std::cout << "Find UVs: " << v.x << ", " << v.y << std::endl;
+		}
+		else if (word == "VN")
+		{
+			//Normals
+			Vector3 v;
+			v.x = t.getfloat();
+			v.z = -t.getfloat();
+			v.y = t.getfloat();
+
+			uniqueVertices.push_back(v);
+
+			std::cout << "Find vertex: " << v.x << ", " << -v.z << ", " << v.y << std::endl;
+		}
+		else
+		{
+			std::cout << "Delete word " << word << std::endl;
+		}
+	}
+}*/
+
+/*bool Mesh::loadBIN(const char* filename) {
+	sMeshBin header;
+
+	FILE* f = fopen(filename, "rb");
+	if (f == NULL) {
+		std::cout << "loadBIN()::Error al abrir archivo" << std::endl;
+		return false;
+	}
+	fread(&header, sizeof(sMeshBin), 1, f);
+	vertices.resize(header.num_vertices);
+	fread(&vertices[0], sizeof(Vector3), header.num_vertices, f);
+	if (header.num_normals) {
+		normals.resize(header.num_normals);
+		fread(&normals[0], sizeof(Vector3), header.num_normals, f);
+	}
+	if (header.num_uvs) {
+		uvs.resize(header.num_uvs);
+		fread(&uvs[0], sizeof(Vector2), header.num_uvs, f);
+	}
+	sBounding.center = header.c;
+	sBounding.halfSize = header.hS;
+	fclose(f);
+
+	return true;
+}*/
+
+std::vector<std::string> Mesh::tokenize(const std::string& source, const char* delimiters, bool process_strings)
+{
+	std::vector<std::string> tokens;
+
+	std::string str;
+	char del_size = strlen(delimiters);
+	const char* pos = source.c_str();
+	char in_string = 0;
+	int i = 0;
+	while (*pos != 0)
+	{
+		bool split = false;
+
+		if (!process_strings || (process_strings && in_string == 0))
+		{
+			for (i = 0; i < del_size && *pos != delimiters[i]; i++);
+			if (i != del_size) split = true;
+		}
+
+		if (process_strings && (*pos == '\"' || *pos == '\''))
+		{
+			if (!str.empty() && in_string == 0) //some chars remaining
+			{
+				tokens.push_back(str);
+				str.clear();
+			}
+
+			in_string = (in_string != 0 ? 0 : *pos);
+			if (in_string == 0)
+			{
+				str += *pos;
+				split = true;
+			}
+		}
+
+		if (split)
+		{
+			if (!str.empty())
+			{
+				tokens.push_back(str);
+				str.clear();
+			}
+		}
+		else
+			str += *pos;
+		pos++;
+	}
+	if (!str.empty())
+		tokens.push_back(str);
+	return tokens;
+}
+
+Vector3 Mesh::parseVector3(const char* text, const char separator)
+{
+	int pos = 0;
+	char num[255];
+	const char* start = text;
+	const char* current = text;
+	Vector3 result;
+
+	while (1)
+	{
+		if (*current == separator || (*current == '\0' && current != text))
+		{
+			strncpy(num, start, current - start);
+			num[current - start] = '\0';
+			start = current + 1;
+			if (num[0] != 'x') //¿?
+				switch (pos)
+				{
+				case 0: result.x = (float)atof(num); break;
+				case 1: result.y = (float)atof(num); break;
+				case 2: result.z = (float)atof(num); break;
+				default: return result; break;
+				}
+
+			++pos;
+			if (*current == '\0')
+				break;
+		}
+
+		++current;
+	}
+
+	return result;
+};
+
+bool Mesh::loadOBJ(const char* filename, const char* path_bin)
+{
+	std::string bin_filename;
+	bin_filename = path_bin + std::string(filename) + std::string(".bin");
+
+	if (readBIN(bin_filename.c_str())) {
+		std::cout << "Existe BIN" << std::endl;
+		return true;
+	}
+
+	struct stat stbuffer;
+
+	FILE* f = fopen(filename, "rb");
+	if (f == NULL)
+	{
+		std::cerr << "File not found: " << filename << std::endl;
+		return false;
+	}
+
+	stat(filename, &stbuffer);
+
+	unsigned int size = stbuffer.st_size;
+	char* data = new char[size + 1];
+	fread(data, size, 1, f);
+	fclose(f);
+	data[size] = 0;
+
+	char* pos = data;
+	char line[255];
+	int i = 0;
+
+	std::vector<Vector3> indexed_positions;
+	std::vector<Vector3> indexed_normals;
+	std::vector<Vector2> indexed_uvs;
+
+	const float max_float = 10000000;
+	const float min_float = -10000000;
+
+	unsigned int vertex_i = 0;
+
+	//parse file
+	while (*pos != 0)
+	{
+		if (*pos == '\n') pos++;
+		if (*pos == '\r') pos++;
+
+		//read one line
+		i = 0;
+		while (i < 255 && pos[i] != '\n' && pos[i] != '\r' && pos[i] != 0) i++;
+		memcpy(line, pos, i);
+		line[i] = 0;
+		pos = pos + i;
+
+		//std::cout << "Line: \"" << line << "\"" << std::endl;
+		if (*line == '#' || *line == 0) continue; //comment
+
+												  //tokenize line
+		std::vector<std::string> tokens = tokenize(line, " ");
+
+		if (tokens.empty()) continue;
+
+		if (tokens[0] == "v" && tokens.size() == 4)
+		{
+			Vector3 v(atof(tokens[1].c_str()), atof(tokens[2].c_str()), atof(tokens[3].c_str()));
+			indexed_positions.push_back(v);
+		}
+		else if (tokens[0] == "vt" && tokens.size() == 4)
+		{
+			Vector2 v(atof(tokens[1].c_str()), atof(tokens[2].c_str()));
+			indexed_uvs.push_back(v);
+		}
+		else if (tokens[0] == "vn" && tokens.size() == 4)
+		{
+			Vector3 v(atof(tokens[1].c_str()), atof(tokens[2].c_str()), atof(tokens[3].c_str()));
+			indexed_normals.push_back(v);
+		}
+		else if (tokens[0] == "s") //surface? it appears one time before the faces
+		{
+			//process mesh
+			if (uvs.size() == 0 && indexed_uvs.size())
+				uvs.resize(1);
+		}
+		else if (tokens[0] == "f" && tokens.size() >= 4)
+		{
+			Vector3 v1, v2, v3;
+			v1 = parseVector3(tokens[1].c_str(), '/');
+
+			for (int iPoly = 2; iPoly < tokens.size() - 1; iPoly++)
+			{
+				v2 = parseVector3(tokens[iPoly].c_str(), '/');
+				v3 = parseVector3(tokens[iPoly + 1].c_str(), '/');
+
+				vertices.push_back(indexed_positions[unsigned int(v1.x) - 1]);
+				vertices.push_back(indexed_positions[unsigned int(v2.x) - 1]);
+				vertices.push_back(indexed_positions[unsigned int(v3.x) - 1]);
+				//triangles.push_back( VECTOR_INDICES_TYPE(vertex_i, vertex_i+1, vertex_i+2) ); //not needed
+				vertex_i += 3;
+
+				if (indexed_uvs.size() > 0)
+				{
+					uvs.push_back(indexed_uvs[unsigned int(v1.y) - 1]);
+					uvs.push_back(indexed_uvs[unsigned int(v2.y) - 1]);
+					uvs.push_back(indexed_uvs[unsigned int(v3.y) - 1]);
+				}
+
+				if (indexed_normals.size() > 0)
+				{
+					normals.push_back(indexed_normals[unsigned int(v1.z) - 1]);
+					normals.push_back(indexed_normals[unsigned int(v2.z) - 1]);
+					normals.push_back(indexed_normals[unsigned int(v3.z) - 1]);
+				}
+			}
+		}
+	}
+
+	Vector3 max = Vector3(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+	Vector3 min = Vector3(FLT_MAX, FLT_MAX, FLT_MAX);
+
+	for (int i = 0; i < vertices.size(); i++) {
+		Vector3 v = vertices[i];
+		if (v.x > max.x) { max.x = v.x; }
+		if (v.y > max.y) { max.y = v.y; }
+		if (v.z > max.z) { max.z = v.z; }
+		if (v.x < min.x) { min.x = v.x; }
+		if (v.y < min.y) { min.y = v.y; }
+		if (v.z < min.z) { min.z = v.z; }
+	}
+
+	sBounding boundingBox;
+	boundingBox.center = (max + min) * 0.5;
+	boundingBox.half_size = max - boundingBox.center;
+	std::cout << "half_size = " << boundingBox.half_size.length() << std::endl;
+
+	writeBIN(bin_filename.c_str());
+	return true;
+}
+
 bool Mesh::writeBIN(const char * pathname)
 {
 	
@@ -619,5 +940,3 @@ bool Mesh::testIntSphereMesh(Matrix44 model, Vector3 origin, float radius)
 
 	return false;
 }
-
-

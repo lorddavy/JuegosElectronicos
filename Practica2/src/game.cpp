@@ -106,6 +106,11 @@ void Game::init(void)
 	//hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
 
+	Mesh* testMesh = new Mesh();
+	testMesh->loadOBJ("data/objtest/test.obj", "data/bin/test.obj.bin");
+	//system("pause");
+
+
 }
 
 //what to do when the image has to be draw

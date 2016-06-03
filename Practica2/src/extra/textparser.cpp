@@ -1,5 +1,4 @@
 #include "textparser.h"
-
 //#include "includes.h"
 
 #include <sys/stat.h>
