@@ -60,7 +60,7 @@ public:
 	void render(Camera* camera);
 	void update(float dt);
 
-	void setup(const char* path, const char* mesh, const char* texture, const char* mesh_low = NULL);
+	void setup(const char* path, const char* mesh, const char* texture = NULL, const char* mesh_low = NULL);
 };
 
 class EntityCollider : public EntityMesh {

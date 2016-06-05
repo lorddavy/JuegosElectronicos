@@ -26,6 +26,8 @@ CollisionManager* collisionManager = NULL;
 //std::vector<Vector3> debugPoints;
 EntityCollider* debugEntityMesh;
 
+EntityMesh* testMesh;
+
 Game::Game(SDL_Window* window)
 {
 	this->window = window;
@@ -109,11 +111,10 @@ void Game::init(void)
 	//hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
 
-	Mesh* testMesh = new Mesh();
-	testMesh->loadOBJ("data/objtest/test.obj", "data/bin/test.obj.bin");
-	//system("pause");
-
-
+	// Test function loadOBJ
+	/*testMesh = new EntityMesh();
+	testMesh->mesh->loadOBJ("data/objtest/test.obj", "data/bin/");
+	scene->root->addEntity(testMesh);*/
 }
 
 //what to do when the image has to be draw
