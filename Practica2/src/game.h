@@ -45,6 +45,10 @@ public:
 	Camera* free_camera;
 	Camera* player_camera;
 
+	//Etapas del juego
+	char* currentStage;
+	void nextStage();
+
 	//Entidad del jugador
 	Vehicle* player;
 
@@ -52,6 +56,8 @@ public:
 
 	Game(SDL_Window* window);
 	void init( void );
+	void end(void);
+	void restart(void);
 	void render( void );
 	void update( double dt );
 	void renderGUI();

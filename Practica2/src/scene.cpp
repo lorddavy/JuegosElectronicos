@@ -117,6 +117,7 @@ void Scene::clearRemovedEntities() {
 		Entity* e = root->toDestroy.back();
 		root->toDestroy.pop_back();
 		delete e;
+		e = NULL;
 	}
 }
 

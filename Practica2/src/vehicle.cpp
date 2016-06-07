@@ -110,7 +110,9 @@ void Vehicle::update(float dt)
 	{
 		Game* game = Game::getInstance();
 		
-		Entity::destroyChild(this, 0);
+		if (game->player == this) game->end(); //Fin de juego
+
+		Entity::destroyChild(this, 0.5);
 
 		auto it = find(EntityCollider::dynamic_entities.begin(), EntityCollider::dynamic_entities.end(), this);
 		EntityCollider::dynamic_entities.erase(it);
@@ -118,7 +120,6 @@ void Vehicle::update(float dt)
 		auto it2 = find(game->controller.begin(), game->controller.end(), this->controller);
 		game->controller.erase(it2);
 	}
-
 }
 
 //Getters del vehiculo
