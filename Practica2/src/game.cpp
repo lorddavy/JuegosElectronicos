@@ -75,31 +75,13 @@ void Game::init(void)
 
 	//free_camera = camera;
 
-	scene->loadLevel("data/scenes/space1.txt");
-
-	player = scene->runner;
-
 	//Player_camera
 	player_camera = new Camera();
 	player_camera->setPerspective(70, window_width / (float)window_height, 0.1, 10000);
-	player_camera->lookAt(player->getGlobalMatrix() * Vector3(0, 2, -5), player->getGlobalMatrix() * Vector3(0, 0, 20), Vector3(0, 1, 0));
+	
 	current_camera = player_camera;
-
-	//Player controller
-	controller.clear();
-	controller.push_back(new Controller(false));
-	controller[0]->setTarget(this->player);
-	controller[0]->setCamera(player_camera);
-	player->controller = controller[0];//Puntero a su controlador
-
-	//Enemies Controllers
-	for (int i = 0; i < scene->enemies.size(); i++) {
-		Controller* element = new Controller();
-		element->setTarget(scene->enemies[i]);
-		//element->followTarget(player, Vector3(-30 + i * 15, 0, 0));
-		controller.push_back(element);
-		scene->enemies[i]->controller = element;//Puntero a su controlador
-	}
+	//Cargamos el juego
+	//load();
 
 	//DEBUG MESH (COLLISIONS)
 	/*debugEntityMesh = new EntityCollider();
@@ -132,9 +114,35 @@ void Game::end(void)
 }
 
 //Reinicio del juego
-void Game::restart(void)
+void Game::load(void)
 {
-	//Seteamos a los valores iniciales
+	//Seteamos a los valores iniciales de la escena
+	scene->loadLevel("data/scenes/space1.txt");
+	player = scene->runner;
+	player_camera->lookAt(player->getGlobalMatrix() * Vector3(0, 2, -5), player->getGlobalMatrix() * Vector3(0, 0, 20), Vector3(0, 1, 0));
+	current_camera = player_camera;
+
+	for (auto it = controller.begin(); it != controller.end(); ++it)
+	{
+		delete *it;
+	}
+	controller.clear();
+
+	//Player controller	
+
+	controller.push_back(new Controller(false));
+	controller[0]->setTarget(this->player);
+	controller[0]->setCamera(player_camera);
+	player->controller = controller[0];//Puntero a su controlador
+
+	//Enemies Controllers
+	for (int i = 0; i < scene->enemies.size(); i++) {
+		Controller* element = new Controller();
+		element->setTarget(scene->enemies[i]);
+		//element->followTarget(player, Vector3(-30 + i * 15, 0, 0));
+		controller.push_back(element);
+		scene->enemies[i]->controller = element;//Puntero a su controlador
+	}
 
 	/*free_camera->setPerspective(70, window_width / (float)window_height, 0.1, 10000);
 	free_camera->lookAt(Vector3(0, 25, 25), Vector3(0, 0, 0), Vector3(0, 1, 0));
@@ -148,12 +156,12 @@ void Game::restart(void)
 	controller[0]->setTarget(this->player);
 	controller[0]->setCamera(player_camera);
 	player->controller = controller[0];
-	for (int i = 0; i < scene->spitfire.size(); i++) {
+	for (int i = 0; i < scene->enemies.size(); i++) {
 	Controller* element = new Controller();
-	element->setTarget(scene->spitfire[i]);
+	element->setTarget(scene->enemies[i]);
 	//element->followTarget(player, Vector3(-30 + i * 15, 0, 0));
 	controller.push_back(element);
-	scene->spitfire[i]->controller = element;
+	scene->enemies[i]->controller = element;
 	}*/
 }
 
@@ -297,6 +305,12 @@ void Game::update(double seconds_elapsed)
 
 		scene->enemies.front()->current_velocity = 0;
 	}
+	if (currentStage == "load")
+	{
+		//Cargamos el juego
+		load();
+		currentStage = "game";
+	}
 }
 
 //Keyboard event handler (sync input)
@@ -308,7 +322,7 @@ void Game::onKeyPressed(SDL_KeyboardEvent event)
 		switch (event.keysym.sym)
 		{
 		case SDLK_ESCAPE: exit(0);									//ESC key, kill the app
-		default: currentStage = "game";
+		default: currentStage = "load";
 
 		}
 	}
