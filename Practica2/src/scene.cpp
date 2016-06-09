@@ -24,7 +24,7 @@ Scene::Scene()
 	meshManager = NULL;
 	textureManager = NULL;
 	runner = NULL;
-	spitfire.clear();
+	enemies.clear();
 }
 
 Scene::~Scene()
@@ -68,21 +68,21 @@ bool Scene::createLevel()
 
 	//Nave (runner)
 	runner = (Vehicle*)createEntity("runner");
-	runner->local_matrix.setTranslation(0, 0, 40);
+	runner->local_matrix.setTranslation(0, -10, 60);
 	runner->local_matrix.rotate(270 * DEG2RAD, Vector3(0, 1, 0));
 	runner->mesh->createCollisionModel();
 	//Lo agregamos a el vector de EntityCollider y al arbol de escena
 	EntityCollider::dynamic_entities.push_back(runner);
 	root->addEntity(runner);
 
-	//Spitfire
-	int spitfireSize = 1;
-	for (int i = 0; i < spitfireSize; i++) {
+	//Enemies
+	int enemiesSize = 1;
+	for (int i = 0; i < enemiesSize; i++) {
 		Vehicle* element = (Vehicle*)createEntity("spitfire");
 		element->local_matrix.setTranslation(200, 0, 40);
 		element->global_matrix = planet->getGlobalMatrix();
 		element->mesh->createCollisionModel();
-		spitfire.push_back(element);
+		enemies.push_back(element);
 		//Lo agregamos a el vector de EntityCollider y al arbol de escena
 		EntityCollider::dynamic_entities.push_back(element);
 		root->addEntity(element);
@@ -107,18 +107,19 @@ bool Scene::loadLevel(const char* filename)
 		ss << "Level " << filename << " doesn't exist!";
 		std::cout << ss.str() << std::endl;
 	}
-	
+
 	return false;
 }
 
 void Scene::clearRemovedEntities() {
 	//Borramos el contenedor con todo lo que se quiere destruir
-	while (root->toDestroy.size() != 0) {
-		Entity* e = root->toDestroy.back();
-		root->toDestroy.pop_back();
-		delete e;
-		e = NULL;
+	std::vector<Entity*>::iterator it;
+
+	for (auto it = root->toDestroy.begin(); it != root->toDestroy.end(); ++it)
+	{
+		delete *it;
 	}
+	root->toDestroy.clear();
 }
 
 //Factory de entidades SCENE

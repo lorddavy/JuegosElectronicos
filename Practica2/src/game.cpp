@@ -55,14 +55,14 @@ void Game::init(void)
 	glEnable(GL_CULL_FACE); //render both sides of every triangle
 	glEnable(GL_DEPTH_TEST); //check the occlusions using the Z buffer
 
-	//Free camera
+							 //Free camera
 	free_camera = new Camera();
 	free_camera->setPerspective(70, window_width / (float)window_height, 0.1, 10000);
 	free_camera->lookAt(Vector3(0, 25, 25), Vector3(0, 0, 0), Vector3(0, 1, 0));
 	//current_camera = free_camera;
 
 	//Etapa inicial
-	currentStage = "";
+	currentStage = "title";
 
 	scene = Scene::getInstance();
 
@@ -89,16 +89,16 @@ void Game::init(void)
 	controller.clear();
 	controller.push_back(new Controller(false));
 	controller[0]->setTarget(this->player);
-	controller[0]->setCamera(player_camera);	
+	controller[0]->setCamera(player_camera);
 	player->controller = controller[0];//Puntero a su controlador
 
-	//Spitfire
-	for (int i = 0; i < scene->spitfire.size(); i++) {
+	//Enemies Controllers
+	for (int i = 0; i < scene->enemies.size(); i++) {
 		Controller* element = new Controller();
-		element->setTarget(scene->spitfire[i]);
+		element->setTarget(scene->enemies[i]);
 		//element->followTarget(player, Vector3(-30 + i * 15, 0, 0));
-		controller.push_back(element);		
-		scene->spitfire[i]->controller = element;//Puntero a su controlador
+		controller.push_back(element);
+		scene->enemies[i]->controller = element;//Puntero a su controlador
 	}
 
 	//DEBUG MESH (COLLISIONS)
@@ -115,18 +115,20 @@ void Game::init(void)
 	//hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
 
-	// Test function loadOBJ
-	/*testMesh = new EntityMesh();
-	testMesh->mesh->loadOBJ("data/objtest/test.obj", "data/bin/");
-	scene->root->addEntity(testMesh);*/
+								   // Test function loadOBJ
+								   /*testMesh = new EntityMesh();
+								   testMesh->mesh->loadOBJ("data/objtest/test.obj", "data/bin/");
+								   scene->root->addEntity(testMesh);*/
 }
 
 //Final de juego
 void Game::end(void)
 {
 	//Acabamos con lo que no necesitamos
-	current_camera = free_camera;	
+	current_camera = free_camera;
 	currentStage = "defeat";
+	scene = Scene::getInstance();
+	//delete scene;
 }
 
 //Reinicio del juego
@@ -147,75 +149,83 @@ void Game::restart(void)
 	controller[0]->setCamera(player_camera);
 	player->controller = controller[0];
 	for (int i = 0; i < scene->spitfire.size(); i++) {
-		Controller* element = new Controller();
-		element->setTarget(scene->spitfire[i]);
-		//element->followTarget(player, Vector3(-30 + i * 15, 0, 0));
-		controller.push_back(element);
-		scene->spitfire[i]->controller = element;
+	Controller* element = new Controller();
+	element->setTarget(scene->spitfire[i]);
+	//element->followTarget(player, Vector3(-30 + i * 15, 0, 0));
+	controller.push_back(element);
+	scene->spitfire[i]->controller = element;
 	}*/
 }
 
 //what to do when the image has to be draw
 void Game::render(void)
 {
-	glClearColor(1.0, 0.0, 0.0, 1.0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	//set the clear color (the background color)
-	glClearColor(0.0, 0.0, 0.0, 1.0);
-
-	// Clear the window and the depth buffer
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		
-	//Put the camera matrices on the stack of OpenGL (only for fixed rendering)
-	current_camera->set();
-
-	//Draw out world
-	glDisable(GL_DEPTH_TEST);
-	scene->skybox->local_matrix.setTranslation(current_camera->eye.x, current_camera->eye.y, current_camera->eye.z);
-	scene->skybox->render(current_camera);
-	glEnable(GL_DEPTH_TEST);
-
-	glClear(GL_DEPTH_BUFFER_BIT);
-
-	drawGrid(500); //background grid
-
-	for (int i = 0; i < controller.size(); i++) {
-		controller[i]->renderDebug();
-	}
-
-	scene->root->render(current_camera);
-	shotManager->render(current_camera);
-
-	if (currentStage == "defeat")
+	if (currentStage == "title")
 	{
-		//Dibujamos texto en pantalla
-		drawText(0.015*window_width, 0.025*window_height, "GAME OVER", Vector3(1, 0, 0), 16);
-	}else{
-		//Dibujamos texto en pantalla
-		drawText(5, 5, "Outer Space", Vector3(1, 0, 0), 3);
-
-		std::string impulse = "Impulse power: " + player->getImpulse() + "%";
-		drawText(5, 25, impulse, Vector3(102 / 255, 255 / 255, 102 / 255), 2);
-
-		std::string hull = "Hull damage: " + player->getHull() + "%";
-		drawText(5, 45, hull, Vector3(102 / 255, 255 / 255, 102 / 255), 2);
 	}
+	else
+	{
+		glClearColor(1.0, 0.0, 0.0, 1.0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		//set the clear color (the background color)
+		glClearColor(0.0, 0.0, 0.0, 1.0);
+
+		// Clear the window and the depth buffer
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		//Put the camera matrices on the stack of OpenGL (only for fixed rendering)
+		current_camera->set();
+
+		//Draw out world
+		glDisable(GL_DEPTH_TEST);
+		scene->skybox->local_matrix.setTranslation(current_camera->eye.x, current_camera->eye.y, current_camera->eye.z);
+		scene->skybox->render(current_camera);
+		glEnable(GL_DEPTH_TEST);
+
+		glClear(GL_DEPTH_BUFFER_BIT);
+
+		drawGrid(500); //background grid
+
+		for (int i = 0; i < controller.size(); i++) {
+			controller[i]->renderDebug();
+		}
+
+		scene->root->render(current_camera);
+		shotManager->render(current_camera);
+
+		if (currentStage == "game")
+		{
+			//Dibujamos texto en pantalla
+			drawText(5, 5, "Outer Space", Vector3(1, 0, 0), 3);
+
+			std::string impulse = "Impulse power: " + player->getImpulse() + "%";
+			drawText(5, 25, impulse, Vector3(102 / 255, 255 / 255, 102 / 255), 2);
+
+			std::string hull = "Hull damage: " + player->getHull() + "%";
+			drawText(5, 45, hull, Vector3(102 / 255, 255 / 255, 102 / 255), 2);
+		}
+
+		if (currentStage == "defeat")
+		{
+			//Dibujamos texto en pantalla
+			drawText(0.015*window_width, 0.025*window_height, "GAME OVER", Vector3(1, 0, 0), 16);
+		}
+	}
 
 	//Función para renderizar la interfaz
 	renderGUI();
 
-	/*glEnable(GL_BLEND);	
+	/*glEnable(GL_BLEND);
 	if (debugPoints.size())
-	{	
- 		for (int i = 0; i < debugPoints.size(); i++)
-		{
-			
-		}
+	{
+	for (int i = 0; i < debugPoints.size(); i++)
+	{
+
+	}
 	}
 	glDisable(GL_BLEND);
-	*/		
+	*/
 
 	glColor3f(1, 1, 1);
 	//swap between front buffer and back buffer
@@ -269,38 +279,70 @@ void Game::renderGUI()
 //Actualizamos los datos del juego
 void Game::update(double seconds_elapsed)
 {
-	//Updates
-	scene->root->update(seconds_elapsed);
-	inputManager->update(seconds_elapsed);
-	shotManager->update(seconds_elapsed*time);
+	if (currentStage == "game" || currentStage == "defeat")
+	{
+		//Updates
+		scene->root->update(seconds_elapsed);
+		inputManager->update(seconds_elapsed);
+		shotManager->update(seconds_elapsed*time);
 
-	//Comprobamos colisiones
-	collisionManager->check();
+		//Comprobamos colisiones
+		collisionManager->check();
 
-	//Borramos el contenedor con todo lo que se quiere destruir
-	scene->clearRemovedEntities();	
+		//Borramos el contenedor con todo lo que se quiere destruir
+		scene->clearRemovedEntities();
 
-	//Rotación del planeta
-	scene->planet->local_matrix.rotateLocal(seconds_elapsed / 50, Vector3(0, 1, 0));
+		//Rotación del planeta
+		scene->planet->local_matrix.rotateLocal(seconds_elapsed / 50, Vector3(0, 1, 0));
 
-	scene->spitfire.front()->current_velocity = 0;
-
+		scene->enemies.front()->current_velocity = 0;
+	}
 }
 
 //Keyboard event handler (sync input)
 void Game::onKeyPressed(SDL_KeyboardEvent event)
 {
-	switch (event.keysym.sym)
+
+	if (currentStage == "title")
 	{
-	case SDLK_ESCAPE: exit(0); //ESC key, kill the app
-	case SDLK_TAB: //Change free camera-player camera
-		if (current_camera == free_camera)
-			current_camera = player_camera;
-		else if (current_camera == player_camera){
-			free_camera->lookAt(player->getGlobalMatrix() * Vector3(0, 15, -35),
-				player->getGlobalMatrix() * Vector3(0, 0, 20),
-				player->getGlobalMatrix().rotateVector(Vector3(0, 1, 0)));
-			current_camera = free_camera;
+		switch (event.keysym.sym)
+		{
+		case SDLK_ESCAPE: exit(0);									//ESC key, kill the app
+		default: currentStage = "game";
+
+		}
+	}
+	if (currentStage == "defeat")
+	{
+		switch (event.keysym.sym)
+		{
+		case SDLK_ESCAPE: currentStage = "title";					//ESC key, kill the app
+		}
+	}
+	if (currentStage == "menu")
+	{
+		switch (event.keysym.sym)
+		{
+		case SDLK_ESCAPE: exit(0);									//ESC key, kill the app
+		default: currentStage = "game";
+		}
+	}
+	if (currentStage == "game")
+	{
+		switch (event.keysym.sym)
+		{
+			/*case SDLK_ESCAPE:
+			if(currentStage == "game") currentStage = "menu";		//ESC key, opens the menu
+			if(currentStage == "menu") currentStage = "game";*/
+		case SDLK_TAB:												//Change free camera-player camera
+			if (current_camera == free_camera)
+				current_camera = player_camera;
+			else if (current_camera == player_camera) {
+				free_camera->lookAt(player->getGlobalMatrix() * Vector3(0, 15, -35),
+					player->getGlobalMatrix() * Vector3(0, 0, 20),
+					player->getGlobalMatrix().rotateVector(Vector3(0, 1, 0)));
+				current_camera = free_camera;
+			}
 		}
 	}
 }
