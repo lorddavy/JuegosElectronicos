@@ -68,33 +68,36 @@ void Vehicle::stop()
 //Método de disparo del vehiculo
 void Vehicle::shoot(char type)
 {
-	ShotManager* shotManager = ShotManager::getInstance();
-	//Disparo tipo beam
-	if (type == 'b') {
-
-		Matrix44 global = getGlobalMatrix();
-		Vector3 origin = global * Vector3(0, 0, 10);
-
-		Vector3 end = global * Vector3(0, 0, 500);
-		Vector3 vel = global.rotateVector(Vector3(0, 0, 0));
-
-		shotManager->createShot('b', origin, end, vel, 10, this);
-	}
-	//disparo tipo laser
-	if (type == 'l')
+	if (hull > 0)
 	{
-		Matrix44 global = getGlobalMatrix();
-		Vector3 origin = global * Vector3(13, 0, -12);
-		Vector3 end = global * Vector3(13, 0, 20);
+		ShotManager* shotManager = ShotManager::getInstance();
+		//Disparo tipo beam
+		if (type == 'b') {
 
-		Vector3 vel = global.rotateVector(Vector3(0, 0, 15));
+			Matrix44 global = getGlobalMatrix();
+			Vector3 origin = global * Vector3(0, 0, 10);
 
-		shotManager->createShot('l', origin, end, vel, 45, this);
+			Vector3 end = global * Vector3(0, 0, 500);
+			Vector3 vel = global.rotateVector(Vector3(0, 0, 0));
 
-		origin = global * Vector3(-13, 0, -12);
-		end = global * Vector3(-13, 0, 20);
+			shotManager->createShot('b', origin, end, vel, 10, this);
+		}
+		//disparo tipo laser
+		if (type == 'l')
+		{
+			Matrix44 global = getGlobalMatrix();
+			Vector3 origin = global * Vector3(13, 0, -12);
+			Vector3 end = global * Vector3(13, 0, 20);
 
-		shotManager->createShot('l', origin, end, vel, 45, this);
+			Vector3 vel = global.rotateVector(Vector3(0, 0, 15));
+
+			shotManager->createShot('l', origin, end, vel, 45, this);
+
+			origin = global * Vector3(-13, 0, -12);
+			end = global * Vector3(-13, 0, 20);
+
+			shotManager->createShot('l', origin, end, vel, 45, this);
+		}
 	}
 }
 //Método update del vehiculo

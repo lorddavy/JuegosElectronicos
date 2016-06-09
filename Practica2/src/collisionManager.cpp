@@ -26,7 +26,7 @@ void CollisionManager::check()
 
 			if (shot.active) {
 				//Miramos si hay colisión con disparo activo
-				if (EntityCollider::static_entities[i]->mesh->testIntRayMesh(EntityCollider::static_entities[i]->getGlobalMatrix(), shot.origin_position, shot.end_position - shot.origin_position))
+				if (EntityCollider::static_entities[i]->mesh->testIntRayMesh(EntityCollider::static_entities[i]->getGlobalMatrix(), shot.origin_position, shot.end_position - shot.origin_position, false, 0, 2))
 				{
 					//Tomamos punto y triangulos de colision
 					float collisionPoint[3];
@@ -36,6 +36,7 @@ void CollisionManager::check()
 					
 					//Invocamos respuesta al evento
 					EntityCollider::static_entities[i]->onShotCollision(collisionPoint, t1, t2);
+					shot.ttl = 0;
 				}
 			}
 		}
@@ -47,8 +48,8 @@ void CollisionManager::check()
 		//Tomamos los necesario para construir la esfera
 		Matrix44 globalMatrix = EntityCollider::dynamic_entities[i]->getGlobalMatrix();
 		Vector3 center = EntityCollider::dynamic_entities[i]->mesh->boundingBox.center;
-		float radius = max(max(EntityCollider::dynamic_entities[i]->mesh->boundingBox.half_size.x, EntityCollider::dynamic_entities[i]->mesh->boundingBox.half_size.y), EntityCollider::dynamic_entities[i]->mesh->boundingBox.half_size.z);
-		radius *= 0.5;
+		float radius = min(min(EntityCollider::dynamic_entities[i]->mesh->boundingBox.half_size.x, EntityCollider::dynamic_entities[i]->mesh->boundingBox.half_size.y), EntityCollider::dynamic_entities[i]->mesh->boundingBox.half_size.z);
+		radius *= 1.2;
 		//Colisiones entre entidades dinamicas y disparos
 		for (int j = 1; j < shotManager->getMaxShots(); ++j)
 		{
@@ -56,7 +57,7 @@ void CollisionManager::check()
 
 			if (shot.active) {
 				//Miramos si hay colisión con disparo activo
-				if (EntityCollider::dynamic_entities[i]->mesh->testIntRayMesh(EntityCollider::dynamic_entities[i]->getGlobalMatrix(), shot.origin_position, shot.end_position - shot.origin_position))
+				if (EntityCollider::dynamic_entities[i]->mesh->testIntRayMesh(EntityCollider::dynamic_entities[i]->getGlobalMatrix(), shot.origin_position, shot.end_position - shot.origin_position, false, 0, 2))
 				{
 					//Tomamos punto y triangulos de colision
 					float collisionPoint[3];
@@ -66,6 +67,7 @@ void CollisionManager::check()
 
 					//Invocamos respuesta al evento
 					EntityCollider::dynamic_entities[i]->onShotCollision(collisionPoint, t1, t2);
+					shot.ttl = 0;
 				}
 			}
 		}

@@ -24,7 +24,6 @@ ShotManager* shotManager = NULL;
 CollisionManager* collisionManager = NULL;
 
 //DEBUG
-//std::vector<Vector3> debugPoints;
 EntityCollider* debugEntityMesh;
 EntityMesh* testMesh;
 
@@ -224,17 +223,6 @@ void Game::render(void)
 	//Función para renderizar la interfaz
 	renderGUI();
 
-	/*glEnable(GL_BLEND);
-	if (debugPoints.size())
-	{
-	for (int i = 0; i < debugPoints.size(); i++)
-	{
-
-	}
-	}
-	glDisable(GL_BLEND);
-	*/
-
 	glColor3f(1, 1, 1);
 	//swap between front buffer and back buffer
 	SDL_GL_SwapWindow(this->window);
@@ -243,8 +231,14 @@ void Game::render(void)
 //Renderizado de la interfaz
 void Game::renderGUI()
 {
-	if (currentStage == "title")
+	if (currentStage == "title" || currentStage == "load")
 	{
+		char* texFile = "";
+		if (currentStage == "title")
+			texFile = "portada.tga";
+		if (currentStage == "load")
+			texFile = "loading.tga";
+
 		glDisable(GL_CULL_FACE);
 		glDisable(GL_DEPTH_TEST);
 
@@ -255,7 +249,7 @@ void Game::renderGUI()
 		Mesh quad;
 		quad.createQuad(window_width / 2, window_height / 2, window_width, window_height, true);
 
-		Texture* tex = scene->textureManager->getTexture("data/hud/", "portada.tga");
+		Texture* tex = scene->textureManager->getTexture("data/hud/", texFile);
 
 		glEnable(GL_BLEND);
 		tex->bind();
@@ -287,6 +281,13 @@ void Game::renderGUI()
 //Actualizamos los datos del juego
 void Game::update(double seconds_elapsed)
 {
+	if (currentStage == "load")
+	{
+		//Cargamos el juego
+		renderGUI();
+		load();
+		currentStage = "game";
+	}
 	if (currentStage == "game" || currentStage == "defeat")
 	{
 		//Updates
@@ -297,20 +298,14 @@ void Game::update(double seconds_elapsed)
 		//Comprobamos colisiones
 		collisionManager->check();
 
-		//Borramos el contenedor con todo lo que se quiere destruir
-		scene->clearRemovedEntities();
-
 		//Rotación del planeta
 		scene->planet->local_matrix.rotateLocal(seconds_elapsed / 50, Vector3(0, 1, 0));
 
 		scene->enemies.front()->current_velocity = 0;
 	}
-	if (currentStage == "load")
-	{
-		//Cargamos el juego
-		load();
-		currentStage = "game";
-	}
+
+	//Borramos el contenedor con todo lo que se quiere destruir
+	scene->clearRemovedEntities();
 }
 
 //Keyboard event handler (sync input)
@@ -323,7 +318,6 @@ void Game::onKeyPressed(SDL_KeyboardEvent event)
 		{
 		case SDLK_ESCAPE: exit(0);									//ESC key, kill the app
 		default: currentStage = "load";
-
 		}
 	}
 	if (currentStage == "defeat")

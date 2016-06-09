@@ -925,7 +925,7 @@ bool Mesh::testIntRayMesh(Matrix44 model, Vector3 start, Vector3 front, bool clo
 {
 	collision_model->setTransform(model.m);
 	
-	if (collision_model->rayCollision(start.v, front.v)) return true;
+	if (collision_model->rayCollision(start.v, front.v, closest, min, max)) return true;
 	return false;
 }
 

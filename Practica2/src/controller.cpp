@@ -59,7 +59,7 @@ void Controller::update(double dt) {
 			if (keystate[SDL_SCANCODE_X]) target->stop();
 			//Shooting Beam
 			if (keystate[SDL_SCANCODE_SPACE]) {
-				target->shoot('b');
+				//target->shoot('b');
 				target->shoot('l');
 			}
 

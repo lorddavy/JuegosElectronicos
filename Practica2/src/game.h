@@ -47,7 +47,6 @@ public:
 
 	//Etapas del juego
 	char* currentStage;
-	void nextStage();
 
 	//Entidad del jugador
 	Vehicle* player;

@@ -10,7 +10,7 @@
 
 class ShotManager{
 public:
-	Shot shots[MAX_SHOTS]; //std::vector<Bullet*>;
+	Shot shots[MAX_SHOTS];
 
 	static ShotManager* getInstance() {
 		if (instance == NULL)
