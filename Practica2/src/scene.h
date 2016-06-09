@@ -24,7 +24,7 @@ public:
 	EntityCollider* planet;
 	EntityCollider* station;
 	Vehicle* runner;
-	std::vector<Vehicle*> spitfire;
+	std::vector<Vehicle*> enemies;
 
 	static Scene* getInstance() {
 		if (instance == NULL)

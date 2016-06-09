@@ -152,12 +152,12 @@ std::string Vehicle::getHull()
 //Respuesta eventos de colisión
 void Vehicle::onShotCollision(float collisionPoint[3], float t1[9], float t2[9])
 {
-	hull -= 10;
+	hull -= 20;
 	std::cout << "Colisión en: " << collisionPoint[0] << ", " << collisionPoint[1] << ", " << collisionPoint[2] << std::endl;
 }
 void Vehicle::onEntityCollision(EntityCollider* entity, float collisionPoint[3], float t1[9], float t2[9])
 {
-	hull -= 1;
+	hull -= 10;
 	this->stop();
 	std::cout << "Colisión en: " << collisionPoint[0] << ", " << collisionPoint[1] << ", " << collisionPoint[2] << std::endl;
 }
