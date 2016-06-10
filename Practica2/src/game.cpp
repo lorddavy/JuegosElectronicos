@@ -54,14 +54,18 @@ void Game::init(void)
 	glEnable(GL_CULL_FACE); //render both sides of every triangle
 	glEnable(GL_DEPTH_TEST); //check the occlusions using the Z buffer
 
-							 //Free camera
+	//Free camera
 	free_camera = new Camera();
 	free_camera->setPerspective(70, window_width / (float)window_height, 0.1, 10000);
 	free_camera->lookAt(Vector3(0, 25, 25), Vector3(0, 0, 0), Vector3(0, 1, 0));
-	//current_camera = free_camera;
 
-	//Etapa inicial
-	currentStage = "title";
+	//2D camera
+	cam2D = new Camera();
+	cam2D->setOrthographic(0, window_width, window_height, 0, -1, 1);
+
+	//Player_camera
+	player_camera = new Camera();
+	player_camera->setPerspective(70, window_width / (float)window_height, 0.1, 10000);
 
 	scene = Scene::getInstance();
 
@@ -72,15 +76,10 @@ void Game::init(void)
 	shotManager = ShotManager::getInstance();
 	collisionManager = CollisionManager::getInstance();
 
-	//free_camera = camera;
-
-	//Player_camera
-	player_camera = new Camera();
-	player_camera->setPerspective(70, window_width / (float)window_height, 0.1, 10000);
-	
+	//Etapa inicial
+	currentStage = "title";
+		
 	current_camera = player_camera;
-	//Cargamos el juego
-	//load();
 
 	//DEBUG MESH (COLLISIONS)
 	/*debugEntityMesh = new EntityCollider();
@@ -167,10 +166,7 @@ void Game::load(void)
 //what to do when the image has to be draw
 void Game::render(void)
 {
-	if (currentStage == "title")
-	{
-	}
-	else
+	if (currentStage == "game" || currentStage == "defeat")
 	{
 		glClearColor(1.0, 0.0, 0.0, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -192,7 +188,7 @@ void Game::render(void)
 
 		glClear(GL_DEPTH_BUFFER_BIT);
 
-		drawGrid(500); //background grid
+		//drawGrid(500); //background grid
 
 		for (int i = 0; i < controller.size(); i++) {
 			controller[i]->renderDebug();
@@ -242,18 +238,16 @@ void Game::renderGUI()
 		glDisable(GL_CULL_FACE);
 		glDisable(GL_DEPTH_TEST);
 
-		Camera cam2D;
-		cam2D.setOrthographic(0, window_width, window_height, 0, -1, 1);
-		cam2D.set();
+		cam2D->set();
 
-		Mesh quad;
-		quad.createQuad(window_width / 2, window_height / 2, window_width, window_height, true);
+		Mesh hud;
+		hud.createQuad(window_width / 2, window_height / 2, window_width, window_height, true);
 
 		Texture* tex = scene->textureManager->getTexture("data/hud/", texFile);
 
 		glEnable(GL_BLEND);
 		tex->bind();
-		quad.render(GL_TRIANGLES);
+		hud.render(GL_TRIANGLES);
 		tex->unbind();
 		glDisable(GL_BLEND);
 	}
@@ -281,13 +275,6 @@ void Game::renderGUI()
 //Actualizamos los datos del juego
 void Game::update(double seconds_elapsed)
 {
-	if (currentStage == "load")
-	{
-		//Cargamos el juego
-		renderGUI();
-		load();
-		currentStage = "game";
-	}
 	if (currentStage == "game" || currentStage == "defeat")
 	{
 		//Updates
@@ -299,9 +286,22 @@ void Game::update(double seconds_elapsed)
 		collisionManager->check();
 
 		//Rotación del planeta
-		scene->planet->local_matrix.rotateLocal(seconds_elapsed / 50, Vector3(0, 1, 0));
+		if (scene->planet != NULL)
+		{
+			scene->planet->local_matrix.rotateLocal(seconds_elapsed / 100, Vector3(0, 1, 0));
+		}
 
-		scene->enemies.front()->current_velocity = 0;
+		if (scene->enemies.size() != 0)
+		{
+			scene->enemies.front()->current_velocity = 0;
+		}
+	}
+	else if (currentStage == "load")
+	{
+		//Cargamos el juego
+		renderGUI();
+		load();
+		currentStage = "game";
 	}
 
 	//Borramos el contenedor con todo lo que se quiere destruir
@@ -312,29 +312,6 @@ void Game::update(double seconds_elapsed)
 void Game::onKeyPressed(SDL_KeyboardEvent event)
 {
 
-	if (currentStage == "title")
-	{
-		switch (event.keysym.sym)
-		{
-		case SDLK_ESCAPE: exit(0);									//ESC key, kill the app
-		default: currentStage = "load";
-		}
-	}
-	if (currentStage == "defeat")
-	{
-		switch (event.keysym.sym)
-		{
-		case SDLK_ESCAPE: currentStage = "title";					//ESC key, kill the app
-		}
-	}
-	if (currentStage == "menu")
-	{
-		switch (event.keysym.sym)
-		{
-		case SDLK_ESCAPE: exit(0);									//ESC key, kill the app
-		default: currentStage = "game";
-		}
-	}
 	if (currentStage == "game")
 	{
 		switch (event.keysym.sym)
@@ -353,6 +330,30 @@ void Game::onKeyPressed(SDL_KeyboardEvent event)
 			}
 		}
 	}
+	else if (currentStage == "defeat")
+	{
+		switch (event.keysym.sym)
+		{
+		case SDLK_ESCAPE: currentStage = "title";					//ESC, ir a pantalla de titulo
+		}
+	}
+	else if (currentStage == "title")
+	{
+		switch (event.keysym.sym)
+		{
+		case SDLK_ESCAPE: exit(0);									//ESC key, Salir
+		default: currentStage = "load";								//Otra tecla, cargar juego
+		}
+	}
+	
+	else if (currentStage == "menu")
+	{
+		switch (event.keysym.sym)
+		{
+		case SDLK_ESCAPE: currentStage = "title";					//ESC, ir a pantalla de titulo													
+		default: currentStage = "game";								//Otra tecla, empezar juego
+		}
+	}	
 }
 
 void Game::onMouseButton(SDL_MouseButtonEvent event)

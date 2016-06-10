@@ -11,6 +11,7 @@
 class Entity;
 class Vehicle;
 class Controller;
+class Mesh;
 
 class Game
 {
@@ -44,6 +45,7 @@ public:
 	Camera* current_camera;
 	Camera* free_camera;
 	Camera* player_camera;
+	Camera* cam2D;
 
 	//Etapas del juego
 	char* currentStage;

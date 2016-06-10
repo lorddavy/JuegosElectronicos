@@ -1,5 +1,6 @@
 #include <iostream>
 #include <assert.h>
+#include <time.h>       /* time */
 
 #include "scene.h"
 #include "meshManager.h"
@@ -28,6 +29,7 @@ Scene::Scene()
 	station = NULL;
 	runner = NULL;
 	enemies.clear();
+	asteroides.clear();
 }
 
 Scene::~Scene()
@@ -40,11 +42,67 @@ bool Scene::createLevel()
 	if (skybox == NULL)
 	{
 		skybox = new EntityMesh();
-		skybox->setup("data/cubemap/space_cubemap/", "space_cubemap.ASE", "nebula_cubemap.tga");
-		skybox->local_matrix.scale(300, 300, 300);
-		skybox->mesh->boundingBox.half_size = skybox->mesh->boundingBox.half_size * 300;
+		skybox->setup("data/cubemap/space_cubemap/", "space_cubemap.ASE", "stars.tga");
+		//skybox->local_matrix.scale(300, 300, 300);
+		//skybox->mesh->boundingBox.half_size = skybox->mesh->boundingBox.half_size * 300;
 		skybox->frustum_text = false;
 		//root->addEntity(skybox);
+	}
+
+	//Asteroides
+	if (asteroides.size() == 0)
+	{
+		//Añadimos asteroides a la escena
+		EntityCollider* element = (EntityCollider*)createEntity("grupoAsteroides");
+		
+		element->local_matrix.setTranslation(200, 200, 40);
+		element->getGlobalMatrix();
+		element->mesh->createCollisionModel();
+		asteroides.push_back(element);
+		//Lo agregamos a el vector de EntityCollider y al arbol de escena
+		EntityCollider::static_entities.push_back(element);
+		root->addEntity(element);
+
+		int asteroidesSize = 3;
+
+		//Más asteroides aleatorios
+		for (int i = 0; i < asteroidesSize; i++) {
+			if(i/3 < 1)	EntityCollider* element = (EntityCollider*)createEntity("asteroide1");
+			else if(i/3 < 2) EntityCollider* element = (EntityCollider*)createEntity("asteroide2");
+			else if(i/3 < 4) EntityCollider* element = (EntityCollider*)createEntity("asteroide3");
+
+			srand(time(NULL));
+			float randPosX = rand() % 300 - 50;
+			float randPosY = rand() % 300 - 50;
+			float randPosZ = rand() % 300 - 50;
+
+			element->local_matrix.setTranslation(i * 10 + (randPosX), i * 10 + (randPosY), i * 10 + (randPosZ));
+			Matrix44 globalMatrix = element->getGlobalMatrix();
+			element->mesh->createCollisionModel();
+
+			//Comprobamos si la posición es válida			
+			Vector3 center = element->mesh->boundingBox.center;
+			float radius = min(min(element->mesh->boundingBox.half_size.x, element->mesh->boundingBox.half_size.y), element->mesh->boundingBox.half_size.z);
+			radius *= 1.2;
+			bool valid = true;
+
+			for (int i = 0; i < EntityCollider::static_entities.size(); ++i)
+			{
+				if (EntityCollider::static_entities[i]->mesh->testIntSphereMesh(EntityCollider::static_entities[i]->getGlobalMatrix(), globalMatrix * center, radius))
+				{
+					valid = false;
+				}
+			}
+
+			if (valid)
+			{
+				asteroides.push_back(element);
+				//Lo agregamos a el vector de EntityCollider y al arbol de escena
+				EntityCollider::static_entities.push_back(element);
+				root->addEntity(element);
+			}
+			else { delete element; }
+		}
 	}
 
 	//Planeta
@@ -91,7 +149,7 @@ bool Scene::createLevel()
 	root->addEntity(runner);
 
 	//Enemies
-	if (enemies.size() == 0)
+	/*if (enemies.size() == 0)
 	{
 		int enemiesSize = 1;
 		for (int i = 0; i < enemiesSize; i++) {
@@ -106,7 +164,7 @@ bool Scene::createLevel()
 			EntityCollider::dynamic_entities.push_back(element);
 			root->addEntity(element);
 		}
-	}
+	}*/
 	return true;
 }
 
@@ -158,7 +216,30 @@ Entity* Scene::createEntity(const char* type)
 		Vehicle* vehicle = new Vehicle();
 		vehicle->setup("data/vehicle/spitfire/", "spitfire.ASE", "spitfire_color_spec.tga", "spitfire_low.ASE");
 		return vehicle;
-
+	}
+	else if (str == "grupoAsteroides")
+	{
+		EntityMesh* asteroide = new EntityMesh();
+		asteroide->setup("data/entityMesh/asteroides/", "asteroides.ASE", "asteroide.tga");
+		return asteroide;
+	}
+	else if (str == "asteroide1")
+	{
+		EntityMesh* asteroide = new EntityMesh();
+		asteroide->setup("data/entityMesh/asteroides/", "asteroide1.ASE", "asteroide.tga");
+		return asteroide;
+	}
+	else if (str == "asteroide2")
+	{
+		EntityMesh* asteroide = new EntityMesh();
+		asteroide->setup("data/entityMesh/asteroides/", "asteroide2.ASE", "asteroide.tga");
+		return asteroide;
+	}
+	else if (str == "asteroide3")
+	{
+		EntityMesh* asteroide = new EntityMesh();
+		asteroide->setup("data/entityMesh/asteroides/", "asteroide3.ASE", "asteroide.tga");
+		return asteroide;
 	}
 	return entity;
 }
