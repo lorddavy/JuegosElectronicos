@@ -42,6 +42,7 @@ bool Scene::createLevel()
 		skybox = new EntityMesh();
 		skybox->setup("data/cubemap/space_cubemap/", "space_cubemap.ASE", "nebula_cubemap.tga");
 		skybox->local_matrix.scale(300, 300, 300);
+		skybox->mesh->boundingBox.half_size = skybox->mesh->boundingBox.half_size * 300;
 		skybox->frustum_text = false;
 		//root->addEntity(skybox);
 	}
@@ -53,6 +54,7 @@ bool Scene::createLevel()
 		planet->setup("data/entityMesh/planet/", "sphere.ASE", "planet_color.tga");
 		planet->local_matrix.setTranslation(0, 0, -200);
 		planet->local_matrix.scale(10, 10, 10);
+		planet->mesh->boundingBox.half_size = planet->mesh->boundingBox.half_size * 10;
 		planet->global_matrix = planet->getGlobalMatrix();
 		planet->frustum_text = false;
 		planet->two_sided = true;
@@ -70,6 +72,7 @@ bool Scene::createLevel()
 		station->local_matrix.setTranslation(-800, 450, 0);
 		station->local_matrix.rotate(270 * DEG2RAD, Vector3(0, 1, 0));
 		station->local_matrix.scale(0.5, 0.5, 0.5);
+		station->mesh->boundingBox.half_size = station->mesh->boundingBox.half_size * 0.5;
 		station->frustum_text = false;
 		station->two_sided = true;
 		station->mesh->createCollisionModel();
@@ -94,6 +97,8 @@ bool Scene::createLevel()
 		for (int i = 0; i < enemiesSize; i++) {
 			Vehicle* element = (Vehicle*)createEntity("spitfire");
 			element->local_matrix.setTranslation(200, 0, 40);
+			element->local_matrix.scale(1.5, 1.5, 1.5);
+			element->mesh->boundingBox.half_size = element->mesh->boundingBox.half_size * 1.5;
 			element->global_matrix = planet->getGlobalMatrix();
 			element->mesh->createCollisionModel();
 			enemies.push_back(element);
