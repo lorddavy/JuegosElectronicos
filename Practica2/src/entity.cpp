@@ -2,6 +2,7 @@
 
 #include "includes.h"
 #include "shader.h"
+#include "scene.h"
 
 std::vector<Entity*> Entity::toDestroy;
 
@@ -142,4 +143,18 @@ void EntityCollider::onShotCollision(float collisionPoint[3], float t1[9], float
 void EntityCollider::onEntityCollision(EntityCollider* entity, float collisionPoint[3], float t1[9], float t2[9])
 {
 	std::cout << "Colisión en: " << collisionPoint[0] << ", " << collisionPoint[1] << ", " << collisionPoint[2] << std::endl;
+
+	Scene* scene = Scene::getInstance();
+
+	//Asteroides
+	/*auto it = find(scene->asteroides.begin(), scene->asteroides.end(), this);
+	if (it != scene->asteroides.end())
+	{
+		Entity::destroyChild(this, 0.5);
+
+		auto it2 = find(EntityCollider::static_entities.begin(), EntityCollider::static_entities.end(), this);
+		EntityCollider::static_entities.erase(it2);
+
+		scene->asteroides.erase(it);*/
+	}
 }

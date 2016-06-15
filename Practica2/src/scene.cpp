@@ -49,62 +49,6 @@ bool Scene::createLevel()
 		//root->addEntity(skybox);
 	}
 
-	//Asteroides
-	if (asteroides.size() == 0)
-	{
-		//Añadimos asteroides a la escena
-		EntityCollider* element = (EntityCollider*)createEntity("grupoAsteroides");
-		
-		element->local_matrix.setTranslation(200, 200, 40);
-		element->getGlobalMatrix();
-		element->mesh->createCollisionModel();
-		asteroides.push_back(element);
-		//Lo agregamos a el vector de EntityCollider y al arbol de escena
-		EntityCollider::static_entities.push_back(element);
-		root->addEntity(element);
-
-		int asteroidesSize = 3;
-
-		//Más asteroides aleatorios
-		for (int i = 0; i < asteroidesSize; i++) {
-			if(i/3 < 1)	EntityCollider* element = (EntityCollider*)createEntity("asteroide1");
-			else if(i/3 < 2) EntityCollider* element = (EntityCollider*)createEntity("asteroide2");
-			else if(i/3 < 4) EntityCollider* element = (EntityCollider*)createEntity("asteroide3");
-
-			srand(time(NULL));
-			float randPosX = rand() % 300 - 50;
-			float randPosY = rand() % 300 - 50;
-			float randPosZ = rand() % 300 - 50;
-
-			element->local_matrix.setTranslation(i * 10 + (randPosX), i * 10 + (randPosY), i * 10 + (randPosZ));
-			Matrix44 globalMatrix = element->getGlobalMatrix();
-			element->mesh->createCollisionModel();
-
-			//Comprobamos si la posición es válida			
-			Vector3 center = element->mesh->boundingBox.center;
-			float radius = min(min(element->mesh->boundingBox.half_size.x, element->mesh->boundingBox.half_size.y), element->mesh->boundingBox.half_size.z);
-			radius *= 1.2;
-			bool valid = true;
-
-			for (int i = 0; i < EntityCollider::static_entities.size(); ++i)
-			{
-				if (EntityCollider::static_entities[i]->mesh->testIntSphereMesh(EntityCollider::static_entities[i]->getGlobalMatrix(), globalMatrix * center, radius))
-				{
-					valid = false;
-				}
-			}
-
-			if (valid)
-			{
-				asteroides.push_back(element);
-				//Lo agregamos a el vector de EntityCollider y al arbol de escena
-				EntityCollider::static_entities.push_back(element);
-				root->addEntity(element);
-			}
-			else { delete element; }
-		}
-	}
-
 	//Planeta
 	if (planet == NULL)
 	{
@@ -165,6 +109,63 @@ bool Scene::createLevel()
 			root->addEntity(element);
 		}
 	}*/
+
+	//Asteroides
+	if (asteroides.size() == 0)
+	{
+		//Añadimos asteroides a la escena
+		EntityCollider* element = (EntityCollider*)createEntity("grupoAsteroides");
+
+		element->local_matrix.setTranslation(200, 200, 40);
+		element->getGlobalMatrix();
+		element->mesh->createCollisionModel();
+		asteroides.push_back(element);
+		//Lo agregamos a el vector de EntityCollider y al arbol de escena
+		EntityCollider::static_entities.push_back(element);
+		root->addEntity(element);
+
+		int asteroidesSize = 3;
+
+		//Más asteroides aleatorios
+		for (int i = 0; i < asteroidesSize; i++) {
+			if (i / 3 < 1)	EntityCollider* element = (EntityCollider*)createEntity("asteroide1");
+			else if (i / 3 < 2) EntityCollider* element = (EntityCollider*)createEntity("asteroide2");
+			else if (i / 3 < 4) EntityCollider* element = (EntityCollider*)createEntity("asteroide3");
+
+			srand(time(NULL));
+			float randPosX = rand() % 300 - 50;
+			float randPosY = rand() % 300 - 50;
+			float randPosZ = rand() % 300 - 50;
+
+			element->local_matrix.setTranslation(i * 10 + (randPosX), i * 10 + (randPosY), i * 10 + (randPosZ));
+			Matrix44 globalMatrix = element->getGlobalMatrix();
+			element->mesh->createCollisionModel();
+
+			//Comprobamos si la posición es válida			
+			Vector3 center = element->mesh->boundingBox.center;
+			float radius = min(min(element->mesh->boundingBox.half_size.x, element->mesh->boundingBox.half_size.y), element->mesh->boundingBox.half_size.z);
+			radius *= 1.2;
+			bool valid = true;
+
+			for (int i = 0; i < EntityCollider::static_entities.size(); ++i)
+			{
+				if (EntityCollider::static_entities[i]->mesh->testIntSphereMesh(EntityCollider::static_entities[i]->getGlobalMatrix(), globalMatrix * center, radius))
+				{
+					valid = false;
+				}
+			}
+
+			if (valid)
+			{
+				asteroides.push_back(element);
+				//Lo agregamos a el vector de EntityCollider y al arbol de escena
+				EntityCollider::static_entities.push_back(element);
+				root->addEntity(element);
+			}
+			else { delete element; }
+		}
+	}
+
 	return true;
 }
 
