@@ -83,9 +83,9 @@ void CollisionManager::check()
 				float t1[9], t2[9];
 				EntityCollider::static_entities[j]->mesh->collision_model->getCollidingTriangles(t1, t2, false);
 
-				//Invocamos respuesta al evento
-				EntityCollider::static_entities[j]->onEntityCollision(EntityCollider::dynamic_entities[i], collisionPoint, t1, t2);
+				//Invocamos respuesta al evento				
 				EntityCollider::dynamic_entities[i]->onEntityCollision(EntityCollider::static_entities[j], collisionPoint, t1, t2);
+				//EntityCollider::static_entities[j]->onEntityCollision(EntityCollider::dynamic_entities[i], collisionPoint, t1, t2);
 			}
 		}
 
