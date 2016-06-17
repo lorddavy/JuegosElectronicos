@@ -25,6 +25,10 @@ InputManager* inputManager = NULL;
 ShotManager* shotManager = NULL;
 CollisionManager* collisionManager = NULL;
 
+//El handler para el sample y canal de musica
+HSAMPLE musicSample;
+HCHANNEL musicChannel;
+
 //DEBUG
 EntityCollider* debugEntityMesh;
 EntityMesh* testMesh;
@@ -79,9 +83,34 @@ void Game::init(void)
 	collisionManager = CollisionManager::getInstance();
 
 	//Etapa inicial
-	currentStage = "title";
-		
+	currentStage = "title";		
 	current_camera = player_camera;
+
+	//Música y Sonido
+
+	//Inicializamos BASS  (id_del_device, muestras por segundo, ...)
+	const char* filename = "data/music/intro.wav";	
+
+	if (BASS_Init(-1, 44100, BASS_DEVICE_DEFAULT, 0, NULL))
+	{
+		BASS_SetConfig(BASS_CONFIG_GVOL_SAMPLE, 1000.0);
+		//BASS_SetVolume(1);
+
+		//Cargamos samples (memoria, filename, offset, length, max, flags)
+		musicSample = BASS_SampleLoad(false, filename, 0, 0, 3, BASS_SAMPLE_LOOP);
+		if (musicSample == 0)
+		{
+			int err = BASS_ErrorGetCode();
+			std::cout << "ERROR AL CARGAR SONIDO: " << err << std::endl;
+			return;
+		}
+
+		//Creamos canales para samples
+		musicChannel = BASS_SampleGetChannel(musicSample, false);
+
+		//Lanzamos sample de musica del menú
+		BASS_ChannelPlay(musicChannel, false); 
+	}
 
 	//DEBUG MESH (COLLISIONS)
 	/*debugEntityMesh = new EntityCollider();
@@ -143,6 +172,9 @@ void Game::load(void)
 		controller.push_back(element);
 		scene->enemies[i]->controller = element;//Puntero a su controlador
 	}
+
+	//Paramos Musica Menu
+	BASS_ChannelPause(musicChannel);
 
 	/*free_camera->setPerspective(70, window_width / (float)window_height, 0.1, 10000);
 	free_camera->lookAt(Vector3(0, 25, 25), Vector3(0, 0, 0), Vector3(0, 1, 0));
@@ -305,6 +337,14 @@ void Game::update(double seconds_elapsed)
 		load();
 		currentStage = "game";
 	}
+	else if (currentStage == "title")
+	{
+		if (BASS_ChannelIsActive(musicChannel) != BASS_ACTIVE_PLAYING)
+		{
+			//Musica
+			BASS_ChannelPlay(musicChannel, true);
+		}
+	}
 
 	//Borramos el contenedor con todo lo que se quiere destruir
 	scene->clearRemovedEntities();
@@ -336,7 +376,8 @@ void Game::onKeyPressed(SDL_KeyboardEvent event)
 	{
 		switch (event.keysym.sym)
 		{
-		case SDLK_ESCAPE: currentStage = "title";					//ESC, ir a pantalla de titulo
+		case SDLK_ESCAPE:
+		currentStage = "title";					//ESC, ir a pantalla de titulo
 		}
 	}
 	else if (currentStage == "title")

@@ -2,28 +2,28 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="..\..\src\extra\coldet\box.cpp">
-      <Filter>coldet</Filter>
+      <Filter>Coldet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\extra\coldet\box_bld.cpp">
-      <Filter>coldet</Filter>
+      <Filter>Coldet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\extra\coldet\coldet.cpp">
-      <Filter>coldet</Filter>
+      <Filter>Coldet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\extra\coldet\coldet_bld.cpp">
-      <Filter>coldet</Filter>
+      <Filter>Coldet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\extra\coldet\math3d.cpp">
-      <Filter>coldet</Filter>
+      <Filter>Coldet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\extra\coldet\mytritri.cpp">
-      <Filter>coldet</Filter>
+      <Filter>Coldet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\extra\coldet\sysdep.cpp">
-      <Filter>coldet</Filter>
+      <Filter>Coldet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\extra\coldet\tritri.c">
-      <Filter>coldet</Filter>
+      <Filter>Coldet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\collisionManager.cpp">
       <Filter>Managers</Filter>
@@ -89,25 +89,25 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\extra\coldet\box.h">
-      <Filter>coldet</Filter>
+      <Filter>Coldet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\extra\coldet\coldet.h">
-      <Filter>coldet</Filter>
+      <Filter>Coldet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\extra\coldet\coldetimpl.h">
-      <Filter>coldet</Filter>
+      <Filter>Coldet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\extra\coldet\math3d.h">
-      <Filter>coldet</Filter>
+      <Filter>Coldet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\extra\coldet\mytritri.h">
-      <Filter>coldet</Filter>
+      <Filter>Coldet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\extra\coldet\sysdep.h">
-      <Filter>coldet</Filter>
+      <Filter>Coldet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\bass.h">
-      <Filter>bass</Filter>
+      <Filter>Bass</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\collisionManager.h">
       <Filter>Managers</Filter>
@@ -174,12 +174,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="coldet">
-      <UniqueIdentifier>{fe8ae6ac-1da6-4ca0-83d6-532112ba9fab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="bass">
-      <UniqueIdentifier>{ec680257-42c4-44d1-813f-20b2c1c83454}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Managers">
       <UniqueIdentifier>{6df999a7-02a2-44b1-96fd-6231ebf09f53}</UniqueIdentifier>
     </Filter>
@@ -200,6 +194,12 @@
     </Filter>
     <Filter Include="Framework">
       <UniqueIdentifier>{4215f385-e701-4630-946c-7d17bb35f9ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bass">
+      <UniqueIdentifier>{ec680257-42c4-44d1-813f-20b2c1c83454}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Coldet">
+      <UniqueIdentifier>{fe8ae6ac-1da6-4ca0-83d6-532112ba9fab}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
