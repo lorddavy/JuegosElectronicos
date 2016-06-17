@@ -12,6 +12,8 @@
 #include "vehicle.h"
 #include "controller.h"
 
+#include "bass.h"
+
 //free_camera, player_camera, current_camera !!
 
 //some globals

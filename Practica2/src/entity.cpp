@@ -155,6 +155,6 @@ void EntityCollider::onEntityCollision(EntityCollider* entity, float collisionPo
 		auto it2 = find(EntityCollider::static_entities.begin(), EntityCollider::static_entities.end(), this);
 		EntityCollider::static_entities.erase(it2);
 
-		scene->asteroides.erase(it);*/
-	}
+		scene->asteroides.erase(it);
+	}*/
 }

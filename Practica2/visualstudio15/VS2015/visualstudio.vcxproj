@@ -44,6 +44,7 @@
     <LibraryPath>..\libs\lib;$(LibraryPath)</LibraryPath>
     <OutDir>..\..\</OutDir>
     <TargetName>$(ProjectName)_debug</TargetName>
+    <IncludePath>$(VC_SourcePath)\extra\bass;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -116,6 +117,7 @@
     <ClCompile Include="..\..\src\vehicle.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\bass.h" />
     <ClInclude Include="..\..\src\camera.h" />
     <ClInclude Include="..\..\src\clipper.h" />
     <ClInclude Include="..\..\src\collisionManager.h" />

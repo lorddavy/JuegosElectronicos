@@ -1,25 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\..\src\camera.cpp" />
-    <ClCompile Include="..\..\src\clipper.cpp" />
-    <ClCompile Include="..\..\src\inputManager.cpp" />
-    <ClCompile Include="..\..\src\entity.cpp" />
-    <ClCompile Include="..\..\src\extra\textparser.cpp" />
-    <ClCompile Include="..\..\src\framework.cpp" />
-    <ClCompile Include="..\..\src\game.cpp" />
-    <ClCompile Include="..\..\src\main.cpp" />
-    <ClCompile Include="..\..\src\mesh.cpp" />
-    <ClCompile Include="..\..\src\meshManager.cpp" />
-    <ClCompile Include="..\..\src\rendertotexture.cpp" />
-    <ClCompile Include="..\..\src\scene.cpp" />
-    <ClCompile Include="..\..\src\shader.cpp" />
-    <ClCompile Include="..\..\src\shot.cpp" />
-    <ClCompile Include="..\..\src\shotManager.cpp" />
-    <ClCompile Include="..\..\src\texture.cpp" />
-    <ClCompile Include="..\..\src\textureManager.cpp" />
-    <ClCompile Include="..\..\src\utils.cpp" />
-    <ClCompile Include="..\..\src\vehicle.cpp" />
     <ClCompile Include="..\..\src\extra\coldet\box.cpp">
       <Filter>coldet</Filter>
     </ClCompile>
@@ -44,29 +25,69 @@
     <ClCompile Include="..\..\src\extra\coldet\tritri.c">
       <Filter>coldet</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\controller.cpp" />
-    <ClCompile Include="..\..\src\collisionManager.cpp" />
+    <ClCompile Include="..\..\src\collisionManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\inputManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\meshManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shotManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\textureManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\entity.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\vehicle.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shot.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\extra\textparser.cpp">
+      <Filter>Text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\controller.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\camera.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\clipper.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\framework.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mesh.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\rendertotexture.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shader.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\texture.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\utils.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\camera.h" />
-    <ClInclude Include="..\..\src\clipper.h" />
-    <ClInclude Include="..\..\src\inputManager.h" />
-    <ClInclude Include="..\..\src\entity.h" />
-    <ClInclude Include="..\..\src\extra\textparser.h" />
-    <ClInclude Include="..\..\src\framework.h" />
-    <ClInclude Include="..\..\src\game.h" />
-    <ClInclude Include="..\..\src\includes.h" />
-    <ClInclude Include="..\..\src\mesh.h" />
-    <ClInclude Include="..\..\src\meshManager.h" />
-    <ClInclude Include="..\..\src\rendertotexture.h" />
-    <ClInclude Include="..\..\src\scene.h" />
-    <ClInclude Include="..\..\src\shader.h" />
-    <ClInclude Include="..\..\src\shot.h" />
-    <ClInclude Include="..\..\src\shotManager.h" />
-    <ClInclude Include="..\..\src\texture.h" />
-    <ClInclude Include="..\..\src\textureManager.h" />
-    <ClInclude Include="..\..\src\utils.h" />
-    <ClInclude Include="..\..\src\vehicle.h" />
     <ClInclude Include="..\..\src\extra\coldet\box.h">
       <Filter>coldet</Filter>
     </ClInclude>
@@ -85,12 +106,100 @@
     <ClInclude Include="..\..\src\extra\coldet\sysdep.h">
       <Filter>coldet</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\controller.h" />
-    <ClInclude Include="..\..\src\collisionManager.h" />
+    <ClInclude Include="..\..\src\bass.h">
+      <Filter>bass</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\collisionManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\inputManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\meshManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\shotManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\textureManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\entity.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\vehicle.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\shot.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\extra\textparser.h">
+      <Filter>Text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\controller.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\camera.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\clipper.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\framework.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\includes.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mesh.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\rendertotexture.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\shader.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\texture.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\utils.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="coldet">
       <UniqueIdentifier>{fe8ae6ac-1da6-4ca0-83d6-532112ba9fab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="bass">
+      <UniqueIdentifier>{ec680257-42c4-44d1-813f-20b2c1c83454}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers">
+      <UniqueIdentifier>{6df999a7-02a2-44b1-96fd-6231ebf09f53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities">
+      <UniqueIdentifier>{e1d3fcc3-cc9e-4841-822b-732599f7c39b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Text">
+      <UniqueIdentifier>{292741bf-3624-4062-9af1-90f0e881116d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Controller">
+      <UniqueIdentifier>{43aa0b75-4536-472e-9934-098f25302701}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{9e934a9d-c127-4a62-b7f6-c14771e96817}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{f0001539-e51a-4520-a758-9baa1f43b01f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework">
+      <UniqueIdentifier>{4215f385-e701-4630-946c-7d17bb35f9ea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
