@@ -26,8 +26,11 @@ ShotManager* shotManager = NULL;
 CollisionManager* collisionManager = NULL;
 
 //El handler para el sample y canal de musica
-HSAMPLE musicSample;
-HCHANNEL musicChannel;
+HSAMPLE titleMusicSample;
+HCHANNEL titleMusicChannel;
+HSAMPLE battleMusicSample;
+HCHANNEL battleMusicChannel;
+
 
 //DEBUG
 EntityCollider* debugEntityMesh;
@@ -89,7 +92,8 @@ void Game::init(void)
 	//Música y Sonido
 
 	//Inicializamos BASS  (id_del_device, muestras por segundo, ...)
-	const char* filename = "data/music/intro.wav";	
+	const char* titleFilename = "data/music/intro.wav";	
+	const char* battleFilename = "data/music/battle_music.wav";
 
 	if (BASS_Init(-1, 44100, BASS_DEVICE_DEFAULT, 0, NULL))
 	{
@@ -97,8 +101,16 @@ void Game::init(void)
 		//BASS_SetVolume(1);
 
 		//Cargamos samples (memoria, filename, offset, length, max, flags)
-		musicSample = BASS_SampleLoad(false, filename, 0, 0, 3, BASS_SAMPLE_LOOP);
-		if (musicSample == 0)
+		titleMusicSample = BASS_SampleLoad(false, titleFilename, 0, 0, 3, BASS_SAMPLE_LOOP);
+		if (titleMusicSample == 0)
+		{
+			int err = BASS_ErrorGetCode();
+			std::cout << "ERROR AL CARGAR SONIDO: " << err << std::endl;
+			return;
+		}
+
+		battleMusicSample = BASS_SampleLoad(false, battleFilename, 0, 0, 3, BASS_SAMPLE_LOOP);
+		if (battleMusicSample == 0)
 		{
 			int err = BASS_ErrorGetCode();
 			std::cout << "ERROR AL CARGAR SONIDO: " << err << std::endl;
@@ -106,10 +118,11 @@ void Game::init(void)
 		}
 
 		//Creamos canales para samples
-		musicChannel = BASS_SampleGetChannel(musicSample, false);
+		titleMusicChannel = BASS_SampleGetChannel(titleMusicSample, false);
+		battleMusicChannel = BASS_SampleGetChannel(battleMusicSample, false);
 
 		//Lanzamos sample de musica del menú
-		BASS_ChannelPlay(musicChannel, false); 
+		BASS_ChannelPlay(titleMusicChannel, false);
 	}
 
 	//DEBUG MESH (COLLISIONS)
@@ -173,8 +186,9 @@ void Game::load(void)
 		scene->enemies[i]->controller = element;//Puntero a su controlador
 	}
 
-	//Paramos Musica Menu
-	BASS_ChannelPause(musicChannel);
+	//Paramos Musica Menu y reproducimos batalla
+	BASS_ChannelPause(titleMusicChannel);
+	BASS_ChannelPlay(battleMusicChannel, true);
 
 	/*free_camera->setPerspective(70, window_width / (float)window_height, 0.1, 10000);
 	free_camera->lookAt(Vector3(0, 25, 25), Vector3(0, 0, 0), Vector3(0, 1, 0));
@@ -339,10 +353,11 @@ void Game::update(double seconds_elapsed)
 	}
 	else if (currentStage == "title")
 	{
-		if (BASS_ChannelIsActive(musicChannel) != BASS_ACTIVE_PLAYING)
+		if (BASS_ChannelIsActive(titleMusicChannel) != BASS_ACTIVE_PLAYING)
 		{
 			//Musica
-			BASS_ChannelPlay(musicChannel, true);
+			BASS_ChannelPause(battleMusicChannel);
+			BASS_ChannelPlay(titleMusicChannel, true);
 		}
 	}
 
