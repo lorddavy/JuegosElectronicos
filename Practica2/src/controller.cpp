@@ -8,12 +8,15 @@
 Controller::Controller(bool ia) {
 	target = NULL;
 	camera = NULL;
+	state = NULL;
 	
 	following = NULL;
 	formation = Vector3(0, 0, 0);
 	IA = ia;
 
 	if (IA) {
+		state = "patrol";
+
 		waypoints.clear();
 		/*waypoints.push_back(Vector3(200, 0, 0));
 		waypoints.push_back(Vector3(400, 0, 0));
@@ -75,6 +78,8 @@ void Controller::update(double dt) {
 		}
 	}
 	else if (IA) {
+		updateState(game->time);
+
 		if (following != NULL) {
 			updateFollowing(dt);
 		}
@@ -143,5 +148,20 @@ void Controller::renderDebug() {
 	}
 	glEnd();
 	glColor3f(1, 1, 1);
+
+}
+
+void Controller::updateState(float time) {
+	static int last_time = 0;
+	if ( (int) time - last_time > 0) {
+		//std::cout << time << ", last_time: " << last_time << std::endl;
+		last_time = (int) time;
+
+		std::cout << "Patrol state: " << (state == "patrol") << std::endl;
+		if (state == "patrol") {
+			target->current_velocity = 50;
+		}
+
+	}
 
 }

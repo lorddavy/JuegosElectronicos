@@ -39,7 +39,7 @@ public:
 	void clearRemovedEntities();
 	//void addPlayer(const char* filename);
 	Entity* createEntity(const char* name);
-
+	bool checkPosition(EntityCollider* element);
 
 private:
 	static Scene* instance;

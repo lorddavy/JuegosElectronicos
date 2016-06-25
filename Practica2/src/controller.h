@@ -25,9 +25,12 @@ public:
 
 	void renderDebug();
 
+	void Controller::updateState(float dt);
+
 private:
 	Vehicle* target;
 	Camera* camera;
+	char* state;
 
 	Vehicle* following;
 	Vector3 formation;

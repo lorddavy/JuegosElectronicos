@@ -38,6 +38,8 @@ Scene::~Scene()
 
 bool Scene::createLevel()
 {
+	srand(time(NULL));
+
 	//Skybox
 	if (skybox == NULL)
 	{
@@ -93,22 +95,36 @@ bool Scene::createLevel()
 	root->addEntity(runner);
 
 	//Enemies
-	/*if (enemies.size() == 0)
+	if (enemies.size() == 0)
 	{
 		int enemiesSize = 1;
 		for (int i = 0; i < enemiesSize; i++) {
 			Vehicle* element = (Vehicle*)createEntity("spitfire");
-			element->local_matrix.setTranslation(200, 0, 40);
-			element->local_matrix.scale(1.5, 1.5, 1.5);
+
+			//Debe ser aleatorio
+			Vector3 v;
+			v.random(Vector3(500, 500, 500));
+			element->local_matrix.setTranslation(v.x, v.y, v.z);
+
+			//element->local_matrix.scale(1.5, 1.5, 1.5);
 			element->mesh->boundingBox.half_size = element->mesh->boundingBox.half_size * 1.5;
 			element->global_matrix = planet->getGlobalMatrix();
 			element->mesh->createCollisionModel();
 			enemies.push_back(element);
-			//Lo agregamos a el vector de EntityCollider y al arbol de escena
-			EntityCollider::dynamic_entities.push_back(element);
-			root->addEntity(element);
+
+			//Comprobamos si la posición es válida
+			if (checkPosition(element))
+			{
+				asteroides.push_back(element);
+				//Lo agregamos a el vector de EntityCollider y al arbol de escena
+				EntityCollider::static_entities.push_back(element);
+				root->addEntity(element);
+			}
+			else {
+				delete element;
+			}
 		}
-	}*/
+	}
 
 	//Asteroides
 	if (asteroides.size() == 0)
@@ -132,40 +148,44 @@ bool Scene::createLevel()
 			else if (i / 3 < 2) EntityCollider* element = (EntityCollider*)createEntity("asteroide2");
 			else if (i / 3 < 4) EntityCollider* element = (EntityCollider*)createEntity("asteroide3");
 
-			srand(time(NULL));
 			float randPosX = rand() % 300 - 50;
 			float randPosY = rand() % 300 - 50;
 			float randPosZ = rand() % 300 - 50;
 
 			element->local_matrix.setTranslation(i * 10 + (randPosX), i * 10 + (randPosY), i * 10 + (randPosZ));
-			Matrix44 globalMatrix = element->getGlobalMatrix();
 			element->mesh->createCollisionModel();
 
-			//Comprobamos si la posición es válida			
-			Vector3 center = element->mesh->boundingBox.center;
-			float radius = min(min(element->mesh->boundingBox.half_size.x, element->mesh->boundingBox.half_size.y), element->mesh->boundingBox.half_size.z);
-			radius *= 1.2;
-			bool valid = true;
-
-			for (int i = 0; i < EntityCollider::static_entities.size(); ++i)
-			{
-				if (EntityCollider::static_entities[i]->mesh->testIntSphereMesh(EntityCollider::static_entities[i]->getGlobalMatrix(), globalMatrix * center, radius))
-				{
-					valid = false;
-				}
-			}
-
-			if (valid)
+			//Comprobamos si la posición es válida
+			if (checkPosition(element))
 			{
 				asteroides.push_back(element);
 				//Lo agregamos a el vector de EntityCollider y al arbol de escena
 				EntityCollider::static_entities.push_back(element);
 				root->addEntity(element);
 			}
-			else { delete element; }
+			else {
+				delete element;
+			}
+
+			
 		}
 	}
+	return true;
+}
 
+bool Scene::checkPosition(EntityCollider* element) {
+	Vector3 center = element->mesh->boundingBox.center;
+	float radius = min(min(element->mesh->boundingBox.half_size.x, element->mesh->boundingBox.half_size.y), element->mesh->boundingBox.half_size.z);
+	radius *= 1.2;
+
+	for (int i = 0; i < EntityCollider::static_entities.size(); ++i)
+	{
+		if (EntityCollider::static_entities[i]->mesh->testIntSphereMesh(
+			EntityCollider::static_entities[i]->getGlobalMatrix(), element->getGlobalMatrix() * center, radius))
+		{
+			return false;
+		}
+	}
 	return true;
 }
 

@@ -1,3 +1,4 @@
+
 #include <cmath>
 #include "utils.h"
 #include "rendertotexture.h"
@@ -341,7 +342,7 @@ void Game::update(double seconds_elapsed)
 
 		if (scene->enemies.size() != 0)
 		{
-			scene->enemies.front()->current_velocity = 0;
+			//scene->enemies.front()->current_velocity = 0;
 		}
 	}
 	else if (currentStage == "load")
