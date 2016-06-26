@@ -153,17 +153,21 @@ void Game::end(void)
 	current_camera = free_camera;
 	currentStage = "defeat";
 	scene = Scene::getInstance();
-	//delete scene;
+	//delete scene;	
 }
 
 //Reinicio del juego
 void Game::load(void)
 {
+	//Eliminamos la escena anterior
+	//scene->root->removeChild(scene->root);
+
 	//Seteamos a los valores iniciales de la escena
 	scene->loadLevel("data/scenes/space1.txt");
 	player = scene->runner;
 	player_camera->lookAt(player->getGlobalMatrix() * Vector3(0, 2, -5), player->getGlobalMatrix() * Vector3(0, 0, 20), Vector3(0, 1, 0));
 	current_camera = player_camera;
+	//Player controller	
 
 	for (auto it = controller.begin(); it != controller.end(); ++it)
 	{
@@ -171,20 +175,21 @@ void Game::load(void)
 	}
 	controller.clear();
 
-	//Player controller	
-
 	controller.push_back(new Controller(false));
 	controller[0]->setTarget(this->player);
 	controller[0]->setCamera(player_camera);
 	player->controller = controller[0];//Puntero a su controlador
+	//player->dead = false;
 
 	//Enemies Controllers
-	for (int i = 0; i < scene->enemies.size(); i++) {
+	for (int i = 0; i < scene->enemies.size(); i++) {		
 		Controller* element = new Controller();
 		element->setTarget(scene->enemies[i]);
 		//element->followTarget(player, Vector3(-30 + i * 15, 0, 0));
 		controller.push_back(element);
 		scene->enemies[i]->controller = element;//Puntero a su controlador
+
+		//scene->enemies[i]->dead = false;
 	}
 
 	//Paramos Musica Menu y reproducimos batalla
@@ -269,6 +274,9 @@ void Game::renderGUI()
 
 		std::string hull = "Hull damage: " + player->getHull() + "%";
 		drawText(5, 45, hull, Vector3(102 / 255, 255 / 255, 102 / 255), 2);
+
+		std::string enemiesAlive = "Enemies remaining: " + scene->getEnemiesAlive();
+		drawText(5, 65, enemiesAlive, Vector3(102 / 255, 255 / 255, 102 / 255), 2);
 	}
 	else if (currentStage == "defeat")
 	{

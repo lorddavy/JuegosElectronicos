@@ -2,6 +2,7 @@
 #include "vehicle.h"
 #include "shotManager.h"
 #include "game.h"
+#include "scene.h"
 #include <algorithm>
 #include <vector> 
 
@@ -15,6 +16,7 @@ Vehicle::Vehicle()
 	camera_eye.set(0, 2, -5);
 	hull = 100;
 	shield = 0;
+	//dead = false;
 }
 
 Vehicle::~Vehicle()
@@ -68,8 +70,8 @@ void Vehicle::stop()
 //Método de disparo del vehiculo
 void Vehicle::shoot(char type)
 {
-	if (hull > 0)
-	{
+	//if (!dead)
+	//{
 		ShotManager* shotManager = ShotManager::getInstance();
 		//Disparo tipo beam
 		if (type == 'b') {
@@ -98,31 +100,81 @@ void Vehicle::shoot(char type)
 
 			shotManager->createShot('l', origin, end, vel, 45, this);
 		}
-	}
+	//}
 }
+
+//Método render del vehiculo
+void Vehicle::render(Camera* camera)
+{
+	//if (!dead)
+	//{
+		if (mesh)
+		{
+			global_matrix = getGlobalMatrix();
+			Vector3 pos = local_matrix.getTranslation();
+			Vector3 center = global_matrix * mesh->boundingBox.center;
+
+			float size = max(max(mesh->boundingBox.half_size.x, mesh->boundingBox.half_size.y), mesh->boundingBox.half_size.z);
+			if (camera->testSphereInFrustum(pos, size) == true) //Hacemos frustum culling para pintar solo lo que hay en frustum
+			{
+				glPushMatrix(); //save the opengl state
+				global_matrix.multGL(); //change the coordinates system
+				if (texture != NULL)texture->bind(); //enable the texture	
+				if (pos.distance(camera->eye) > 70 && mesh_low) //Escogemos la mesh de la calidad que toca
+					mesh_low->render(GL_TRIANGLES);//render the mesh
+				else
+					mesh->render(GL_TRIANGLES);//render the mesh
+				if (texture != NULL)texture->unbind(); //disable the texture
+				glPopMatrix();
+			}
+		}
+
+		for (int i = 0; i < children.size(); i++)
+			children[i]->render(camera); //repeat for every child
+	//}
+}
+
 //Método update del vehiculo
 void Vehicle::update(float dt)
 {
-	velocity = this->getGlobalMatrix().rotateVector(Vector3(0, 0, -1));
-	velocity.normalize();
+	//if (!dead)
+	//{
 
-	Vector3 translation = velocity * current_velocity * -dt;
-	local_matrix.traslate(translation.x, translation.y, translation.z);
+		velocity = this->getGlobalMatrix().rotateVector(Vector3(0, 0, -1));
+		velocity.normalize();
 
-	if (hull < 0)
-	{
-		Game* game = Game::getInstance();
-		
-		if (game->player == this) game->end(); //Fin de juego
+		Vector3 translation = velocity * current_velocity * -dt;
+		local_matrix.traslate(translation.x, translation.y, translation.z);
 
-		Entity::destroyChild(this, 0.5);
+		if (hull < 0)
+		{
+			die();
+		}
+	//}
+}
 
-		auto it = find(EntityCollider::dynamic_entities.begin(), EntityCollider::dynamic_entities.end(), this);
-		EntityCollider::dynamic_entities.erase(it);
+void Vehicle::die()
+{
+	Game* game = Game::getInstance();
+	Scene* scene = Scene::getInstance();
+	//dead = true;
 
-		auto it2 = find(game->controller.begin(), game->controller.end(), this->controller);
-		game->controller.erase(it2);
-	}
+	if (game->player == this) game->end(); //Fin de juego
+
+										   //Eliminamos la entidad y sus entidades hijas
+	Entity::destroyChild(this, 0.5);
+
+	//La quitamos del vector de Entity collider dinámico
+	auto it = find(EntityCollider::dynamic_entities.begin(), EntityCollider::dynamic_entities.end(), this);
+	EntityCollider::dynamic_entities.erase(it);
+
+	//Eliminamos su controlador del vector de controladores
+	auto it2 = find(game->controller.begin(), game->controller.end(), this->controller);
+	game->controller.erase(it2);
+
+	//La quitamos del vector de enemigos (si lo es)
+	auto it3 = find(scene->enemies.begin(), scene->enemies.end(), this);
+	if (it3 != scene->enemies.end())scene->enemies.erase(it3);
 }
 
 //Getters del vehiculo

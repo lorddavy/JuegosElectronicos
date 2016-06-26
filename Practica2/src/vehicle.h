@@ -19,6 +19,7 @@ public:
 
 	int hull;
 	int shield;
+	//bool dead;
 
 	Vehicle(); //Constructor
 	 ~Vehicle();	//Destructor
@@ -38,8 +39,10 @@ public:
 	void pointerPosition(Vector3 target, float dt);
 	void balanceVehicle(Vector3 targetUp, float dt);
 
-	//update
+	//render & update
+	void render(Camera* camera);
 	void update(float dt);
+	void die();
 
 	//Getters
 	std::string getVelocity();
