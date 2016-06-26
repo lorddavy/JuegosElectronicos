@@ -99,7 +99,7 @@ bool Scene::createLevel()
 	{
 		int enemiesSize = 1;
 		for (int i = 0; i < enemiesSize; i++) {
-			Vehicle* element = (Vehicle*)createEntity("spitfire");
+			Vehicle* element = (Vehicle*)createEntity("hunter");
 
 			//Debe ser aleatorio
 			Vector3 v;
@@ -236,6 +236,12 @@ Entity* Scene::createEntity(const char* type)
 	{
 		Vehicle* vehicle = new Vehicle();
 		vehicle->setup("data/vehicle/spitfire/", "spitfire.ASE", "spitfire_color_spec.tga", "spitfire_low.ASE");
+		return vehicle;
+	}
+	else if (str == "hunter")
+	{
+		Vehicle* vehicle = new Vehicle();
+		vehicle->setup("data/vehicle/hunter/", "hunter.ASE", "hunter.tga");
 		return vehicle;
 	}
 	else if (str == "grupoAsteroides")
