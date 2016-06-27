@@ -13,7 +13,8 @@ Vehicle::Vehicle()
 	current_velocity = 30;
 	max_velocity = 500;
 	camera_eye.set(0, 2, -5);
-	hull = 100;
+	max_hull = 100;
+	hull = max_hull;
 	shield = 0;
 }
 
@@ -193,4 +194,11 @@ void Vehicle::balanceVehicle(Vector3 targetUp, float dt) {
 
 	this->roll(angle);
 
+}
+
+float Vehicle::vehicleDistance(Vector3 position) 
+{
+	Vector3 distanceVector = this->getGlobalMatrix() * Vector3(0, 0, 0) - position;
+	
+	return distanceVector.length();;
 }

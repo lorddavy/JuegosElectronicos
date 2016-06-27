@@ -264,3 +264,16 @@ Entity* Scene::createEntity(const char* type)
 	}
 	return entity;
 }
+
+
+/*std::vector<Entity*> Scene::postOrder()
+{
+	std::vector<Entity*> postOrderVector;
+	while () {
+		for (int i = 0; i < root->children.size(); i++) {
+			std::vector<Entity*> root->getChildren();
+
+			postOrderVector.push_back(root->children[i]);
+		}
+	}
+}*/

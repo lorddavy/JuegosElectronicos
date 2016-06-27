@@ -20,19 +20,24 @@ public:
 
 	void followTarget(Vehicle* follow, Vector3 delta );
 	void updateFollowing(float dt);
+	void updateRunAway(float dt);
 
 	void updateWaypoints(float dt);
 
 	void renderDebug();
 
-	void Controller::updateState(float dt);
+	void updateState(float dt);
+	void evaluateState(float time);
+	Vehicle* enemyAtDistance(float dist);
+
+	Vehicle* following;
 
 private:
 	Vehicle* target;
 	Camera* camera;
 	char* state;
 
-	Vehicle* following;
+	
 	Vector3 formation;
 	bool IA;
 	std::vector<Vector3> waypoints;

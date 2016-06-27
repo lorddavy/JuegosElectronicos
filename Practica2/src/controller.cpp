@@ -1,9 +1,11 @@
 #include "controller.h"
 
 #include "game.h"
+#include "scene.h"
 #include "entity.h"
 #include "vehicle.h"
 #include "camera.h"
+
 
 Controller::Controller(bool ia) {
 	target = NULL;
@@ -29,8 +31,8 @@ Controller::Controller(bool ia) {
 			waypoints.push_back(v);
 		}
 	}
-	
 
+	
 }
 
 Controller::~Controller() {
@@ -78,14 +80,15 @@ void Controller::update(double dt) {
 		}
 	}
 	else if (IA) {
-		updateState(game->time);
+		evaluateState(game->time);
+		updateState(dt);
 
-		if (following != NULL) {
+		/*if (following != NULL) {
 			updateFollowing(dt);
 		}
 		else {
 			updateWaypoints(dt);
-		}
+		}*/
 		
 	}
 }
@@ -104,13 +107,28 @@ void Controller::followTarget(Vehicle* follow, Vector3 delta) {
 	IA = true;
 }
 
-void Controller::updateFollowing(float dt) {
+void Controller::updateFollowing(float dt)
+{
 	target->pointerPosition(following->getGlobalMatrix() * formation, dt);
 	Vector3 globalFollowingUp = following->getGlobalMatrix().rotateVector(Vector3(0, 1, 0));
 	target->balanceVehicle(globalFollowingUp, dt);
 }
 
-void Controller::updateWaypoints(float dt) {
+void Controller::updateRunAway(float dt)
+{
+	Vector3 myPos = target->getGlobalMatrix() * Vector3(0, 0, 0);
+	Vector3 followingPos = following->getGlobalMatrix() * Vector3(0, 0, 0);
+	Vector3 runAway /*= myPos - direction (followingPos - myPos)*/ = myPos * 2 - followingPos;
+
+	target->pointerPosition(runAway, dt);
+	Vector3 globalFollowingUp = following->getGlobalMatrix().rotateVector(Vector3(0, 1, 0));
+	target->balanceVehicle(globalFollowingUp, dt);
+}
+
+void Controller::updateWaypoints(float dt)
+{
+	target->current_velocity = 30;
+
 	Vector3 direction = waypoints.front() - target->getGlobalMatrix() * Vector3(0, 0, 0);
 	float distance = direction.length();
 
@@ -151,17 +169,98 @@ void Controller::renderDebug() {
 
 }
 
-void Controller::updateState(float time) {
-	static int last_time = 0;
-	if ( (int) time - last_time > 0) {
-		//std::cout << time << ", last_time: " << last_time << std::endl;
-		last_time = (int) time;
+void Controller::updateState(float dt)
+{
+	if (state == "patrol") {
+		updateWaypoints(dt);
+	}
+	else if(state == "attack"){
+		updateFollowing(dt);
+	}
+	else if (state == "scape") {
+		updateRunAway(dt);
+	}
+	else if (state == "heal") {
 
-		std::cout << "Patrol state: " << (state == "patrol") << std::endl;
+	}
+	else {
+		std::cout << "Controller ERROR: Unknown state" << std::endl;
+	}
+}
+
+void Controller::evaluateState(float time) {
+	static int last_time = 0;
+	if ((int)time - last_time > 0) {
+		//std::cout << time << ", last_time: " << last_time << std::endl;
+		last_time = (int)time;
+		//std::cout << "State: " << state << std::endl;
+
 		if (state == "patrol") {
-			target->current_velocity = 50;
+			// Enemigo cerca?
+			Vehicle* enemy = enemyAtDistance(200);
+			if (enemy != NULL) {
+				following = enemy;
+				state = "attack";
+				std::cout << "State: " << state << std::endl;
+			}
+		}
+		else if(state == "attack" && target->hull < target->max_hull){
+			state = "scape";
+			std::cout << "State: " << state << std::endl;
+		}
+		else if (state == "scape" && 0 /* && enemigo lejos */) {
+			state = "heal";
+			std::cout << "State: " << state << std::endl;
+
+		}
+		else if (state == "heal" && 0 /* && vida restaurada */){
+			if (0 /* vida restaurada */) {
+				state = "patrol";
+			}
+			else if (0 /* enemigo cerca */) {
+				if (0 /* poca vida*/) {
+					state = "scape";
+				}
+				else if (0 /*mucha vida*/) {
+					state = "attack";
+				}
+			}
+			std::cout << "State: " << state << std::endl;
+		}
+		else if (state == "heal" && 0 /* && poca vida && enemigo cerca */) {
+			state = "scape";
+			std::cout << "State: " << state << std::endl;
+		}
+	}
+}
+
+Vehicle* Controller::enemyAtDistance(float dist)
+{
+	Entity* root = Scene::getInstance()->root;
+	// Recorremos el árbol en postorden (izquierda, derecha, padre) -> el último elemento es root
+	root->postOrderVector.clear();
+	std::vector<Entity*> postOrderVector = root->postOrder();
+
+	Vehicle* closest = NULL;
+	float minDist = dist;
+
+	for (int i = 0; i < postOrderVector.size(); i++) {
+		Vector3 pos = postOrderVector[i]->getGlobalMatrix() * Vector3(0, 0, 0);
+		/*std::cout << "Entity position: (" <<
+			pos.x << ", " <<
+			pos.y << ", " <<
+			pos.z << ") " << std::endl;*/
+		Vector3 myPos = target->getGlobalMatrix() * Vector3(0, 0, 0);
+		float vehicleDistance = postOrderVector[i]->vehicleDistance(myPos);
+		std::cout << vehicleDistance << std::endl;
+
+		if (vehicleDistance > 1 && vehicleDistance < dist) {
+			closest = (Vehicle*) postOrderVector[i];
+			minDist = vehicleDistance;
 		}
 
 	}
 
+	return closest;
 }
+

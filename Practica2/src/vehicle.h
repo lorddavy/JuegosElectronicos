@@ -18,6 +18,7 @@ public:
 	Vector3 camera_eye;
 
 	int hull;
+	int max_hull;
 	int shield;
 
 	Vehicle(); //Constructor
@@ -49,6 +50,8 @@ public:
 	//Respuesta a eventos de colision
 	void onShotCollision(float collisionPoint[3], float t1[9], float t2[9]);
 	void onEntityCollision(EntityCollider* entity, float collisionPoint[3], float t1[9], float t2[9]);
+
+	float vehicleDistance(Vector3 position);
 
 private:
 

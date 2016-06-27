@@ -5,6 +5,8 @@
 #include "scene.h"
 
 std::vector<Entity*> Entity::toDestroy;
+std::vector<Entity*> Entity::postOrderVector;
+
 
 //Entity Class Methods
 Entity::Entity()
@@ -58,6 +60,23 @@ Matrix44 Entity::getGlobalMatrix()
 		return local_matrix * parent->getGlobalMatrix();
 	return local_matrix;
 }
+
+std::vector<Entity*> Entity::postOrder()
+{
+	//postOrderVector.clear();
+	for (int i=0; i < this->children.size(); i++) {
+		this->children[i]->postOrder();
+	}
+	postOrderVector.push_back(this);
+	
+	return postOrderVector;
+}
+
+float Entity::vehicleDistance(Vector3 position) {
+	return -1;
+}
+
+
 
 //EntityMesh Class Methods
 
@@ -123,6 +142,10 @@ void EntityMesh::setup(const char* path, const char* mesh, const char* texture, 
 	}
 }
 
+float EntityMesh::vehicleDistance(Vector3 position) {
+	return -1;
+}
+
 std::vector<EntityCollider*> EntityCollider::static_entities;
 std::vector<EntityCollider*> EntityCollider::dynamic_entities;
 
@@ -158,3 +181,8 @@ void EntityCollider::onEntityCollision(EntityCollider* entity, float collisionPo
 		scene->asteroides.erase(it);
 	}*/
 }
+
+float EntityCollider::vehicleDistance(Vector3 position) {
+	return -1;
+}
+

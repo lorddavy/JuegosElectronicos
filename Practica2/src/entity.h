@@ -24,6 +24,7 @@ public:
 	~Entity();	//Destructor
 
 	static std::vector<Entity*> toDestroy;
+	static std::vector<Entity*> postOrderVector;
 
 	unsigned int uid;
 	std::string name;
@@ -34,6 +35,7 @@ public:
 
 	virtual void render(Camera* camera);
 	virtual void update(float dt);
+	
 
 	void addEntity(Entity*);
 	void removeChild(Entity* ent); //No tiene que destruir nada, solo lo quita del árbol, lo desvincula, pero luego se puede poner a otro sitio
@@ -41,7 +43,11 @@ public:
 
 	//Vector3 getPosition();
 
-	Matrix44 getGlobalMatrix();	
+	Matrix44 getGlobalMatrix();
+
+	std::vector<Entity*> postOrder();
+	virtual float vehicleDistance(Vector3 position);
+
 };
 
 class EntityMesh : public Entity {
@@ -61,6 +67,8 @@ public:
 	void update(float dt);
 
 	void setup(const char* path, const char* mesh, const char* texture = NULL, const char* mesh_low = NULL);
+
+	virtual float vehicleDistance(Vector3 position);
 };
 
 class EntityCollider : public EntityMesh {
@@ -75,6 +83,8 @@ public:
 	//Respuesta a eventos de colision
 	virtual void onShotCollision(float collisionPoint[3], float t1[9], float t2[9]);
 	virtual void onEntityCollision(EntityCollider* entity, float collisionPoint[3], float t1[9], float t2[9]);
+
+	virtual float vehicleDistance(Vector3 position);
 };
 
 #endif
