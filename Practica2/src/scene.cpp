@@ -94,7 +94,7 @@ bool Scene::createLevel()
 	EntityCollider::dynamic_entities.push_back(runner);
 	root->addEntity(runner);
 
-	int enemiesTotalSize = 15;
+	int enemiesTotalSize = 1;
 	//Enemies
 	if(enemies.size()==0)
 	{
