@@ -41,7 +41,7 @@ public:
 	Entity* createEntity(const char* name);
 	bool checkPosition(EntityCollider* element);
 
-	//std::vector<Entity*> postOrder();
+	std::string getEnemiesAlive();
 
 private:
 	static Scene* instance;

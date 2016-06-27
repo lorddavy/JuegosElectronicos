@@ -153,17 +153,21 @@ void Game::end(void)
 	current_camera = free_camera;
 	currentStage = "defeat";
 	scene = Scene::getInstance();
-	//delete scene;
+	//delete scene;	
 }
 
 //Reinicio del juego
 void Game::load(void)
 {
+	//Eliminamos la escena anterior
+	//scene->root->removeChild(scene->root);
+
 	//Seteamos a los valores iniciales de la escena
 	scene->loadLevel("data/scenes/space1.txt");
 	player = scene->runner;
 	player_camera->lookAt(player->getGlobalMatrix() * Vector3(0, 2, -5), player->getGlobalMatrix() * Vector3(0, 0, 20), Vector3(0, 1, 0));
 	current_camera = player_camera;
+	//Player controller	
 
 	for (auto it = controller.begin(); it != controller.end(); ++it)
 	{
@@ -171,20 +175,21 @@ void Game::load(void)
 	}
 	controller.clear();
 
-	//Player controller	
-
 	controller.push_back(new Controller(false));
 	controller[0]->setTarget(this->player);
 	controller[0]->setCamera(player_camera);
 	player->controller = controller[0];//Puntero a su controlador
+	//player->dead = false;
 
 	//Enemies Controllers
-	for (int i = 0; i < scene->enemies.size(); i++) {
+	for (int i = 0; i < scene->enemies.size(); i++) {		
 		Controller* element = new Controller();
 		element->setTarget(scene->enemies[i]);
 		//element->followTarget(player, Vector3(-30 + i * 15, 0, 0));
 		controller.push_back(element);
 		scene->enemies[i]->controller = element;//Puntero a su controlador
+
+		//scene->enemies[i]->dead = false;
 	}
 
 	//Paramos Musica Menu y reproducimos batalla
@@ -245,24 +250,6 @@ void Game::render(void)
 
 		scene->root->render(current_camera);
 		shotManager->render(current_camera);
-
-		if (currentStage == "game")
-		{
-			//Dibujamos texto en pantalla
-			drawText(5, 5, "Outer Space", Vector3(1, 0, 0), 3);
-
-			std::string impulse = "Impulse power: " + player->getImpulse() + "%";
-			drawText(5, 25, impulse, Vector3(102 / 255, 255 / 255, 102 / 255), 2);
-
-			std::string hull = "Hull damage: " + player->getHull() + "%";
-			drawText(5, 45, hull, Vector3(102 / 255, 255 / 255, 102 / 255), 2);
-		}
-
-		if (currentStage == "defeat")
-		{
-			//Dibujamos texto en pantalla
-			drawText(0.015*window_width, 0.025*window_height, "GAME OVER", Vector3(1, 0, 0), 16);
-		}
 	}
 
 	//Función para renderizar la interfaz
@@ -276,14 +263,40 @@ void Game::render(void)
 //Renderizado de la interfaz
 void Game::renderGUI()
 {
-	if (currentStage == "title" || currentStage == "load")
+	//El HUD es distinto dependiendo de la Stage actual
+	if (currentStage == "game")
+	{
+		//Dibujamos texto en pantalla
+		drawText(5, 5, "Outer Space", Vector3(1, 0, 0), 3);
+
+		std::string impulse = "Impulse power: " + player->getImpulse() + "%";
+		drawText(5, 25, impulse, Vector3(102 / 255, 255 / 255, 102 / 255), 2);
+
+		std::string hull = "Hull damage: " + player->getHull() + "%";
+		drawText(5, 45, hull, Vector3(102 / 255, 255 / 255, 102 / 255), 2);
+
+		std::string enemiesAlive = "Enemies remaining: " + scene->getEnemiesAlive();
+		drawText(5, 65, enemiesAlive, Vector3(102 / 255, 255 / 255, 102 / 255), 2);
+	}
+	else if (currentStage == "defeat")
+	{
+		//Dibujamos texto en pantalla
+		drawText(0.015*window_width, 0.025*window_height, "GAME OVER", Vector3(1, 0, 0), 16);
+	}
+	else if (currentStage == "title" || currentStage == "load" || currentStage == "menu" || currentStage == "credits")
 	{
 		char* texFile = "";
+		//rutas para asset de textura
 		if (currentStage == "title")
 			texFile = "portada.tga";
-		if (currentStage == "load")
+		else if (currentStage == "load")
 			texFile = "loading.tga";
+		else if (currentStage == "menu")
+			texFile = "menu.tga";
+		else if (currentStage == "credits")
+			texFile = "credits.tga";
 
+		//render del quad 2D de HUD
 		glDisable(GL_CULL_FACE);
 		glDisable(GL_DEPTH_TEST);
 
@@ -345,6 +358,10 @@ void Game::update(double seconds_elapsed)
 			//scene->enemies.front()->current_velocity = 0;
 		}
 	}
+	else if (currentStage == "menu")
+	{
+		//Menu del juego
+	}
 	else if (currentStage == "load")
 	{
 		//Cargamos el juego
@@ -386,6 +403,7 @@ void Game::onKeyPressed(SDL_KeyboardEvent event)
 					player->getGlobalMatrix().rotateVector(Vector3(0, 1, 0)));
 				current_camera = free_camera;
 			}
+			break;
 		}
 	}
 	else if (currentStage == "defeat")
@@ -393,24 +411,42 @@ void Game::onKeyPressed(SDL_KeyboardEvent event)
 		switch (event.keysym.sym)
 		{
 		case SDLK_ESCAPE:
-		currentStage = "title";					//ESC, ir a pantalla de titulo
+			currentStage = "title";					//ESC, ir a pantalla de titulo
+			break;
 		}
 	}
 	else if (currentStage == "title")
 	{
 		switch (event.keysym.sym)
 		{
-		case SDLK_ESCAPE: exit(0);									//ESC key, Salir
-		default: currentStage = "load";								//Otra tecla, cargar juego
+		case SDLK_ESCAPE: 
+			currentStage = "credits";									//ESC key, Salir
+			break;
+		default: 
+			currentStage = "menu";										//Otra tecla, ir al menu
+			break;
+		}
+	}	
+	else if (currentStage == "credits")
+	{
+		switch (event.keysym.sym)
+		{									
+		default:
+			exit(0);						//cualquier tecla, Salir
+			break;
 		}
 	}
-	
 	else if (currentStage == "menu")
 	{
 		switch (event.keysym.sym)
-		{
-		case SDLK_ESCAPE: currentStage = "title";					//ESC, ir a pantalla de titulo													
-		default: currentStage = "game";								//Otra tecla, empezar juego
+		{					
+		case SDLK_RETURN: 
+			currentStage = "load";					//Otra tecla, empezar juego
+			break;
+		case SDLK_ESCAPE: 
+			currentStage = "title";					//ESC, ir a pantalla de titulo	
+			break;
+		//default: ;
 		}
 	}	
 }

@@ -94,38 +94,36 @@ bool Scene::createLevel()
 	EntityCollider::dynamic_entities.push_back(runner);
 	root->addEntity(runner);
 
+	int enemiesTotalSize = 5;
 	//Enemies
-	if (enemies.size() == 0)
+	if(enemies.size()==0)
 	{
-		int enemiesSize = 1;
-		for (int i = 0; i < enemiesSize; i++) {
-			Vehicle* element = (Vehicle*)createEntity("spitfire");
+		for (int i = 0; i < enemiesTotalSize; i++) {
+				Vehicle* element = (Vehicle*)createEntity("hunter");
 
-			//Debe ser aleatorio
-			Vector3 v;
-			v.random(Vector3(500, 500, 500));
-			element->local_matrix.setTranslation(v.x, v.y, v.z);
+				//Debe ser aleatorio
+				Vector3 v;
+				v.random(Vector3(2000, 2000, 2000));
+				element->local_matrix.setTranslation(v.x, v.y, v.z);
+		
+				//element->local_matrix.scale(1.5, 1.5, 1.5);
+				element->mesh->boundingBox.half_size = element->mesh->boundingBox.half_size * 1.5;
+				element->global_matrix = planet->getGlobalMatrix();
+				element->mesh->createCollisionModel();
 
-			//element->local_matrix.scale(1.5, 1.5, 1.5);
-			element->mesh->boundingBox.half_size = element->mesh->boundingBox.half_size * 1.5;
-			element->global_matrix = planet->getGlobalMatrix();
-			element->mesh->createCollisionModel();
-			enemies.push_back(element);
+				//Comprobamos si la posición es válida
+				if (checkPosition(element))
+				{
+					enemies.push_back(element);
+					//Lo agregamos a el vector de EntityCollider y al arbol de escena
+					EntityCollider::dynamic_entities.push_back(element);
+					root->addEntity(element);
+				}
 
-			//Comprobamos si la posición es válida
-			if (checkPosition(element))
-			{
-				asteroides.push_back(element);
-				//Lo agregamos a el vector de EntityCollider y al arbol de escena
-				EntityCollider::static_entities.push_back(element);
-				root->addEntity(element);
 			}
-			else {
-				delete element;
-			}
-		}
 	}
 
+	asteroides.clear();
 	//Asteroides
 	if (asteroides.size() == 0)
 	{
@@ -162,12 +160,7 @@ bool Scene::createLevel()
 				//Lo agregamos a el vector de EntityCollider y al arbol de escena
 				EntityCollider::static_entities.push_back(element);
 				root->addEntity(element);
-			}
-			else {
-				delete element;
-			}
-
-			
+			}			
 		}
 	}
 	return true;
@@ -220,6 +213,19 @@ void Scene::clearRemovedEntities() {
 	root->toDestroy.clear();
 }
 
+//Get enemigos restantes
+std::string Scene::getEnemiesAlive() {	
+	/*int count = 0;
+	for (int i = 0; i < enemies.size(); i++)
+	{
+		if (!enemies[i]->dead) count++;
+	}*/
+
+	std::stringstream ss;
+	ss << (int)enemies.size();
+	return ss.str();
+}
+
 //Factory de entidades SCENE
 Entity* Scene::createEntity(const char* type)
 {
@@ -236,6 +242,12 @@ Entity* Scene::createEntity(const char* type)
 	{
 		Vehicle* vehicle = new Vehicle();
 		vehicle->setup("data/vehicle/spitfire/", "spitfire.ASE", "spitfire_color_spec.tga", "spitfire_low.ASE");
+		return vehicle;
+	}
+	else if (str == "hunter")
+	{
+		Vehicle* vehicle = new Vehicle();
+		vehicle->setup("data/vehicle/hunter/", "hunter.ASE", "hunter.tga");
 		return vehicle;
 	}
 	else if (str == "grupoAsteroides")
