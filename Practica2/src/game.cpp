@@ -283,7 +283,7 @@ void Game::renderGUI()
 		//Dibujamos texto en pantalla
 		drawText(0.015*window_width, 0.025*window_height, "GAME OVER", Vector3(1, 0, 0), 16);
 	}
-	else if (currentStage == "title" || currentStage == "load" || currentStage == "menu")
+	else if (currentStage == "title" || currentStage == "load" || currentStage == "menu" || currentStage == "credits")
 	{
 		char* texFile = "";
 		//rutas para asset de textura
@@ -293,6 +293,8 @@ void Game::renderGUI()
 			texFile = "loading.tga";
 		else if (currentStage == "menu")
 			texFile = "menu.tga";
+		else if (currentStage == "credits")
+			texFile = "credits.tga";
 
 		//render del quad 2D de HUD
 		glDisable(GL_CULL_FACE);
@@ -418,12 +420,22 @@ void Game::onKeyPressed(SDL_KeyboardEvent event)
 		switch (event.keysym.sym)
 		{
 		case SDLK_ESCAPE: 
-			exit(0);									//ESC key, Salir
+			currentStage = "credits";									//ESC key, Salir
+			break;
 		default: 
-			currentStage = "menu";						//Otra tecla, ir al menu
+			currentStage = "menu";										//Otra tecla, ir al menu
 			break;
 		}
 	}	
+	else if (currentStage == "credits")
+	{
+		switch (event.keysym.sym)
+		{									
+		default:
+			exit(0);						//cualquier tecla, Salir
+			break;
+		}
+	}
 	else if (currentStage == "menu")
 	{
 		switch (event.keysym.sym)
