@@ -32,10 +32,10 @@ HCHANNEL titleMusicChannel;
 HSAMPLE battleMusicSample;
 HCHANNEL battleMusicChannel;
 
-
 //DEBUG
 EntityCollider* debugEntityMesh;
 EntityMesh* testMesh;
+float loadTime;
 
 Game::Game(SDL_Window* window)
 {
@@ -151,18 +151,26 @@ void Game::end(void)
 {
 	//Acabamos con lo que no necesitamos
 	current_camera = free_camera;
-	currentStage = "defeat";
-	scene = Scene::getInstance();
+	
+	if (scene->enemies.size() != 0)
+	{
+		currentStage = "defeat";
+	}
+	else {
+		currentStage = "victory";
+	}
+	//scene = Scene::getInstance();
 	//delete scene;	
 }
 
 //Reinicio del juego
-void Game::load(void)
+bool Game::load(void)
 {
 	//Eliminamos la escena anterior
 	//scene->root->removeChild(scene->root);
 
 	//Seteamos a los valores iniciales de la escena
+	
 	scene->loadLevel("data/scenes/space1.txt");
 	player = scene->runner;
 	player_camera->lookAt(player->getGlobalMatrix() * Vector3(0, 2, -5), player->getGlobalMatrix() * Vector3(0, 0, 20), Vector3(0, 1, 0));
@@ -192,9 +200,13 @@ void Game::load(void)
 		//scene->enemies[i]->dead = false;
 	}
 
-	//Paramos Musica Menu y reproducimos batalla
+	//Paramos Musica Menu 
 	BASS_ChannelPause(titleMusicChannel);
 	BASS_ChannelPlay(battleMusicChannel, true);
+	BASS_ChannelPause(battleMusicChannel);
+
+	std::cout << "Game Loaded" << std::endl;
+	loadTime = time;
 
 	/*free_camera->setPerspective(70, window_width / (float)window_height, 0.1, 10000);
 	free_camera->lookAt(Vector3(0, 25, 25), Vector3(0, 0, 0), Vector3(0, 1, 0));
@@ -215,41 +227,45 @@ void Game::load(void)
 	controller.push_back(element);
 	scene->enemies[i]->controller = element;
 	}*/
+	return true;
 }
 
 //what to do when the image has to be draw
 void Game::render(void)
 {
-	if (currentStage == "game" || currentStage == "defeat")
+	if (currentStage == "game" || currentStage == "defeat" || currentStage == "victory")
 	{
-		glClearColor(1.0, 0.0, 0.0, 1.0);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		if (time > loadTime + 12)
+		{
+			glClearColor(1.0, 0.0, 0.0, 1.0);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		//set the clear color (the background color)
-		glClearColor(0.0, 0.0, 0.0, 1.0);
+			//set the clear color (the background color)
+			glClearColor(0.0, 0.0, 0.0, 1.0);
 
-		// Clear the window and the depth buffer
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			// Clear the window and the depth buffer
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		//Put the camera matrices on the stack of OpenGL (only for fixed rendering)
-		current_camera->set();
+			//Put the camera matrices on the stack of OpenGL (only for fixed rendering)
+			current_camera->set();
 
-		//Draw out world
-		glDisable(GL_DEPTH_TEST);
-		scene->skybox->local_matrix.setTranslation(current_camera->eye.x, current_camera->eye.y, current_camera->eye.z);
-		scene->skybox->render(current_camera);
-		glEnable(GL_DEPTH_TEST);
+			//Draw out world
+			glDisable(GL_DEPTH_TEST);
+			scene->skybox->local_matrix.setTranslation(current_camera->eye.x, current_camera->eye.y, current_camera->eye.z);
+			scene->skybox->render(current_camera);
+			glEnable(GL_DEPTH_TEST);
 
-		glClear(GL_DEPTH_BUFFER_BIT);
+			glClear(GL_DEPTH_BUFFER_BIT);
 
-		//drawGrid(500); //background grid
+			//drawGrid(500); //background grid
 
-		for (int i = 0; i < controller.size(); i++) {
-			controller[i]->renderDebug();
+			for (int i = 0; i < controller.size(); i++) {
+				controller[i]->renderDebug();
+			}
+
+			scene->root->render(current_camera);
+			shotManager->render(current_camera);
 		}
-
-		scene->root->render(current_camera);
-		shotManager->render(current_camera);
 	}
 
 	//Función para renderizar la interfaz
@@ -281,7 +297,13 @@ void Game::renderGUI()
 	else if (currentStage == "defeat")
 	{
 		//Dibujamos texto en pantalla
-		drawText(0.015*window_width, 0.025*window_height, "GAME OVER", Vector3(1, 0, 0), 16);
+		drawText(window_width / 65, window_height / 40, "GAME OVER", Vector3(1, 0, 0), 16);
+	}
+	else if (currentStage == "victory")
+	{
+		//Dibujamos texto en pantalla
+		drawText(window_width/55, window_height/60, "VICTORY", Vector3(1, 1, 0), 16);
+		drawText(window_width/50, window_height/20, "Thanks for playing!", Vector3(0, 1, 1), 10);
 	}
 	else if (currentStage == "title" || currentStage == "load" || currentStage == "menu" || currentStage == "credits")
 	{
@@ -290,7 +312,7 @@ void Game::renderGUI()
 		if (currentStage == "title")
 			texFile = "portada.tga";
 		else if (currentStage == "load")
-			texFile = "loading.tga";
+			texFile = "loading.tga";		
 		else if (currentStage == "menu")
 			texFile = "menu.tga";
 		else if (currentStage == "credits")
@@ -312,6 +334,9 @@ void Game::renderGUI()
 		hud.render(GL_TRIANGLES);
 		tex->unbind();
 		glDisable(GL_BLEND);
+
+		if (currentStage == "load")
+		drawText(window_width / 55, window_height / 40, "LOADING", Vector3(1, 1, 0), 16);
 	}
 
 	/*quad.createQuad(100, 100, 200, 200);
@@ -337,37 +362,60 @@ void Game::renderGUI()
 //Actualizamos los datos del juego
 void Game::update(double seconds_elapsed)
 {
-	if (currentStage == "game" || currentStage == "defeat")
+	if (currentStage == "game" || currentStage == "defeat" || currentStage == "victory")
 	{
-		//Updates
-		scene->root->update(seconds_elapsed);
-		inputManager->update(seconds_elapsed);
-		shotManager->update(seconds_elapsed*time);
-
-		//Comprobamos colisiones
-		collisionManager->check();
-
-		//Rotación del planeta
-		if (scene->planet != NULL)
+		if (time > loadTime+12)
 		{
-			scene->planet->local_matrix.rotateLocal(seconds_elapsed / 100, Vector3(0, 1, 0));
-		}
+			if (currentStage == "game")
+			{
+				//Peproducimos batalla
+				BASS_ChannelPlay(battleMusicChannel, false);
+			}
 
-		if (scene->enemies.size() != 0)
-		{
-			//scene->enemies.front()->current_velocity = 0;
+			//Updates
+			scene->root->update(seconds_elapsed);
+			inputManager->update(seconds_elapsed);
+			shotManager->update(seconds_elapsed*time);
+
+			//Comprobamos colisiones
+			collisionManager->check();
+
+			//Rotación del planeta
+			if (scene->planet != NULL)
+			{
+				scene->planet->local_matrix.rotateLocal(seconds_elapsed / 100, Vector3(0, 1, 0));
+			}
+
+			if (scene->enemies.size() == 0)
+			{
+				end();
+			}
+			else
+			{
+				//scene->enemies.front()->current_velocity = 0;
+			}
 		}
+	}
+	/*else if (currentStage == "victory")
+	{
+		
 	}
 	else if (currentStage == "menu")
 	{
 		//Menu del juego
-	}
+	}*/
 	else if (currentStage == "load")
 	{
-		//Cargamos el juego
 		renderGUI();
-		load();
-		currentStage = "game";
+		//Cargamos el juego
+		if (load())
+		{
+			currentStage = "game";
+		}
+		else
+		{
+			std::cout << "Error Loading Game" << std::endl;
+		}
 	}
 	else if (currentStage == "title")
 	{
@@ -406,12 +454,12 @@ void Game::onKeyPressed(SDL_KeyboardEvent event)
 			break;
 		}
 	}
-	else if (currentStage == "defeat")
+	else if (currentStage == "defeat" || currentStage == "victory")
 	{
 		switch (event.keysym.sym)
 		{
 		case SDLK_ESCAPE:
-			currentStage = "title";					//ESC, ir a pantalla de titulo
+			currentStage = "title";										//ESC, ir a pantalla de titulo
 			break;
 		}
 	}

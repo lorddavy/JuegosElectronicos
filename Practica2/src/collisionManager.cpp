@@ -35,7 +35,7 @@ void CollisionManager::check()
 					EntityCollider::static_entities[i]->mesh->collision_model->getCollidingTriangles(t1, t2, false);
 					
 					//Invocamos respuesta al evento
-					EntityCollider::static_entities[i]->onShotCollision(collisionPoint, t1, t2);
+					//EntityCollider::static_entities[i]->onShotCollision(collisionPoint, t1, t2);
 					shot.ttl = 0;
 				}
 			}

@@ -89,15 +89,15 @@ void Vehicle::shoot(char type)
 		if (type == 'l')
 		{
 			Matrix44 global = getGlobalMatrix();
-			Vector3 origin = global * Vector3(13, 0, -12);
-			Vector3 end = global * Vector3(13, 0, 20);
+			Vector3 origin = global * Vector3(13, 0, -45);
+			Vector3 end = global * Vector3(13, 0, 25);
 
-			Vector3 vel = global.rotateVector(Vector3(0, 0, 15));
+			Vector3 vel = global.rotateVector(Vector3(0, 0, 50));
 
 			shotManager->createShot('l', origin, end, vel, 45, this);
 
-			origin = global * Vector3(-13, 0, -12);
-			end = global * Vector3(-13, 0, 20);
+			origin = global * Vector3(-13, 0, -45);
+			end = global * Vector3(-13, 0, 25);
 
 			shotManager->createShot('l', origin, end, vel, 45, this);
 		}

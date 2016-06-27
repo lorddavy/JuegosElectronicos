@@ -73,7 +73,7 @@ bool Scene::createLevel()
 	{
 		station = new EntityCollider();
 		station->setup("data/entityMesh/eve_station/", "eve_station.ASE", "eve2.tga");
-		station->local_matrix.setTranslation(-800, 450, 0);
+		station->local_matrix.setTranslation(-2800, 450, 0);
 		station->local_matrix.rotate(270 * DEG2RAD, Vector3(0, 1, 0));
 		station->local_matrix.scale(0.5, 0.5, 0.5);
 		station->mesh->boundingBox.half_size = station->mesh->boundingBox.half_size * 0.5;
@@ -87,14 +87,14 @@ bool Scene::createLevel()
 
 	//Nave (runner)
 	runner = (Vehicle*)createEntity("runner");
-	runner->local_matrix.setTranslation(0, -10, 60);
+	runner->local_matrix.setTranslation(-1000, -10, 65);
 	runner->local_matrix.rotate(270 * DEG2RAD, Vector3(0, 1, 0));
 	runner->mesh->createCollisionModel();
 	//Lo agregamos a el vector de EntityCollider y al arbol de escena
 	EntityCollider::dynamic_entities.push_back(runner);
 	root->addEntity(runner);
 
-	int enemiesTotalSize = 5;
+	int enemiesTotalSize = 15;
 	//Enemies
 	if(enemies.size()==0)
 	{
@@ -103,12 +103,16 @@ bool Scene::createLevel()
 
 				//Debe ser aleatorio
 				Vector3 v;
-				v.random(Vector3(2000, 2000, 2000));
-				element->local_matrix.setTranslation(v.x, v.y, v.z);
+				//v.random(Vector3(200, 200, 200));
+				float randPosX = rand() % 1000 - 500;
+				float randPosY = rand() % 1000 - 500;
+				float randPosZ = rand() % 1000 - 500;
+				element->local_matrix.setTranslation(2000 + randPosX, randPosY, -2000 + randPosZ);
 		
 				//element->local_matrix.scale(1.5, 1.5, 1.5);
-				element->mesh->boundingBox.half_size = element->mesh->boundingBox.half_size * 1.5;
-				element->global_matrix = planet->getGlobalMatrix();
+				//element->mesh->boundingBox.half_size = element->mesh->boundingBox.half_size * 1.5;
+				//element->global_matrix = planet->getGlobalMatrix();
+				element->getGlobalMatrix();
 				element->mesh->createCollisionModel();
 
 				//Comprobamos si la posición es válida

@@ -58,7 +58,7 @@ public:
 	Game(SDL_Window* window);
 	void init( void );
 	void end(void);
-	void load(void);
+	bool load(void);
 	void render( void );
 	void update( double dt );
 	void renderGUI();
