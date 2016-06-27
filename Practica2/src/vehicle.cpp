@@ -254,3 +254,22 @@ float Vehicle::vehicleDistance(Vector3 position)
 	
 	return distanceVector.length();;
 }
+
+void Vehicle::heal(float dt)
+{
+	static float restore = 0;
+	int factor = 5;
+
+	if (hull < max_hull -1)
+	{
+		restore += factor * dt;
+		if (restore >= 1) {
+			restore--;
+			hull ++;
+			std::cout << "Hull: " << hull << std::endl;
+		}
+	}
+	else {
+		hull = max_hull;
+	}
+}

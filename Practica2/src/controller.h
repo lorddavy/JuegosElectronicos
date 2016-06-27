@@ -27,10 +27,12 @@ public:
 	void renderDebug();
 
 	void updateState(float dt);
-	void evaluateState(float time);
+	void evaluateState();
 	Vehicle* enemyAtDistance(float dist);
 
 	Vehicle* following;
+
+	bool clock(float dt);
 
 private:
 	Vehicle* target;

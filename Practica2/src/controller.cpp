@@ -79,16 +79,12 @@ void Controller::update(double dt) {
 				target->getGlobalMatrix().rotateVector(Vector3(0, 1, 0)));
 		}
 	}
-	else if (IA) {
-		evaluateState(game->time);
-		updateState(dt);
-
-		/*if (following != NULL) {
-			updateFollowing(dt);
+	else if (IA)
+	{
+		if (clock(dt)) {
+			evaluateState();
 		}
-		else {
-			updateWaypoints(dt);
-		}*/
+		updateState(dt);
 		
 	}
 }
@@ -181,56 +177,61 @@ void Controller::updateState(float dt)
 		updateRunAway(dt);
 	}
 	else if (state == "heal") {
-
+		target->heal(dt);
 	}
 	else {
 		std::cout << "Controller ERROR: Unknown state" << std::endl;
 	}
 }
 
-void Controller::evaluateState(float time) {
-	static int last_time = 0;
-	if ((int)time - last_time > 0) {
-		//std::cout << time << ", last_time: " << last_time << std::endl;
-		last_time = (int)time;
-		//std::cout << "State: " << state << std::endl;
+void Controller::evaluateState()
+{
+	std::cout << std::endl << "State: " << state << std::endl;
+	Vehicle* enemyClose = enemyAtDistance(10000);
+	std::cout << "Hull: " << target->hull << std::endl <<std::endl;
 
-		if (state == "patrol") {
-			// Enemigo cerca?
-			Vehicle* enemy = enemyAtDistance(200);
-			if (enemy != NULL) {
-				following = enemy;
-				state = "attack";
-				std::cout << "State: " << state << std::endl;
-			}
-		}
-		else if(state == "attack" && target->hull < target->max_hull){
-			state = "scape";
+	if (state == "patrol") {
+		// Enemigo cerca?
+		Vehicle* enemy = enemyAtDistance(1000);
+		if (enemy != NULL) {
+			following = enemy;
+			state = "attack";
 			std::cout << "State: " << state << std::endl;
 		}
-		else if (state == "scape" && 0 /* && enemigo lejos */) {
+	}
+	else if(state == "attack" && target->hull < target->max_hull * 0.5){
+		state = "scape";
+		std::cout << "State: " << state << std::endl;
+	}
+	else if (state == "scape") {
+		Vehicle* enemy = enemyAtDistance(1100);
+		if (enemy == NULL) {
 			state = "heal";
-			std::cout << "State: " << state << std::endl;
+		}
+		std::cout << "State: " << state << std::endl;
 
+	}
+	else if (state == "heal"){
+		Vehicle* enemy = enemyAtDistance(1000);
+		if (target->hull == target->max_hull) {
+			state = "patrol";
 		}
-		else if (state == "heal" && 0 /* && vida restaurada */){
-			if (0 /* vida restaurada */) {
-				state = "patrol";
-			}
-			else if (0 /* enemigo cerca */) {
-				if (0 /* poca vida*/) {
-					state = "scape";
-				}
-				else if (0 /*mucha vida*/) {
-					state = "attack";
-				}
-			}
-			std::cout << "State: " << state << std::endl;
-		}
-		else if (state == "heal" && 0 /* && poca vida && enemigo cerca */) {
+		else if (enemy != NULL)
+		{
 			state = "scape";
-			std::cout << "State: " << state << std::endl;
+
+			if (target->hull < target->max_hull * 0.5) {
+				state = "scape";
+			}
+			else if (target->hull > target->max_hull * 0.8) {
+				state = "attack";
+			}
 		}
+		std::cout << "State: " << state << std::endl;
+	}
+	else if (state == "heal" && 0 /* && poca vida && enemigo cerca */) {
+		state = "scape";
+		std::cout << "State: " << state << std::endl;
 	}
 }
 
@@ -252,7 +253,10 @@ Vehicle* Controller::enemyAtDistance(float dist)
 			pos.z << ") " << std::endl;*/
 		Vector3 myPos = target->getGlobalMatrix() * Vector3(0, 0, 0);
 		float vehicleDistance = postOrderVector[i]->vehicleDistance(myPos);
-		std::cout << vehicleDistance << std::endl;
+
+		if (vehicleDistance > 1) {
+			std::cout << "Distance: " << vehicleDistance << std::endl;
+		}
 
 		if (vehicleDistance > 1 && vehicleDistance < dist) {
 			closest = (Vehicle*) postOrderVector[i];
@@ -264,3 +268,15 @@ Vehicle* Controller::enemyAtDistance(float dist)
 	return closest;
 }
 
+bool Controller::clock(float dt) {
+	static float last_time = 0;
+	static int seconds = 0;
+	last_time += dt;
+	if (last_time >= 1) {
+		seconds++;
+		last_time -= 1;
+		//std::cout << seconds << std::endl;
+		return true;
+	}
+	return false;
+}

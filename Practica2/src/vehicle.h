@@ -37,6 +37,8 @@ public:
 	void stop();					//X key
 	void shoot(char type);			// SPACE key
 
+	void heal(float dt);
+
 	void pointerPosition(Vector3 target, float dt);
 	void balanceVehicle(Vector3 targetUp, float dt);
 
