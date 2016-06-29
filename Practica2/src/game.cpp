@@ -337,6 +337,21 @@ void Game::renderGUI()
 
 		if (currentStage == "load")
 		drawText(window_width / 55, window_height / 40, "LOADING", Vector3(1, 1, 0), 16);
+		//Opciones del menú
+		else if(currentStage == "menu"){ 
+			texFile = "menuOption1.tga";
+			tex = scene->textureManager->getTexture("data/hud/", texFile);
+
+			glEnable(GL_BLEND);
+			//glBlendFunc(GL_SRC_ALPHA,GL_ONE);
+			glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA); //para toda pantalla
+			tex->bind();
+			hud.render(GL_TRIANGLES);
+			tex->unbind();
+			glDisable(GL_BLEND);
+
+
+		}
 	}
 
 	/*quad.createQuad(100, 100, 200, 200);
