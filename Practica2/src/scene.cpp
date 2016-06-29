@@ -85,6 +85,8 @@ bool Scene::createLevel()
 		root->addEntity(station);
 	}
 
+	if (runner != NULL)
+		runner->die();
 	//Nave (runner)
 	runner = (Vehicle*)createEntity("runner");
 	runner->local_matrix.setTranslation(-1000, -10, 65);
@@ -107,7 +109,7 @@ bool Scene::createLevel()
 				float randPosX = rand() % 1000 - 500;
 				float randPosY = rand() % 1000 - 500;
 				float randPosZ = rand() % 1000 - 500;
-				element->local_matrix.setTranslation(2000 + randPosX, randPosY, -2000 + randPosZ);
+				element->local_matrix.setTranslation(1000 + randPosX, randPosY, randPosZ - 1000);
 		
 				//element->local_matrix.scale(1.5, 1.5, 1.5);
 				//element->mesh->boundingBox.half_size = element->mesh->boundingBox.half_size * 1.5;
