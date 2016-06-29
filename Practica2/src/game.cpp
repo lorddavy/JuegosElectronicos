@@ -31,6 +31,8 @@ HSAMPLE titleMusicSample;
 HCHANNEL titleMusicChannel;
 HSAMPLE battleMusicSample;
 HCHANNEL battleMusicChannel;
+HSAMPLE victoryMusicSample;
+HCHANNEL victoryMusicChannel;
 
 //DEBUG
 EntityCollider* debugEntityMesh;
@@ -99,6 +101,7 @@ void Game::init(void)
 	//Inicializamos BASS  (id_del_device, muestras por segundo, ...)
 	const char* titleFilename = "data/music/intro.wav";	
 	const char* battleFilename = "data/music/battle_music.wav";
+	const char* victoryFilename = "data/music/victory.wav";
 
 	if (BASS_Init(-1, 44100, BASS_DEVICE_DEFAULT, 0, NULL))
 	{
@@ -122,9 +125,18 @@ void Game::init(void)
 			return;
 		}
 
+		victoryMusicSample = BASS_SampleLoad(false, victoryFilename, 0, 0, 3, BASS_SAMPLE_MONO);
+		if (victoryMusicSample == 0)
+		{
+			int err = BASS_ErrorGetCode();
+			std::cout << "ERROR AL CARGAR SONIDO: " << err << std::endl;
+			return;
+		}
+
 		//Creamos canales para samples
 		titleMusicChannel = BASS_SampleGetChannel(titleMusicSample, false);
 		battleMusicChannel = BASS_SampleGetChannel(battleMusicSample, false);
+		victoryMusicChannel = BASS_SampleGetChannel(victoryMusicSample, false);
 
 		//Lanzamos sample de musica del menú
 		BASS_ChannelPlay(titleMusicChannel, false);
@@ -205,6 +217,7 @@ bool Game::load(void)
 	}
 
 	//Paramos Musica Menu 
+	BASS_ChannelPause(victoryMusicChannel);
 	BASS_ChannelPause(titleMusicChannel);
 	BASS_ChannelPlay(battleMusicChannel, true);
 	BASS_ChannelPause(battleMusicChannel);
@@ -287,7 +300,7 @@ void Game::renderGUI()
 	if (currentStage == "game")
 	{
 		//Dibujamos texto en pantalla
-		drawText(5, 5, "Outer Space", Vector3(1, 0, 0), 3);
+		drawText(5, 5, "Outer Space (Omicron-Delta Sector)", Vector3(1, 0, 0), 3);
 
 		std::string impulse = "Impulse power: " + player->getImpulse() + "%";
 		drawText(5, 25, impulse, Vector3(102 / 255, 255 / 255, 102 / 255), 2);
@@ -467,6 +480,15 @@ void Game::update(double seconds_elapsed)
 				//scene->enemies.front()->current_velocity = 0;
 			}
 		}
+		if (currentStage == "victory")
+		{
+			if (BASS_ChannelIsActive(battleMusicChannel) == BASS_ACTIVE_PLAYING)
+			{
+				BASS_ChannelPause(battleMusicChannel);
+				//std::cout << "VICTORIA! Gracias por jugar!" << std::endl;
+				BASS_ChannelPlay(victoryMusicChannel, true);
+			}
+		}
 	}
 	else if (currentStage == "load")
 	{
@@ -486,6 +508,7 @@ void Game::update(double seconds_elapsed)
 		if (BASS_ChannelIsActive(titleMusicChannel) != BASS_ACTIVE_PLAYING)
 		{
 			//Musica
+			BASS_ChannelPause(victoryMusicChannel);
 			BASS_ChannelPause(battleMusicChannel);
 			BASS_ChannelPlay(titleMusicChannel, true);
 		}

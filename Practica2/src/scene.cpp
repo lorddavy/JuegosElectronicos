@@ -98,6 +98,13 @@ bool Scene::createLevel()
 
 	int enemiesTotalSize = 1;
 	//Enemies
+	/*if (enemies.size() != 0)
+	{
+		for (int i = 0; enemies.size(); i++)
+		{
+			enemies[i]->die();
+		}
+	}*/
 	if(enemies.size()==0)
 	{
 		for (int i = 0; i < enemiesTotalSize; i++) {
