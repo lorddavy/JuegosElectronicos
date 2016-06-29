@@ -20,7 +20,7 @@ public:
 	int hull;
 	int max_hull;
 	int shield;
-	//bool dead;
+	bool dead;
 
 	Vehicle(); //Constructor
 	 ~Vehicle();	//Destructor

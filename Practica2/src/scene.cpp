@@ -85,7 +85,7 @@ bool Scene::createLevel()
 		root->addEntity(station);
 	}
 
-	if (runner != NULL)
+	if (runner!=NULL && !runner->dead)
 		runner->die();
 	//Nave (runner)
 	runner = (Vehicle*)createEntity("runner");
