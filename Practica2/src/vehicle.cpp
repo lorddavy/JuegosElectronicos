@@ -141,17 +141,30 @@ void Vehicle::update(float dt)
 	//if (!dead)
 	//{
 
-		velocity = this->getGlobalMatrix().rotateVector(Vector3(0, 0, -1));
-		velocity.normalize();
+	velocity = this->getGlobalMatrix().rotateVector(Vector3(0, 0, -1));
+	velocity.normalize();
 
-		Vector3 translation = velocity * current_velocity * -dt;
-		local_matrix.traslate(translation.x, translation.y, translation.z);
+	Vector3 translation = velocity * current_velocity * -dt;
+	local_matrix.traslate(translation.x, translation.y, translation.z);
 
-		if (hull < 0)
-		{
-			die();
-		}
+	if (hull < 0)
+	{
+		die();
+	}
 	//}
+
+	/*if (0) //ShotCollision
+	{
+		static float damage = 0;
+		int factor = 5;
+
+		damage += factor * dt;
+		if (damage >= 1) {
+			damage--;
+			hull--;
+			std::cout << "Hull: " << hull << std::endl;
+		}
+	}*/
 }
 
 void Vehicle::die()
@@ -171,6 +184,7 @@ void Vehicle::die()
 
 	//Eliminamos su controlador del vector de controladores
 	auto it2 = find(game->controller.begin(), game->controller.end(), this->controller);
+	// EL ERROR ESTA AQUI !!!!
 	game->controller.erase(it2);
 
 	//La quitamos del vector de enemigos (si lo es)
@@ -208,14 +222,15 @@ std::string Vehicle::getHull()
 //Respuesta eventos de colisión
 void Vehicle::onShotCollision(float collisionPoint[3], float t1[9], float t2[9])
 {
-	hull -= 20;
-	std::cout << "Colisión en: " << collisionPoint[0] << ", " << collisionPoint[1] << ", " << collisionPoint[2] << std::endl;
+	float damage = 1;
+	hull -= damage;
+	std::cout << "Colision en: " << collisionPoint[0] << ", " << collisionPoint[1] << ", " << collisionPoint[2] << std::endl;
 }
 void Vehicle::onEntityCollision(EntityCollider* entity, float collisionPoint[3], float t1[9], float t2[9])
 {
 	hull -= 10;
 	this->stop();
-	std::cout << "Colisión en: " << collisionPoint[0] << ", " << collisionPoint[1] << ", " << collisionPoint[2] << std::endl;
+	std::cout << "Colision en: " << collisionPoint[0] << ", " << collisionPoint[1] << ", " << collisionPoint[2] << std::endl;
 }
 
 //???
@@ -251,7 +266,6 @@ void Vehicle::balanceVehicle(Vector3 targetUp, float dt) {
 float Vehicle::vehicleDistance(Vector3 position) 
 {
 	Vector3 distanceVector = this->getGlobalMatrix() * Vector3(0, 0, 0) - position;
-	
 	return distanceVector.length();;
 }
 

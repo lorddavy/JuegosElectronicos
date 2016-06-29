@@ -31,12 +31,14 @@ Controller::Controller(bool ia) {
 			waypoints.push_back(v);
 		}
 	}
-
-	
 }
 
 Controller::~Controller() {
-
+	target = NULL;
+	camera = NULL;
+	state = NULL;
+	following = NULL;
+	delete state;
 }
 
 void Controller::update(double dt) {
@@ -173,6 +175,10 @@ void Controller::updateState(float dt)
 	else if(state == "attack"){
 		updateFollowing(dt);
 	}
+	else if (state == "shooting") {
+		updateFollowing(dt);
+		shotEnemy(dt);
+	}
 	else if (state == "scape") {
 		updateRunAway(dt);
 	}
@@ -199,8 +205,21 @@ void Controller::evaluateState()
 			std::cout << "State: " << state << std::endl;
 		}
 	}
-	else if(state == "attack" && target->hull < target->max_hull * 0.5){
-		state = "scape";
+	else if(state == "attack" || state == "shooting"){
+		Vehicle* enemy = enemyAtDistance(500);
+		if (target->hull < target->max_hull * 0.5) {
+			state = "scape";
+		}
+		else if (state == "attack" && enemy != NULL) {
+			if (following != enemy) {
+				following = enemy;
+			}
+			state = "shooting";
+		}
+		else if (state == "shooting") {
+			state = "attack";
+		}
+
 		std::cout << "State: " << state << std::endl;
 	}
 	else if (state == "scape") {
@@ -218,19 +237,13 @@ void Controller::evaluateState()
 		}
 		else if (enemy != NULL)
 		{
-			state = "scape";
-
-			if (target->hull < target->max_hull * 0.5) {
+			if (target->hull < target->max_hull * 0.8) {
 				state = "scape";
 			}
-			else if (target->hull > target->max_hull * 0.8) {
+			else{
 				state = "attack";
 			}
 		}
-		std::cout << "State: " << state << std::endl;
-	}
-	else if (state == "heal" && 0 /* && poca vida && enemigo cerca */) {
-		state = "scape";
 		std::cout << "State: " << state << std::endl;
 	}
 }
@@ -279,4 +292,8 @@ bool Controller::clock(float dt) {
 		return true;
 	}
 	return false;
+}
+
+void Controller::shotEnemy(float dt) {
+	target->shoot('l');
 }

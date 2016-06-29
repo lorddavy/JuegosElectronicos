@@ -21,6 +21,7 @@ public:
 	void followTarget(Vehicle* follow, Vector3 delta );
 	void updateFollowing(float dt);
 	void updateRunAway(float dt);
+	void shotEnemy(float dt);
 
 	void updateWaypoints(float dt);
 
