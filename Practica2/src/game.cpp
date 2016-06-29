@@ -300,15 +300,17 @@ void Game::renderGUI()
 	else if (currentStage == "defeat")
 	{
 		//Dibujamos texto en pantalla
-		drawText(window_width / 65, window_height / 40, "GAME OVER", Vector3(1, 0, 0), 16);
+		drawText(window_width / 70, window_height / 40, "GAME OVER", Vector3(1, 0, 0), 16);
+		drawText(5, 5, "Press ESC key to return to the menu!", Vector3(1, 1, 1), 2);
 	}
 	else if (currentStage == "victory")
 	{
 		//Dibujamos texto en pantalla
 		drawText(window_width/55, window_height/60, "VICTORY", Vector3(1, 1, 0), 16);
 		drawText(window_width/50, window_height/20, "Thanks for playing!", Vector3(0, 1, 1), 10);
+		drawText(5, 5, "Press ESC key to return to the menu!", Vector3(1, 1, 1), 2);
 	}
-	else if (currentStage == "title" || currentStage == "load" || currentStage == "menu" || currentStage == "credits")
+	else if (currentStage == "title" || currentStage == "load" || currentStage == "menu" || currentStage == "credits" || currentStage == "mission")
 	{
 		char* texFile = "";
 		//rutas para asset de textura
@@ -320,6 +322,8 @@ void Game::renderGUI()
 			texFile = "menu.tga";
 		else if (currentStage == "credits")
 			texFile = "credits.tga";
+		else if (currentStage == "mission")
+			texFile = "mission.tga";
 
 		//render del quad 2D de HUD
 		glDisable(GL_CULL_FACE);
@@ -338,8 +342,9 @@ void Game::renderGUI()
 		tex->unbind();
 		glDisable(GL_BLEND);
 
-		if (currentStage == "load")
-		drawText(window_width / 55, window_height / 40, "LOADING", Vector3(1, 1, 0), 16);
+		if (currentStage == "load") {
+			drawText(window_width / 55, window_height / 40, "LOADING", Vector3(1, 1, 0), 16);
+		}
 		//Opciones del menú
 		else if(currentStage == "menu"){ 
 			if(menuOption == 0)
@@ -352,8 +357,6 @@ void Game::renderGUI()
 				texFile = "menuOption3.tga";
 			if (menuOption == 4)
 				texFile = "menuOption4.tga";
-			if (menuOption == 5)
-				texFile = "menuOption5.tga";
 
 			tex = scene->textureManager->getTexture("data/hud/", texFile);
 
@@ -365,7 +368,26 @@ void Game::renderGUI()
 			tex->unbind();
 			glDisable(GL_BLEND);
 
-
+			//Dibujamos texto en pantalla
+			drawText(5, 5, "Press ARROW keys to change the options and ENTER key to select one!", Vector3(1, 1, 1), 2);
+		}
+		else if (currentStage == "title" ) {
+			drawText(5, 5, "Press any key!", Vector3(1, 1, 1), 2);
+		}
+		else if (currentStage == "mission") {
+			drawText(5, 5, "Press any key!", Vector3(1, 1, 1), 2);
+			drawText(25, 60, "Mission -1Ex6x9B2- Report:", Vector3(0.36, 0.75, 0.56), 3);
+			drawText(25, 75, "Congratulations on your promotion , commander.", Vector3(0.36, 0.75, 0.56), 3); 
+			drawText(25, 95, "We hope you meet our expectations on you.", Vector3(0.36, 0.75, 0.56), 3);			
+			drawText(25, 115, "You should know the strategic importance that the Omicron-Delta sector has ", Vector3(0.36, 0.75, 0.56), 3);
+			drawText(25, 125, "for the Human Cosmic Empire.", Vector3(0.36, 0.75, 0.56), 3);
+			drawText(25, 135, "Recent discoveries of large ore veins are of great value to us.", Vector3(0.36, 0.75, 0.56), 3);
+			drawText(25, 145, "A few days ago, we sent a fleet of mineral collectors but have been attacked by surprise", Vector3(0.36, 0.75, 0.56), 3);
+			drawText(25, 155, "by what appear to be space pirates.", Vector3(0.36, 0.75, 0.56), 3);
+			drawText(25, 165, "Your mission is to end them and safeguard our ships while are returning to our mothership.", Vector3(0.36, 0.75, 0.56), 3);
+			drawText(25, 175, "You are alone. Your proven experience should be more than enough.", Vector3(0.36, 0.75, 0.56), 3);
+			drawText(25, 195, "Good luck,", Vector3(0.36, 0.75, 0.56), 3);
+			drawText(25, 215, "HCE - Order and Progress", Vector3(0.36, 0.75, 0.56), 3);
 		}
 	}
 
@@ -426,14 +448,6 @@ void Game::update(double seconds_elapsed)
 			}
 		}
 	}
-	/*else if (currentStage == "victory")
-	{
-		
-	}
-	else if (currentStage == "menu")
-	{
-		//Menu del juego
-	}*/
 	else if (currentStage == "load")
 	{
 		renderGUI();
@@ -484,12 +498,56 @@ void Game::onKeyPressed(SDL_KeyboardEvent event)
 			break;
 		}
 	}
+	else if (currentStage == "menu")
+	{
+		switch (event.keysym.sym)
+		{
+			//Opción anterior
+		case SDLK_LEFT:
+		case SDLK_UP:
+			--menuOption;
+			if (menuOption < 0) menuOption = 4;
+			break;
+			//Opción siguiente
+		case SDLK_RIGHT:
+		case SDLK_DOWN:
+			++menuOption;
+			if (menuOption > 4) menuOption = 0;
+			break;
+		case SDLK_RETURN:
+			if (menuOption == 0)
+			{
+				currentStage = "mission";;
+			}
+			if (menuOption == 1)
+			{
+				currentStage = "load";			//empezar juego
+			}
+			else if (menuOption == 2)
+			{
+
+			}
+			else if (menuOption == 3)
+			{
+
+			}
+			else if (menuOption == 4)
+			{
+				currentStage = "credits";		//Salir
+			}
+			break;
+		case SDLK_ESCAPE:
+			currentStage = "title";					//ESC, ir a pantalla de titulo	
+			break;
+			//default: ;
+		}
+	}
 	else if (currentStage == "defeat" || currentStage == "victory")
 	{
 		switch (event.keysym.sym)
 		{
 		case SDLK_ESCAPE:
-			currentStage = "title";										//ESC, ir a pantalla de titulo
+			currentStage = "menu";										//ESC, ir a pantalla de titulo
 			break;
 		}
 	}
@@ -514,50 +572,15 @@ void Game::onKeyPressed(SDL_KeyboardEvent event)
 			break;
 		}
 	}
-	else if (currentStage == "menu")
+	else if (currentStage == "mission")
 	{
 		switch (event.keysym.sym)
 		{
-			//Opción anterior
-		case SDLK_LEFT:
-		case SDLK_UP:
-			--menuOption;
-			if (menuOption < 0) menuOption = 4;			
+		default:
+			currentStage = "menu";							//cualquier tecla, al menú
 			break;
-			//Opción siguiente
-		case SDLK_RIGHT:
-		case SDLK_DOWN:
-			++menuOption;
-			if (menuOption > 4) menuOption = 0;
-			break;
-		case SDLK_RETURN:
-			if (menuOption == 0)
-			{
-				
-			}
-			if (menuOption == 1)
-			{
-				currentStage = "load";			//empezar juego
-			}
-			else if (menuOption == 2)
-			{
-
-			}
-			else if (menuOption == 3)
-			{
-				
-			}
-			else if (menuOption == 4)
-			{
-				currentStage = "credits";		//Salir
-			}			
-			break;
-		case SDLK_ESCAPE: 
-			currentStage = "title";					//ESC, ir a pantalla de titulo	
-			break;
-		//default: ;
 		}
-	}	
+	}
 }
 
 void Game::onMouseButton(SDL_MouseButtonEvent event)

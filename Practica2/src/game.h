@@ -52,6 +52,7 @@ public:
 
 	//Opciones del menu;
 	int menuOption;
+	int missionText;
 
 	//Entidad del jugador
 	Vehicle* player;
