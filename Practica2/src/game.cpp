@@ -90,6 +90,9 @@ void Game::init(void)
 	currentStage = "title";		
 	current_camera = player_camera;
 
+	//Opción de menú inicial
+	menuOption = 0;
+
 	//Música y Sonido
 
 	//Inicializamos BASS  (id_del_device, muestras por segundo, ...)
@@ -339,7 +342,19 @@ void Game::renderGUI()
 		drawText(window_width / 55, window_height / 40, "LOADING", Vector3(1, 1, 0), 16);
 		//Opciones del menú
 		else if(currentStage == "menu"){ 
-			texFile = "menuOption1.tga";
+			if(menuOption == 0)
+				texFile = "menuOption0.tga";
+			if (menuOption == 1)
+				texFile = "menuOption1.tga";
+			if (menuOption == 2)
+				texFile = "menuOption2.tga";
+			if (menuOption == 3)
+				texFile = "menuOption3.tga";
+			if (menuOption == 4)
+				texFile = "menuOption4.tga";
+			if (menuOption == 5)
+				texFile = "menuOption5.tga";
+
 			tex = scene->textureManager->getTexture("data/hud/", texFile);
 
 			glEnable(GL_BLEND);
@@ -502,7 +517,19 @@ void Game::onKeyPressed(SDL_KeyboardEvent event)
 	else if (currentStage == "menu")
 	{
 		switch (event.keysym.sym)
-		{					
+		{
+			//Opción anterior
+		case SDLK_LEFT:
+		case SDLK_UP:
+			--menuOption;
+			if (menuOption < 0) menuOption = 4;			
+			break;
+			//Opción siguiente
+		case SDLK_RIGHT:
+		case SDLK_DOWN:
+			++menuOption;
+			if (menuOption > 4) menuOption = 0;
+			break;
 		case SDLK_RETURN: 
 			currentStage = "load";					//Otra tecla, empezar juego
 			break;
