@@ -92,6 +92,7 @@ void Game::init(void)
 
 	//Opción de menú inicial
 	menuOption = 0;
+	missionText = 0;
 
 	//Música y Sonido
 
@@ -353,9 +354,9 @@ void Game::renderGUI()
 				texFile = "menuOption1.tga";
 			if (menuOption == 2)
 				texFile = "menuOption2.tga";
+			/*if (menuOption == 3)
+				texFile = "menuOption3.tga";*/
 			if (menuOption == 3)
-				texFile = "menuOption3.tga";
-			if (menuOption == 4)
 				texFile = "menuOption4.tga";
 
 			tex = scene->textureManager->getTexture("data/hud/", texFile);
@@ -375,19 +376,38 @@ void Game::renderGUI()
 			drawText(5, 5, "Press any key!", Vector3(1, 1, 1), 2);
 		}
 		else if (currentStage == "mission") {
+			
+			
 			drawText(5, 5, "Press any key!", Vector3(1, 1, 1), 2);
-			drawText(25, 60, "Mission -1Ex6x9B2- Report:", Vector3(0.36, 0.75, 0.56), 3);
-			drawText(25, 75, "Congratulations on your promotion , commander.", Vector3(0.36, 0.75, 0.56), 3); 
-			drawText(25, 95, "We hope you meet our expectations on you.", Vector3(0.36, 0.75, 0.56), 3);			
-			drawText(25, 115, "You should know the strategic importance that the Omicron-Delta sector has ", Vector3(0.36, 0.75, 0.56), 3);
-			drawText(25, 125, "for the Human Cosmic Empire.", Vector3(0.36, 0.75, 0.56), 3);
+
+			//Text of the mission
+			if (missionText >= 0)
+				drawText(25, 60, "Mission -1Ex6x9B2- Report:", Vector3(0.36, 0.75, 0.56), 3);
+			if (missionText > 0)
+				drawText(25, 75, "Congratulations on your promotion , commander.", Vector3(0.36, 0.75, 0.56), 3); 
+			if (missionText > 1)
+				drawText(25, 95, "We hope you meet our expectations on you.", Vector3(0.36, 0.75, 0.56), 3);
+			if (missionText > 2)
+			{
+				drawText(25, 115, "You should know the strategic importance that the Omicron-Delta sector has ", Vector3(0.36, 0.75, 0.56), 3);
+				drawText(25, 125, "for the Human Cosmic Empire.", Vector3(0.36, 0.75, 0.56), 3);
+			}
+			if (missionText > 3)
 			drawText(25, 135, "Recent discoveries of large ore veins are of great value to us.", Vector3(0.36, 0.75, 0.56), 3);
-			drawText(25, 145, "A few days ago, we sent a fleet of mineral collectors but have been attacked by surprise", Vector3(0.36, 0.75, 0.56), 3);
-			drawText(25, 155, "by what appear to be space pirates.", Vector3(0.36, 0.75, 0.56), 3);
-			drawText(25, 165, "Your mission is to end them and safeguard our ships while are returning to our mothership.", Vector3(0.36, 0.75, 0.56), 3);
-			drawText(25, 175, "You are alone. Your proven experience should be more than enough.", Vector3(0.36, 0.75, 0.56), 3);
-			drawText(25, 195, "Good luck,", Vector3(0.36, 0.75, 0.56), 3);
-			drawText(25, 215, "HCE - Order and Progress", Vector3(0.36, 0.75, 0.56), 3);
+			if (missionText > 4)
+			{
+				drawText(25, 145, "A few days ago, we sent a fleet of mineral collectors but have been attacked by surprise", Vector3(0.36, 0.75, 0.56), 3);
+				drawText(25, 155, "by what appear to be space pirates.", Vector3(0.36, 0.75, 0.56), 3);
+			}
+			if (missionText > 5)
+				drawText(25, 165, "Your mission is to end them and safeguard our ships while are returning to our mothership.", Vector3(0.36, 0.75, 0.56), 3);
+			if (missionText > 6)
+				drawText(25, 175, "You are alone. Your proven experience should be more than enough.", Vector3(0.36, 0.75, 0.56), 3);
+			if (missionText > 7)
+			{
+				drawText(25, 195, "Good luck,", Vector3(0.36, 0.75, 0.56), 3);
+				drawText(25, 215, "HCE - Order and Progress", Vector3(0.36, 0.75, 0.56), 3);
+			}
 		}
 	}
 
@@ -512,7 +532,7 @@ void Game::onKeyPressed(SDL_KeyboardEvent event)
 		case SDLK_RIGHT:
 		case SDLK_DOWN:
 			++menuOption;
-			if (menuOption > 4) menuOption = 0;
+			if (menuOption > 3) menuOption = 0;
 			break;
 		case SDLK_RETURN:
 			if (menuOption == 0)
@@ -529,12 +549,12 @@ void Game::onKeyPressed(SDL_KeyboardEvent event)
 			}
 			else if (menuOption == 3)
 			{
-
-			}
-			else if (menuOption == 4)
-			{
 				currentStage = "credits";		//Salir
 			}
+			/*else if (menuOption == 4)
+			{
+				
+			}*/
 			break;
 		case SDLK_ESCAPE:
 			currentStage = "title";					//ESC, ir a pantalla de titulo	
@@ -577,7 +597,9 @@ void Game::onKeyPressed(SDL_KeyboardEvent event)
 		switch (event.keysym.sym)
 		{
 		default:
-			currentStage = "menu";							//cualquier tecla, al menú
+			++missionText;
+			if(missionText>8)
+				currentStage = "menu";							//cualquier tecla, al menú
 			break;
 		}
 	}
