@@ -481,7 +481,7 @@ void Game::update(double seconds_elapsed)
 			std::cout << "Error Loading Game" << std::endl;
 		}
 	}
-	else if (currentStage == "title")
+	else if (currentStage == "title"|| currentStage == "menu")
 	{
 		if (BASS_ChannelIsActive(titleMusicChannel) != BASS_ACTIVE_PLAYING)
 		{
@@ -526,7 +526,7 @@ void Game::onKeyPressed(SDL_KeyboardEvent event)
 		case SDLK_LEFT:
 		case SDLK_UP:
 			--menuOption;
-			if (menuOption < 0) menuOption = 4;
+			if (menuOption < 0) menuOption = 3;
 			break;
 			//Opción siguiente
 		case SDLK_RIGHT:
