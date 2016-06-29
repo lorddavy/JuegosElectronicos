@@ -530,8 +530,27 @@ void Game::onKeyPressed(SDL_KeyboardEvent event)
 			++menuOption;
 			if (menuOption > 4) menuOption = 0;
 			break;
-		case SDLK_RETURN: 
-			currentStage = "load";					//Otra tecla, empezar juego
+		case SDLK_RETURN:
+			if (menuOption == 0)
+			{
+				
+			}
+			if (menuOption == 1)
+			{
+				currentStage = "load";			//empezar juego
+			}
+			else if (menuOption == 2)
+			{
+
+			}
+			else if (menuOption == 3)
+			{
+				
+			}
+			else if (menuOption == 4)
+			{
+				currentStage = "credits";		//Salir
+			}			
 			break;
 		case SDLK_ESCAPE: 
 			currentStage = "title";					//ESC, ir a pantalla de titulo	
