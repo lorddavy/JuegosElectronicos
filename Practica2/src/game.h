@@ -50,6 +50,10 @@ public:
 	//Etapas del juego
 	char* currentStage;
 
+	//Opciones del menu;
+	int menuOption;
+	int missionText;
+
 	//Entidad del jugador
 	Vehicle* player;
 

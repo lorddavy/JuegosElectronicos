@@ -17,7 +17,7 @@ Vehicle::Vehicle()
 	max_hull = 100;
 	hull = max_hull;
 	shield = 0;
-	//dead = false;
+	dead = false;
 }
 
 Vehicle::~Vehicle()
@@ -171,7 +171,7 @@ void Vehicle::die()
 {
 	Game* game = Game::getInstance();
 	Scene* scene = Scene::getInstance();
-	//dead = true;
+	dead = true;
 
 	if (game->player == this) game->end(); //Fin de juego
 
