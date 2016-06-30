@@ -116,13 +116,15 @@ void Controller::updateFollowing(float dt)
 
 void Controller::updateRunAway(float dt)
 {
-	Vector3 myPos = target->getGlobalMatrix() * Vector3(0, 0, 0);
-	Vector3 followingPos = following->getGlobalMatrix() * Vector3(0, 0, 0);
-	Vector3 runAway /*= myPos - direction (followingPos - myPos)*/ = myPos * 2 - followingPos;
+	if (following != NULL){
+		Vector3 myPos = target->getGlobalMatrix() * Vector3(0, 0, 0);
+		Vector3 followingPos = following->getGlobalMatrix() * Vector3(0, 0, 0);
+		Vector3 runAway /*= myPos - direction (followingPos - myPos)*/ = myPos * 2 - followingPos;
 
-	target->pointerPosition(runAway, dt);
-	Vector3 globalFollowingUp = following->getGlobalMatrix().rotateVector(Vector3(0, 1, 0));
-	target->balanceVehicle(globalFollowingUp, dt);
+		target->pointerPosition(runAway, dt);
+		Vector3 globalFollowingUp = following->getGlobalMatrix().rotateVector(Vector3(0, 1, 0));
+		target->balanceVehicle(globalFollowingUp, dt);
+	}
 }
 
 void Controller::updateWaypoints(float dt)
@@ -194,52 +196,48 @@ void Controller::updateState(float dt)
 
 void Controller::evaluateState()
 {
+	Vehicle* player = Game::getInstance()->player;
+	float playerDist = computeDistanceToEnemy(player);
+
 	std::cout << std::endl << "State: " << state << std::endl;
-	Vehicle* enemyClose = enemyAtDistance(10000);
+	//Vehicle* enemyClose = enemyAtDistance(10000);
+	std::cout << "Distancia del player: " << playerDist << std::endl;
 	std::cout << "Hull: " << target->hull << std::endl <<std::endl;
 
 	if (state == "patrol") {
-		// Enemigo cerca?
-		Vehicle* enemy = enemyAtDistance(1000);
-		if (enemy != NULL) {
-			if (Game::getInstance()->player == enemy) {
-				following = enemy;
-				state = "attack";
-				std::cout << "State: " << state << std::endl;
-			}
+		// Player cerca?
+		//Vehicle* enemy = enemyAtDistance(1000);
+		if (playerDist > 0 && playerDist < 1000) {
+			following = player;
+			state = "attack";
 		}
 	}
 	else if(state == "attack" || state == "shooting"){
-		Vehicle* enemy = enemyAtDistance(500);
+		//Vehicle* enemy = enemyAtDistance(500);
 		if (target->hull < target->max_hull * 0.5) {
 			state = "scape";
 		}
-		else if (state == "attack" && enemy != NULL) {
-			if (following != enemy) {
-				following = enemy;
-			}
+		else if(playerDist < 0){
+			state = "patrol";
+		}
+		else if (state == "attack" && playerDist > 0 && playerDist < 500) {
+			following = player;
 			state = "shooting";
 		}
-		else if (state == "shooting") {
+		else if (state == "shooting" && playerDist > 500) {
 			state = "attack";
 		}
-
-		std::cout << "State: " << state << std::endl;
 	}
-	else if (state == "scape") {
-		Vehicle* enemy = enemyAtDistance(1100);
-		if (enemy == NULL) {
-			state = "heal";
-		}
-		std::cout << "State: " << state << std::endl;
-
+	else if (state == "scape" && (playerDist < 0 || playerDist > 1100)) {
+		//Vehicle* enemy = enemyAtDistance(1100);
+		state = "heal";
 	}
 	else if (state == "heal"){
-		Vehicle* enemy = enemyAtDistance(1000);
+		//Vehicle* enemy = enemyAtDistance(1000);
 		if (target->hull == target->max_hull) {
 			state = "patrol";
 		}
-		else if (enemy != NULL)
+		else if (playerDist > 0 && playerDist < 1000)
 		{
 			if (target->hull < target->max_hull * 0.8) {
 				state = "scape";
@@ -248,7 +246,6 @@ void Controller::evaluateState()
 				state = "attack";
 			}
 		}
-		std::cout << "State: " << state << std::endl;
 	}
 }
 
@@ -300,4 +297,20 @@ bool Controller::clock(float dt) {
 
 void Controller::shotEnemy(float dt) {
 	target->shoot('l');
+}
+
+float Controller::computeDistanceToEnemy(Vehicle* enemy)
+{
+	Vector3 enemyPosition, myPosition, direction;
+
+	if (enemy != NULL) {
+		enemyPosition = enemy->getGlobalMatrix() * Vector3(0, 0, 0);
+		myPosition = target->getGlobalMatrix() * Vector3(0, 0, 0);
+		direction = enemyPosition - myPosition;
+		return direction.length();
+	}
+	else {
+		return -1;
+	}
+
 }

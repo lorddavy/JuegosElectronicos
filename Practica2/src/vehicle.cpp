@@ -173,7 +173,10 @@ void Vehicle::die()
 	Scene* scene = Scene::getInstance();
 	dead = true;
 
-	if (game->player == this) game->end(); //Fin de juego
+	if (game->player == this) {
+		game->end(); //Fin de juego
+		game->player = NULL;
+	}
 
 										   //Eliminamos la entidad y sus entidades hijas
 	Entity::destroyChild(this, 0.5);
@@ -184,7 +187,6 @@ void Vehicle::die()
 
 	//Eliminamos su controlador del vector de controladores
 	auto it2 = find(game->controller.begin(), game->controller.end(), this->controller);
-	// EL ERROR ESTA AQUI !!!!
 	game->controller.erase(it2);
 
 	for (int i = 0; i < game->controller.size(); i++) {

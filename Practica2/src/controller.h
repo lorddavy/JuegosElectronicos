@@ -30,6 +30,7 @@ public:
 	void updateState(float dt);
 	void evaluateState();
 	Vehicle* enemyAtDistance(float dist);
+	float computeDistanceToEnemy(Vehicle* enemy);
 
 	Vehicle* following;
 
