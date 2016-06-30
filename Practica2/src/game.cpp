@@ -276,9 +276,9 @@ void Game::render(void)
 
 			//drawGrid(500); //background grid
 
-			for (int i = 0; i < controller.size(); i++) {
+			/*for (int i = 0; i < controller.size(); i++) {
 				controller[i]->renderDebug();
-			}
+			}*/
 
 			scene->root->render(current_camera);
 			shotManager->render(current_camera);

@@ -137,7 +137,7 @@ void Controller::updateRunAway(float dt)
 
 void Controller::updateWaypoints(float dt)
 {
-	target->current_velocity = 30;
+	target->current_velocity = 50;
 
 	Vector3 direction = waypoints.front() - target->getGlobalMatrix() * Vector3(0, 0, 0);
 	float distance = direction.length();
