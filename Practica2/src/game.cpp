@@ -193,7 +193,7 @@ bool Game::load(void)
 	current_camera = player_camera;
 	//Player controller	
 
-	for (auto it = controller.begin(); it != controller.end(); ++it)
+	for (std::vector<Controller*>::iterator it = controller.begin(); it != controller.end(); ++it)
 	{
 		delete *it;
 	}

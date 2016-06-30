@@ -13,7 +13,7 @@ Controller::Controller(bool ia) {
 	state = NULL;
 	
 	following = NULL;
-	formation = Vector3(0, 0, 0);
+	//formation = Vector3(0, 0, 0);
 	IA = ia;
 
 	if (IA) {
@@ -107,9 +107,11 @@ void Controller::followTarget(Vehicle* follow, Vector3 delta) {
 
 void Controller::updateFollowing(float dt)
 {
-	target->pointerPosition(following->getGlobalMatrix() * formation, dt);
-	Vector3 globalFollowingUp = following->getGlobalMatrix().rotateVector(Vector3(0, 1, 0));
-	target->balanceVehicle(globalFollowingUp, dt);
+	if (following != NULL) {
+		target->pointerPosition(following->getGlobalMatrix() * formation, dt);
+		Vector3 globalFollowingUp = following->getGlobalMatrix().rotateVector(Vector3(0, 1, 0));
+		target->balanceVehicle(globalFollowingUp, dt);
+	}
 }
 
 void Controller::updateRunAway(float dt)
@@ -200,9 +202,11 @@ void Controller::evaluateState()
 		// Enemigo cerca?
 		Vehicle* enemy = enemyAtDistance(1000);
 		if (enemy != NULL) {
-			following = enemy;
-			state = "attack";
-			std::cout << "State: " << state << std::endl;
+			if (Game::getInstance()->player == enemy) {
+				following = enemy;
+				state = "attack";
+				std::cout << "State: " << state << std::endl;
+			}
 		}
 	}
 	else if(state == "attack" || state == "shooting"){

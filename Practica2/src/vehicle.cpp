@@ -187,6 +187,10 @@ void Vehicle::die()
 	// EL ERROR ESTA AQUI !!!!
 	game->controller.erase(it2);
 
+	for (int i = 0; i < game->controller.size(); i++) {
+		if (game->controller[i]->following == this) game->controller[i]->following = NULL;
+	}
+
 	//La quitamos del vector de enemigos (si lo es)
 	auto it3 = find(scene->enemies.begin(), scene->enemies.end(), this);
 	if (it3 != scene->enemies.end())scene->enemies.erase(it3);
