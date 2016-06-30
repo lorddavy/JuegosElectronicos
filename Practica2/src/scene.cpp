@@ -99,16 +99,17 @@ bool Scene::createLevel()
 
 	int enemiesTotalSize = 5;
 	//Enemies
+	int enemiesActualSize = enemies.size();
 
-	if (enemies.size() != enemiesTotalSize && enemies.size() != 0)
-	{
-		for (int i = 0; i < enemies.size(); i++) {
-			enemies[i]->die();
-		}
-		enemies.clear();		
+	if (enemiesActualSize != 0)
+	{		
+		for (int i = 0; i < enemiesActualSize; i++) {
+			enemies[0]->die();
+		}				
 	}
-	
-	if(enemies.size()==0)
+	//enemies.clear();
+
+	if(enemies.size() != enemiesTotalSize)
 	{
 		for (int i = 0; i < enemiesTotalSize; i++) {
 				Vehicle* element = (Vehicle*)createEntity("hunter");

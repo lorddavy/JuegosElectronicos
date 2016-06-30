@@ -60,13 +60,9 @@ void Controller::update(double dt) {
 			if (keystate[SDL_SCANCODE_W]) target->pitch(pitchInverted * 0.01 * speed);
 			if (keystate[SDL_SCANCODE_S]) target->pitch(pitchInverted * -0.01 * speed);
 			//Roll
-			//if (keystate[SDL_SCANCODE_A]) target->roll(0.01 * speed);
-			//if (keystate[SDL_SCANCODE_D]) target->roll(-0.01 * speed);
 			if (keystate[SDL_SCANCODE_A]) target->roll(0.005 * speed);
 			if (keystate[SDL_SCANCODE_D]) target->roll(-0.005 * speed);
 			//Yaw
-			//if (keystate[SDL_SCANCODE_Q]) target->yaw(-0.01 * speed);
-			//if (keystate[SDL_SCANCODE_E]) target->yaw(0.01 * speed);
 			if (keystate[SDL_SCANCODE_Q]) target->yaw(-0.005 * speed);
 			if (keystate[SDL_SCANCODE_E]) target->yaw(0.005 * speed);
 			//Stop

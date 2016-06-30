@@ -324,7 +324,7 @@ void Game::renderGUI()
 		drawText(window_width/50, window_height/20, "Thanks for playing!", Vector3(0, 1, 1), 10);
 		drawText(5, 5, "Press ESC key to return to the menu!", Vector3(1, 1, 1), 2);
 	}
-	else if (currentStage == "title" || currentStage == "load" || currentStage == "menu" || currentStage == "credits" || currentStage == "mission")
+	else if (currentStage == "title" || currentStage == "load" || currentStage == "menu" || currentStage == "credits" || currentStage == "mission" || currentStage == "config")
 	{
 		char* texFile = "";
 		//rutas para asset de textura
@@ -336,7 +336,7 @@ void Game::renderGUI()
 			texFile = "menu.tga";
 		else if (currentStage == "credits")
 			texFile = "credits.tga";
-		else if (currentStage == "mission")
+		else if (currentStage == "mission" || currentStage == "config")
 			texFile = "mission.tga";
 
 		//render del quad 2D de HUD
@@ -406,7 +406,7 @@ void Game::renderGUI()
 				drawText(25, 125, "for the Human Cosmic Empire.", Vector3(0.36, 0.75, 0.56), 3);
 			}
 			if (missionText > 3)
-			drawText(25, 135, "Recent discoveries of large ore veins are of great value to us.", Vector3(0.36, 0.75, 0.56), 3);
+				drawText(25, 135, "Recent discoveries of large ore veins are of great value to us.", Vector3(0.36, 0.75, 0.56), 3);
 			if (missionText > 4)
 			{
 				drawText(25, 145, "A few days ago, we sent a fleet of mineral collectors but have been attacked by surprise", Vector3(0.36, 0.75, 0.56), 3);
@@ -421,6 +421,22 @@ void Game::renderGUI()
 				drawText(25, 195, "Good luck,", Vector3(0.36, 0.75, 0.56), 3);
 				drawText(25, 215, "HCE - Order and Progress", Vector3(0.36, 0.75, 0.56), 3);
 			}
+		}
+		else if (currentStage == "config") {
+			drawText(5, 5, "Press any key!", Vector3(1, 1, 1), 2);
+			drawText(25, 60, "Configured controls:", Vector3(0.36, 0.75, 0.56), 3);
+			drawText(25, 75, "Ship movement:", Vector3(0.36, 0.75, 0.56), 3);
+			drawText(25, 85, "Press W-S keys to pitch the ship", Vector3(0.36, 0.75, 0.56), 3);
+			drawText(25, 95, "Press A-D keys to roll the ship", Vector3(0.36, 0.75, 0.56), 3);
+			drawText(25, 105, "Press Q-E keys to jaw the ship", Vector3(0.36, 0.75, 0.56), 3);
+			drawText(25, 115, "Press X key to stop the ship", Vector3(0.36, 0.75, 0.56), 3);
+			drawText(25, 135, "Ship shooting:", Vector3(0.36, 0.75, 0.56), 3);
+			drawText(25, 145, "Press SPACE key to shoot", Vector3(0.36, 0.75, 0.56), 3);
+			drawText(25, 155, "Press 1-2 num keys to change the shot type", Vector3(0.36, 0.75, 0.56), 3);
+			drawText(25, 175, "Press TAB key to change the view: free or player fixed", Vector3(0.36, 0.75, 0.56), 3);
+			drawText(25, 185, "In free view: hold LEFT MOUSE BUTTON to look around", Vector3(0.36, 0.75, 0.56), 3);
+			drawText(25, 195, "In free view: AWSD to move", Vector3(0.36, 0.75, 0.56), 3);
+			drawText(25, 205, "In free view: R-F to go up and down", Vector3(0.36, 0.75, 0.56), 3);
 		}
 	}
 
@@ -560,7 +576,7 @@ void Game::onKeyPressed(SDL_KeyboardEvent event)
 		case SDLK_RETURN:
 			if (menuOption == 0)
 			{
-				currentStage = "mission";;
+				currentStage = "mission";
 			}
 			if (menuOption == 1)
 			{
@@ -568,7 +584,7 @@ void Game::onKeyPressed(SDL_KeyboardEvent event)
 			}
 			else if (menuOption == 2)
 			{
-
+				currentStage = "config";
 			}
 			else if (menuOption == 3)
 			{
@@ -625,6 +641,10 @@ void Game::onKeyPressed(SDL_KeyboardEvent event)
 				currentStage = "menu";							//cualquier tecla, al menú
 			break;
 		}
+	}
+	else if (currentStage == "config")
+	{
+		currentStage = "menu";
 	}
 }
 
