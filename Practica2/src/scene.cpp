@@ -1,6 +1,7 @@
 #include <iostream>
 #include <assert.h>
 #include <time.h>       /* time */
+#include <algorithm>
 
 #include "scene.h"
 #include "meshManager.h"
@@ -96,15 +97,17 @@ bool Scene::createLevel()
 	EntityCollider::dynamic_entities.push_back(runner);
 	root->addEntity(runner);
 
-	int enemiesTotalSize = 2;
+	int enemiesTotalSize = 5;
 	//Enemies
-	/*if (enemies.size() != 0)
+
+	if (enemies.size() != enemiesTotalSize && enemies.size() != 0)
 	{
-		for (int i = 0; enemies.size(); i++)
-		{
+		for (int i = 0; i < enemies.size(); i++) {
 			enemies[i]->die();
 		}
-	}*/
+		enemies.clear();		
+	}
+	
 	if(enemies.size()==0)
 	{
 		for (int i = 0; i < enemiesTotalSize; i++) {

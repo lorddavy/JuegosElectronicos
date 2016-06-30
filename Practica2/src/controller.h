@@ -23,6 +23,8 @@ public:
 	void updateRunAway(float dt);
 	void shotEnemy(float dt);
 
+	char shotType;
+
 	void updateWaypoints(float dt);
 
 	void renderDebug();

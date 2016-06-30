@@ -14,6 +14,9 @@ Controller::Controller(bool ia) {
 	
 	following = NULL;
 	//formation = Vector3(0, 0, 0);
+
+	shotType = 'l';
+
 	IA = ia;
 
 	if (IA) {
@@ -45,7 +48,7 @@ void Controller::update(double dt) {
 
 	Game* game = Game::getInstance();
 	const Uint8* keystate = game->keystate;
-	
+
 	if (!IA & game->current_camera == game->player_camera) {
 		double speed = dt * 100; //the speed is defined by the seconds_elapsed so it goes constant
 		int pitchInverted = -1;
@@ -68,10 +71,19 @@ void Controller::update(double dt) {
 			if (keystate[SDL_SCANCODE_E]) target->yaw(0.005 * speed);
 			//Stop
 			if (keystate[SDL_SCANCODE_X]) target->stop();
-			//Shooting Beam
+
+			//Disparar
 			if (keystate[SDL_SCANCODE_SPACE]) {
-				//target->shoot('b');
-				target->shoot('l');
+				
+				target->shoot(shotType);
+			}
+
+			//Cambiar tipo de disparo
+			if (keystate[SDL_SCANCODE_1]) {
+				shotType = 'l';
+			}
+			if (keystate[SDL_SCANCODE_2]) {
+				shotType = 'b';
 			}
 
 

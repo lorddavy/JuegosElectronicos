@@ -69,8 +69,8 @@ void ShotManager::render(Camera* camera)
 				Mesh mesh;
 				mesh.vertices.push_back(shots[0].origin_position);
 				mesh.vertices.push_back(shots[0].end_position);
-				mesh.colors.push_back(Vector4(1, 0.3, 0.5, 1));
-				mesh.colors.push_back(Vector4(0, 0, 1, 1));
+				mesh.colors.push_back(Vector4(102 / 255, 255 / 255, 102 / 255, 1));
+				mesh.colors.push_back(Vector4(95 / 255, 250 / 255, 95 / 255, 1));
 
 				if (mesh.vertices.size() == 0)
 					return;
