@@ -78,7 +78,7 @@ void Vehicle::shoot(char type)
 		if (type == 'b') {
 
 			Matrix44 global = getGlobalMatrix();
-			Vector3 origin = global * Vector3(0, 0, 10);
+			Vector3 origin = global * Vector3(0, 0, 15);
 
 			Vector3 end = global * Vector3(0, 0, 500);
 			Vector3 vel = global.rotateVector(Vector3(0, 0, 0));
