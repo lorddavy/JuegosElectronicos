@@ -105,7 +105,7 @@ void Game::init(void)
 
 	if (BASS_Init(-1, 44100, BASS_DEVICE_DEFAULT, 0, NULL))
 	{
-		BASS_SetConfig(BASS_CONFIG_GVOL_SAMPLE, 1000.0);
+		BASS_SetConfig(BASS_CONFIG_GVOL_SAMPLE, 10000.0);
 		//BASS_SetVolume(1);
 
 		//Cargamos samples (memoria, filename, offset, length, max, flags)
